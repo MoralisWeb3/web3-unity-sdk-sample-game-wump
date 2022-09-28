@@ -1,17 +1,14 @@
-using System.Threading.Tasks;
-using Cysharp.Threading.Tasks;
-using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Architectures.MVCS;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Controller;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model.Data.Types;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model.Data.Types.Configuration;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Service;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.View;
+using MoralisUnity.Samples.TheGame.MVCS.Controller;
+using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
+using MoralisUnity.Samples.TheGame.MVCS.Service;
+using MoralisUnity.Samples.TheGame.MVCS.View;
 using UnityEngine;
 
 #pragma warning disable 1998
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS
+namespace MoralisUnity.Samples.TheGame.MVCS
 {
 
 	/// <summary>

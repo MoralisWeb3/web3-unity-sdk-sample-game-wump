@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared.Data.Types;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model.Data.Types;
+using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 
 #pragma warning disable CS1998
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Service
+namespace MoralisUnity.Samples.TheGame.MVCS.Service
 {
 	/// <summary>
 	/// Handles communication with external sources (e.g. database/servers/contracts)

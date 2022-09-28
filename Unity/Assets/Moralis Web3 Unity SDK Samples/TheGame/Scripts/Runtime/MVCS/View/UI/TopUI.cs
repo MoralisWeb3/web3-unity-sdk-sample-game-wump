@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.View.UI
+namespace MoralisUnity.Samples.TheGame.MVCS.View.UI
 {
 	/// <summary>
 	/// Handles the top navigation

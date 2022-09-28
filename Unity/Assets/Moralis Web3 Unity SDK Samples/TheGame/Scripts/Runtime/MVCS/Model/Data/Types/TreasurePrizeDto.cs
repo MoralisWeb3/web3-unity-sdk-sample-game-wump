@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model.Data.Types
+namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
 {
     [Serializable]
     public class TreasurePrizeMetadata

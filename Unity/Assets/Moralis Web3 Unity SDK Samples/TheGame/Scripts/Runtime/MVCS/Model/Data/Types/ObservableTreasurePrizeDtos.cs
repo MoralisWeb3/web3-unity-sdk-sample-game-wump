@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using MoralisUnity.Samples.Shared.Data.Types;
 using UnityEngine;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model.Data.Types
+namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
 {
     /// <summary>
     /// Observable wrapper invoking events for <see cref="TreasurePrizeDto"/>

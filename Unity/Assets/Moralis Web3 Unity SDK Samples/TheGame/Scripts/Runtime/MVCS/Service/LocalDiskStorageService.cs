@@ -5,10 +5,10 @@ using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Data.Types.Storage;
 using MoralisUnity.Samples.Shared.Attributes;
 using MoralisUnity.Samples.Shared.Data.Types;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.Shared.Debugging;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Service
+namespace MoralisUnity.Samples.TheGame.MVCS.Service
 {
 
 	/// <summary>

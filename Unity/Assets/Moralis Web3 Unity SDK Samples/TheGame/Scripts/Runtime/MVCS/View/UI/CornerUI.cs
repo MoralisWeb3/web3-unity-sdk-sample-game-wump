@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.View.UI
+namespace MoralisUnity.Samples.TheGame.MVCS.View.UI
 {
 	/// <summary>
 	/// Handles the top navigation

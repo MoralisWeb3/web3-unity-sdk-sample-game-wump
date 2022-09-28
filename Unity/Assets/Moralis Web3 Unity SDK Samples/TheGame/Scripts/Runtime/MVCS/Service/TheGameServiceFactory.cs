@@ -1,7 +1,7 @@
 using MoralisUnity.Samples.Shared.Exceptions;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model.Data.Types;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Service
+namespace MoralisUnity.Samples.TheGame.MVCS.Service
 {
 	/// <summary>
 	/// Creates a concrete <see cref="ITheGameService"/>

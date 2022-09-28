@@ -1,7 +1,7 @@
 ﻿
 using MoralisUnity.Samples.Shared;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS
+namespace MoralisUnity.Samples.TheGame.MVCS
 {
     /// <summary>
     /// Helper Values

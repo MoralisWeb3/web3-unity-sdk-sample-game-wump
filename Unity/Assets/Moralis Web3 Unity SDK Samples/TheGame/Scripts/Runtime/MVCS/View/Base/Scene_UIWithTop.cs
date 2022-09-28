@@ -1,9 +1,9 @@
 using MoralisUnity.Samples.Shared.UI;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.View.UI;
+using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.View.UI;
 using UnityEngine;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.View
+namespace MoralisUnity.Samples.TheGame.MVCS.View
 {
 	/// <summary>
 	/// Any shared functionality for all Scene-specific UIs

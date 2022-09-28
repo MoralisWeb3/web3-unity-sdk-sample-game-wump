@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model.Data.Types;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.View.UI;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
+using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.View.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS
+namespace MoralisUnity.Samples.TheGame.MVCS
 {
     /// <summary>
     /// Helper Methods

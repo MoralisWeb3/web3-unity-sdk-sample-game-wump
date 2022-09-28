@@ -5,14 +5,14 @@ using DG.Tweening;
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Components;
 using MoralisUnity.Samples.Shared.Data.Types;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Controller.Events;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model.Data.Types;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Service;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.View;
+using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
+using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
+using MoralisUnity.Samples.TheGame.MVCS.Service;
+using MoralisUnity.Samples.TheGame.MVCS.View;
 using UnityEngine;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Controller
+namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 {
 	/// <summary>
 	/// Stores data for the game

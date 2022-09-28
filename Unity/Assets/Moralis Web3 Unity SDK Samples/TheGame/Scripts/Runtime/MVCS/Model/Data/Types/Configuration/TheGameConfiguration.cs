@@ -1,10 +1,10 @@
 using MoralisUnity.Samples.Shared.Attributes;
 using MoralisUnity.Samples.Shared.Data.Types.Configuration;
 using MoralisUnity.Samples.Shared.Data.Types.Storage;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.View;
+using MoralisUnity.Samples.TheGame.MVCS.View;
 using UnityEngine;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model.Data.Types.Configuration
+namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration
 {
     /// <summary>
     /// Main configuration for the game. Click the instance of this class in the project to view/edit

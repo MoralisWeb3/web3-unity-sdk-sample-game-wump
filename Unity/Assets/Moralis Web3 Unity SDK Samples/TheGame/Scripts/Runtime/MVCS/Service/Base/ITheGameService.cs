@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared.Data.Types;
-using MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model.Data.Types;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Service
+namespace MoralisUnity.Samples.TheGame.MVCS.Service
 {
 	/// <summary>
 	/// Handles communication with external sources (e.g. database/servers/contracts)

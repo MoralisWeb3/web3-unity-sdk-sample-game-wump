@@ -1,5 +1,5 @@
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model.Data.Types
+namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
 {
 	/// <summary>
 	/// At edit-time, toggle this with the <see cref="TheGameConfiguration"/> in the Unity inspector.

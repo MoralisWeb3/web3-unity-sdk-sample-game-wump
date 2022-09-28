@@ -1,7 +1,7 @@
 
 using MoralisUnity.Samples.Shared.UI;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.View.UI
+namespace MoralisUnity.Samples.TheGame.MVCS.View.UI
 {
 	/// <summary>
 	/// UI element to cover the full game screen with a "Loading..." type message

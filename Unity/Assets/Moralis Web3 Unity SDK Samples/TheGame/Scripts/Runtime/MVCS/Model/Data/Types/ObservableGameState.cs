@@ -3,7 +3,7 @@ using System;
 using MoralisUnity.Samples.Shared.Data.Types;
 using UnityEngine;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.MVCS.Model.Data.Types
+namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
 {
 	/// <summary>
 	/// Determines the user-input state of the game

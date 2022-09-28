@@ -1,6 +1,6 @@
 using System;
 
-namespace MoralisUnity.Samples.Web3MagicTreasureChest.Exceptions
+namespace MoralisUnity.Samples.TheGame.Exceptions
 {
     /// <summary>
     /// Thrown when isRegistered is required true but is not true.
