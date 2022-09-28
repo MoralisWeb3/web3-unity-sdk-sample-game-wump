@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.CustomSingletonMonobehaviour;
 using MoralisUnity.Sdk.DesignPatterns.Creational.Singleton.SingletonMonobehaviour;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace MoralisUnity.Samples.Shared.Audio
 	/// Maintain a list of AudioSources and play the next 
 	/// AudioClip on the first available AudioSource.
 	/// </summary>
-	public class SoundManager : SingletonMonobehaviour<SoundManager>
+	public class SoundManager : CustomSingletonMonobehaviour<SoundManager>
 	{
 		// Properties -------------------------------------
 		public List<AudioClip> AudioClips { get { return _soundManagerConfiguration.AudioClips; } }

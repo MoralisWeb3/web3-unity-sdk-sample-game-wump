@@ -1,3 +1,4 @@
+using MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.CustomSingletonMonobehaviour;
 using MoralisUnity.Sdk.DesignPatterns.Creational.Singleton.SingletonMonobehaviour;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace MoralisUnity.Samples.Shared.Data.Types.Storage
     /// Example local storage which is written to disk
     /// and used throughout various examples to hold shared state.
     /// </summary>
-    public class BaseRuntimeStorage <T>  : SingletonMonobehaviour<T> where T : MonoBehaviour
+    public class BaseRuntimeStorage <T>  : CustomSingletonMonobehaviour<T> where T : MonoBehaviour
     {
 
         //  Events  ---------------------------------------

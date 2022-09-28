@@ -1,0 +1,6 @@
+Source Url: 
+* https://assetstore.unity.com/packages/3d/props/interior/animated-pbr-chest-demo-194755
+
+Changelog: 
+* Some unneeded files may have been removed
+* Moved to \Assets\...\3rdParty

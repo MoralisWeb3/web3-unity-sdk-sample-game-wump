@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 32
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d1a99b9a9bc47da8c2bc37da397e4cf, type: 3}
+  m_Name: TheGameConfiguration
+  m_EditorClassIdentifier: 
+  _isLogEnabled: 0
+  _theGameViewPrefab: {fileID: 7658312415067987870, guid: 58ebf062fbd0bf54a90ceb725ac64508, type: 3}
+  _sceneDataStorage: {fileID: 11400000, guid: b26de83d10480624f82cf855ce76b933, type: 2}
+  _theGameServiceType: 1

@@ -1,10 +1,11 @@
 using MoralisUnity.Samples.Shared.Debugging;
+using MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.CustomSingletonMonobehaviour;
 using MoralisUnity.Sdk.DesignPatterns.Creational.Singleton.SingletonMonobehaviour;
 using UnityEngine;
 
 namespace MoralisUnity.Samples.Shared.Architectures.MVCS
 {
-	public class BaseMVCS<U> : SingletonMonobehaviour<U> where U: MonoBehaviour
+	public class BaseMVCS<U> : CustomSingletonMonobehaviour<U> where U: MonoBehaviour
 	{
 		public static IDebug Debug = new UnityEngineDebug();
 	}

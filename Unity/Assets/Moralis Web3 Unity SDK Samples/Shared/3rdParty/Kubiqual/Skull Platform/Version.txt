@@ -1,0 +1,6 @@
+Source Url: 
+* https://assetstore.unity.com/packages/3d/props/skull-platform-105664
+
+Changelog: 
+* Some unneeded files may have been removed
+* Moved to \Assets\...\3rdParty

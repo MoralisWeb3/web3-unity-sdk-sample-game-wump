@@ -1,0 +1,43 @@
+///////////////////////////////////////////////////////////
+// 
+// This is the original developer's to do list. Just an FYI.
+// 
+///////////////////////////////////////////////////////////
+
+
+CHECKLIST - DEVELOPMENT 
+- [ ] Intro - 
+- [ ] Auth -
+- [ ] Settings - 
+- [ ] DevConsole - 
+- [ ] Collection - 
+- [ ] Game - 
+
+
+CHECKLIST - DEVELOPMENT 
+- [ ] Finish all runtime features
+- [ ] Address all "TODO" comments in code
+- [ ] Move any logging to "Custom.Debug.Log." calls. Ideall all.
+- [ ] Revisit every class name, namespace, folder
+- [ ] Rename every "async" method as "MethodName{Async}"
+- [ ] Add class comments
+- [ ] Unity/Tools/Moralis Web3 Unity SDK/ ... Menu Items
+- [ ] Update/Test ReadMe.asset
+- [ ] Update/Test README.md
+- [ ] Update/Test TheGameConfiguration.asset
+- [ ] Remove unneeded /3rdParty/ contents
+- [ ] Reduce filesize of /Unity/Assets/. Ideally < 100MB
+- [ ] Run/Test runtime in Unity Editor
+- [ ] Build/Test runtime on Standalone Desktop
+
+
+CHECKLIST - RECORDING VIDEO 
+- [] - Use 16x10 Layout
+- [] - Code editor height set to ~25 lines
+
+
+CHECKLIST - RELEASE 
+- [ ] Keep in git: ALL values within: TheGameConfiguration.asset
+- [ ] Keep in git: ALL values within: TheGameContract.cs
+- [ ] Release repo as public
+- [ ] Release video as unlisted
