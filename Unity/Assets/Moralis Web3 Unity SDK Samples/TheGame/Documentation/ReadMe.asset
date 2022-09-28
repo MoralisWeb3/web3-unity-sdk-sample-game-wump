@@ -27,22 +27,20 @@ MonoBehaviour:
     linkText: docs.moralis.io/unity
     url: https://docs.moralis.io/unity
   - heading: 
-    subheading: Web3 Unity SDK Examples
-    text: This suite of standalone Unity example scenes showcases key features of the Web3 Unity SDK.
-    linkText: github.com/MoralisWeb3/web3-unity-sdk-sample-game-template
-    url: https://github.com/MoralisWeb3/web3-unity-sdk-sample-game-template
+    subheading: Web3 Unity Multiplayer Playground
+    text: Enter the multiplayer playground - an shared environment to move, trade currency, and trade NFTs.
+    linkText: github.com/MoralisWeb3/web3-unity-sdk-sample-game-wump
+    url: https://github.com/MoralisWeb3/web3-unity-sdk-sample-game-wump
   - heading: Getting Started
-    subheading: 1. Get the Configuration
-    text: Setup the server and copy the config
-    linkText: admin.moralis.io
-    url: https://admin.moralis.io
+    subheading: 1. Get the Configuration from Web Browser
+    text: See the docs per "Using Unity & PlayFab"
+    linkText: docs.moralis.io/unity
+    url: https://docs.moralis.io/unity
   - heading: 
-    subheading: 2. Set the Configuration
-    text: Paste the config into Unity
-    linkText: 
-    url: 
-    openMenuName: Web3 Setup Window
-    openMenuNameId: Tools/Moralis Web3 Unity SDK/Open Web3 Setup
+    subheading: 2. Set the Configuration In Unity
+    text: See the docs per "Using Unity & PlayFab"
+    linkText: docs.moralis.io/unity
+    url: https://docs.moralis.io/unity
   - heading: 
     subheading: 3. Update the Build Settings
     text: Prepare project for use
@@ -55,8 +53,8 @@ MonoBehaviour:
     text: Use our default layout or choose your own
     linkText: 
     url: 
-    openMenuName: Load Moralis Layout (10x16)
-    openMenuNameId: Tools/Moralis Web3 Unity SDK/Samples/The Game/Load Moralis Layout (10x16)
+    openMenuName: Load Moralis Layout (16x10)
+    openMenuNameId: Tools/Moralis Web3 Unity SDK/Samples/The Game/Load Moralis Layout (16x10)
   - heading: 
     subheading: 5. Open Any Example Scene
     text: Play this scene or choose your own
