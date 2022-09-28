@@ -1,0 +1,19 @@
+{
+    "name": "MoralisUnity.Samples.TheGame.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:570b4cb8b98b2944c9f69c1e96380338",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:4ec0a6fe697cea44a929571e8583e72a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
