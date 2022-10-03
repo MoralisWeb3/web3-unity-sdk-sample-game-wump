@@ -7,8 +7,8 @@ pragma solidity ^0.8.9;
 ///////////////////////////////////////////////////////////
 import "hardhat/console.sol";
 import "contracts/Gold.sol";
-import "contracts/TreasurePrize.sol";
-import "classes/Reward.sol";
+import "contracts/Prize.sol";
+import "classes/TransferLog.sol";
 import { TheGameLibrary } from "libraries/TheGameLibrary.sol";
 
 
@@ -29,27 +29,27 @@ contract TheGameContract
     // Stores address of the Gold contract, to be called
     address _goldContractAddress;
 
-    // Stores address of the TreasurePrize contract, to be called
-    address _treasurePrizeContractAddress;
+    // Stores address of the Prize contract, to be called
+    address _prizeContractAddress;
 
     mapping(address => bool) private _isRegistered;
 
-    // Stores the most recent reward
-    mapping (address => Reward) private _lastReward;
+    // Stores the most recent TransferLog
+    mapping (address => TransferLog) private _lastTransferLog;
 
     ///////////////////////////////////////////////////////////
     // CONSTRUCTOR
     //      *   Runs when contract is executed
     ///////////////////////////////////////////////////////////
-    constructor(address goldContractAddress, address treasurePrizeContractAddress) 
+    constructor(address goldContractAddress, address prizeContractAddress) 
     {
         _goldContractAddress = goldContractAddress;
-        _treasurePrizeContractAddress = treasurePrizeContractAddress;
+        _prizeContractAddress = prizeContractAddress;
 
         console.log(
-            "TheGameContract.constructor() _goldContractAddress = %s, _treasurePrizeContractAddress = %s",
+            "TheGameContract.constructor() _goldContractAddress = %s, _prizeContractAddress = %s",
             _goldContractAddress,
-            _treasurePrizeContractAddress
+            _prizeContractAddress
         );
     }
     
@@ -86,9 +86,9 @@ contract TheGameContract
     }
 
 
-    function getRewardsHistory(address userAddress) external view ensureIsRegistered (userAddress) returns (string memory rewardString)
+    function getTransferLogHistory(address userAddress) external view ensureIsRegistered (userAddress) returns (string memory transferLogString)
     {
-        rewardString =  TheGameLibrary.convertRewardToString(_lastReward[userAddress]);
+        transferLogString =  TheGameLibrary.convertTransferLogToString(_lastTransferLog[userAddress]);
     }
 
 
@@ -98,15 +98,24 @@ contract TheGameContract
     function register() public
     {
         _isRegistered[msg.sender] = true;
+
+        for (uint i = 0; i < TheGameLibrary.PrizesOnRegister; i++)
+        {
+            string memory imageUrl = TheGameLibrary.getRandomImageUrl();
+            addPrize (imageUrl);
+        }
+
         setGold(TheGameLibrary.GoldOnRegister);
     }
 
 
-    function unregister() public ensureIsRegistered (msg.sender)
+    function unregister(uint256[] calldata tokenIds) public ensureIsRegistered (msg.sender)
     {
-
-        //Update gold first
+        // Update gold
         setGold(TheGameLibrary.GoldOnUnregister);
+
+        // Update prizes
+        deleteAllPrizes(tokenIds);
 
         //Then unregister
         _isRegistered[msg.sender] = false;
@@ -115,67 +124,19 @@ contract TheGameContract
 
 
     ///////////////////////////////////////////////////////////
-    // FUNCTIONS: REWARDS
-    ///////////////////////////////////////////////////////////
-    function startGameAndGiveRewards(uint256 goldAmount) ensureIsRegistered (msg.sender) external
-    {
-        require(goldAmount > 0, "goldAmount must be > 0 to start the game");
-
-        require(getGold(msg.sender) >= goldAmount, "getGold() must be >= goldAmount to start the game");
-
-        // Deduct gold
-        setGoldBy(-int(goldAmount));
-
-        // The higher the goldAmount paid, the higher the POTENTIAL Prize Price Value
-        uint random = TheGameLibrary.randomRange (0, 100 + goldAmount, 1);
-        uint price = random;
-        uint theType = 0;
-        string memory title = "";
-
-        if (random < TheGameLibrary.MaxRandomForGold)
-        {
-            // REWARD: Gold!
-            theType = TheGameLibrary.GoldType;
-            title = "This is gold.";
-            setGoldBy (int(price));
-        } 
-        else 
-        {
-            // REWARD: Prize!
-            theType = TheGameLibrary.PrizeType;
-            title = "This is an nft.";
-        }
-
-        _lastReward[msg.sender] = Reward (
-        {
-            Title: title,
-            Type: theType,
-            Price: price
-        });
-
-        if (theType == 2)
-        {
-            //NOTE: Metadata structure must match in both: TheGameContract.sol and TreasurePrizeDto.cs
-            string memory metadata = TheGameLibrary.convertRewardToString(_lastReward[msg.sender]);
-            addTreasurePrize (metadata);     
-        }
-    }
-
-
-    ///////////////////////////////////////////////////////////
     // FUNCTIONS: CLEAR DATA
     ///////////////////////////////////////////////////////////
-    function safeReregisterAndDeleteAllTreasurePrizes(uint256[] calldata tokenIds) external
+    function safeReregisterAndDeleteAllPrizes(uint256[] calldata tokenIds) external
     {
         // Do not require isRegistered for this method to run
         bool isRegistered = getIsRegistered(msg.sender);
         if (isRegistered)
         {
-            unregister();
+            unregister(tokenIds);
         }
 
         register();
-        deleteAllTreasurePrizes(tokenIds);
+        deleteAllPrizes(tokenIds);
     }
 
 
@@ -188,6 +149,21 @@ contract TheGameContract
     }
 
 
+    function transferGold(address toAddress) ensureIsRegistered (msg.sender) ensureIsRegistered (toAddress) public
+    {
+        uint256 amount = TheGameLibrary.GoldOnTransfer;
+        Gold(_goldContractAddress).transferGold(msg.sender, toAddress, amount);
+
+        _lastTransferLog[msg.sender] = TransferLog (
+        {
+            FromAddress: msg.sender,
+            ToAddress: toAddress,
+            Type: TheGameLibrary.GoldType,
+            Amount: amount
+        });
+    }
+
+
     function setGoldBy(int delta) ensureIsRegistered (msg.sender) public
     {
         Gold(_goldContractAddress).setGoldBy(msg.sender, delta); 
@@ -195,26 +171,37 @@ contract TheGameContract
 
 
     ///////////////////////////////////////////////////////////
-    // FUNCTIONS: TREASURE PRIZE
+    // FUNCTIONS: PRIZE
     ///////////////////////////////////////////////////////////
-    function addTreasurePrize(string memory tokenURI) ensureIsRegistered (msg.sender)  public 
+    function addPrize(string memory tokenURI) ensureIsRegistered (msg.sender)  public 
     {
-        TreasurePrize(_treasurePrizeContractAddress).mintNft(msg.sender, tokenURI);
+        Prize(_prizeContractAddress).mintNft(msg.sender, tokenURI);
     }
 
 
-    function deleteAllTreasurePrizes(uint256[] calldata tokenIds) ensureIsRegistered (msg.sender)  public
+    function deleteAllPrizes(uint256[] calldata tokenIds) ensureIsRegistered (msg.sender)  public
     {
-        TreasurePrize(_treasurePrizeContractAddress).burnNfts(tokenIds); 
+        Prize(_prizeContractAddress).burnNfts(tokenIds); 
     }
 
 
-    function sellTreasurePrize(uint256 tokenId) ensureIsRegistered (msg.sender)  external
+    function transferPrize(address toAddress, uint256 tokenId) ensureIsRegistered (msg.sender) ensureIsRegistered (toAddress) public
     {
-        //TODO reward gold for the specific prize. Can I find the metadata from the tokenId here in Solidity?
+        Prize(_prizeContractAddress).transferNft(msg.sender, toAddress, tokenId);
 
-        //Then burn the prize
-        TreasurePrize(_treasurePrizeContractAddress).burnNft(tokenId);
+        _lastTransferLog[msg.sender] = TransferLog (
+        {
+            FromAddress: msg.sender,
+            ToAddress: toAddress,
+            Type: TheGameLibrary.PrizeType,
+            Amount: 1
+        });
+    }
+
+
+    function getIsOwnerOfPrize(uint256 tokenId) public view returns (bool isOwnerOfPrize) 
+    {
+        isOwnerOfPrize = Prize(_prizeContractAddress).ownerOf(tokenId) == msg.sender;
     }
 }
 

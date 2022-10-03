@@ -10,9 +10,10 @@ pragma solidity ^0.8.9;
 ///////////////////////////////////////////////////////////
 // STRUCTS
 ///////////////////////////////////////////////////////////
-struct Reward 
+struct TransferLog 
 {
-    string Title;
-    uint Type;
-    uint Price;
+    address FromAddress;
+    address ToAddress;
+    uint Type; 
+    uint Amount;
 }

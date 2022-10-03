@@ -24,10 +24,10 @@ async function main()
   const gold = await Gold.deploy();
   await gold.deployed();
 
-  // TreasurePrize Contract
-  const TreasurePrize = await ethers.getContractFactory("TreasurePrize");
-  const treasurePrize = await TreasurePrize.deploy();
-  await treasurePrize.deployed();
+  // Prize Contract
+  const Prize = await ethers.getContractFactory("Prize");
+  const prize = await Prize.deploy();
+  await prize.deployed();
 
   // TheGameContract
   const TheGameContract = await ethers.getContractFactory("TheGameContract", {
@@ -35,7 +35,7 @@ async function main()
         TheGameLibrary: theGameLibrary.address,
     },
   });
-  const theGameContract = await TheGameContract.deploy(gold.address, treasurePrize.address);
+  const theGameContract = await TheGameContract.deploy(gold.address, prize.address);
   await theGameContract.deployed();
 
 
@@ -49,7 +49,7 @@ async function main()
   console.log("\n");
   console.log("       protected override void SetContractDetails()");
   console.log("       {\n");
-  console.log("         _treasurePrizeContractAddress  = \"%s\";", treasurePrize.address);
+  console.log("         _prizeContractAddress  = \"%s\";", prize.address);
   console.log("         _address  = \"%s\";", theGameContract.address);
   console.log("         _abi      = \"%s\";\n", abi);
   console.log("       }\n");
@@ -73,7 +73,7 @@ async function main()
     address: theGameContract.address,
     constructorArguments: [
       gold.address, 
-      treasurePrize.address],
+      prize.address],
   });
 
   ///////////////////////////////////////////////////////////

@@ -35,7 +35,7 @@ contract Prize is ERC721URIStorage
     // CONSTRUCTOR
     //      *   Runs when contract is executed
     ///////////////////////////////////////////////////////////
-    constructor(string memory name, string memory symbol) ERC721 (name, symbol) 
+    constructor() ERC721 ("Prize","PRZ") 
     {
         _owner = msg.sender;
 
@@ -59,6 +59,18 @@ contract Prize is ERC721URIStorage
         _setTokenURI(newItemId, tokenURI);
     }
 
+
+    ///////////////////////////////////////////////////////////
+    // FUNCTION: 
+    //      *   Transfer Prize
+    ///////////////////////////////////////////////////////////
+    function transferNft(address origin, address toAddress, uint256 tokenId ) public
+    {
+        require(origin == ownerOf(tokenId), "FromAddress MUST be current owner");
+        _transfer(origin, toAddress, tokenId);
+    }
+
+
     ///////////////////////////////////////////////////////////
     // FUNCTION: 
     //      *   Delete Existing Prize
@@ -67,6 +79,7 @@ contract Prize is ERC721URIStorage
     {
         _burn(tokenId);
     }
+
 
     ///////////////////////////////////////////////////////////
     // FUNCTION: 

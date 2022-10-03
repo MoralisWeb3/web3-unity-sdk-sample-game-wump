@@ -5,7 +5,7 @@ pragma solidity ^0.8.9;
 ///////////////////////////////////////////////////////////
 // IMPORTS
 ///////////////////////////////////////////////////////////
-import "classes/Reward.sol";
+import "classes/TransferLog.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 ///////////////////////////////////////////////////////////
@@ -16,65 +16,65 @@ library TheGameLibrary
     ///////////////////////////////////////////////////////////
     // CONTANTS
     ///////////////////////////////////////////////////////////
-    uint constant GoldOnRegister = 100;             
+    uint constant GoldOnRegister = 100;   
     uint constant GoldOnUnregister = 0;  
-    uint constant MaxRandomForGold = 50;  
+    uint constant PrizesOnRegister = 3;
+    uint constant GoldOnTransfer = 25;   
     uint constant GoldType = 1;  
     uint constant PrizeType = 2;  
 
     ///////////////////////////////////////////////////////////
-    // FUNCTIONS: RANDOM
+    // FUNCTIONS: CONVERT
     ///////////////////////////////////////////////////////////
-    function randomRange (uint min, uint max, uint nonce) public view returns (uint) 
+    function getRandomImageUrl () public pure returns (string memory imageUrl) 
     {
-        // The nonce is especially useful for unit-tests, to ensure variation
-        uint randomnumber = uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, msg.sender, nonce))) % (max);
-        randomnumber = randomnumber + min;
-        return randomnumber;
+        //TODO: Randomize from a list of severl prize images
+        imageUrl = "https://www.oregonlottery.org/wp-content/uploads/2020/03/trophy-illustration.jpg";
     }
-    
+
     ///////////////////////////////////////////////////////////
     // FUNCTIONS: CONVERT
     ///////////////////////////////////////////////////////////
-    function convertRewardToString (Reward memory reward) public pure returns (string memory rewardString) 
+    function convertTransferLogToString (TransferLog memory transferLog) public pure returns (string memory transferLogString) 
     {
-        string memory titleString = reward.Title;
-        string memory typeString = Strings.toString(reward.Type);
-        string memory priceString = Strings.toString(reward.Price);
+        string memory fromAddressString = Strings.toHexString(transferLog.FromAddress);
+        string memory toAddressString = Strings.toHexString(transferLog.ToAddress);
+        string memory typeString = Strings.toString(transferLog.Type);
+        string memory amountString = Strings.toString(transferLog.Amount);
 
         if (bytes(typeString).length == 0)
         {
             typeString = "0";
         }
 
-        if (bytes(priceString).length == 0)
+        if (bytes(amountString).length == 0)
         {
-            priceString = "0";
+            amountString = "0";
         }
 
 
-        rewardString = string(abi.encodePacked("Title=", titleString, "|Type=", typeString, "|Price=", priceString));
+        transferLogString = string(abi.encodePacked("FromAddress=", fromAddressString, "|ToAddress=", toAddressString, "|Type=", typeString, "|Amount=", amountString));
     }
 
     //TODO: This works great. It exists only for use in testTheGameLibrary.js. Can I move it from here?
-    function createNewRewardForTesting () public pure returns (Reward memory reward)
+    function createNewTransferLogForTesting () public pure returns (TransferLog memory transferLog)
     {
-        uint price = 0;
         uint theType = 0;
-        string memory title = "";
+        uint amount = 0;
 
-        reward = Reward (
+        transferLog = TransferLog (
         {
-            Title: title,
+            FromAddress: address(0),
+            ToAddress: address(0),
             Type: theType,
-            Price: price
+            Amount: amount
         });
     }
 
     //TODO: This works great. It exists only for use in testTheGameLibrary.js. Can I move it from here?
-    function convertRewardToStringForTesting () public pure returns (string memory stringReward)
+    function convertTransferLogToStringForTesting () public pure returns (string memory transferLogString)
     {
-        Reward memory reward2 = createNewRewardForTesting();
-        stringReward =  convertRewardToString (reward2);
+        TransferLog memory transferLog = createNewTransferLogForTesting();
+        transferLogString =  convertTransferLogToString (transferLog);
     }
 }

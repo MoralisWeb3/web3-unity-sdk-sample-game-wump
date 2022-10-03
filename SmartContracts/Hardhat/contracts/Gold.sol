@@ -44,6 +44,18 @@ contract Gold is ERC20
     }
 
     ///////////////////////////////////////////////////////////
+    // MODIFIERS 
+    ///////////////////////////////////////////////////////////
+    modifier ensureHasBalance (address userAddress, uint256 amount)
+    {
+        // Validate
+        require(getGold(userAddress) >= amount, "Must be registered");
+
+        // Execute rest of function
+      _;
+    }
+
+    ///////////////////////////////////////////////////////////
     // FUNCTION: CRUD
     //      *   Get gold amount for the calling address
     //      *   Changes no contract state, so call via 
@@ -96,6 +108,20 @@ contract Gold is ERC20
         }
     }
 
+
+    ///////////////////////////////////////////////////////////
+    // FUNCTION: CRUD
+    //      *   Transfer gold amount from origin to the toAddress
+    //      *   Changes contract state, so call via 
+    //          ExecuteContractFunction
+    ///////////////////////////////////////////////////////////
+    function transferGold(address origin, address toAddress, uint256 amount) ensureHasBalance (origin, amount) ensureHasBalance (toAddress, 0) public
+    {
+        removeGold(origin, amount);
+        addGold(toAddress, amount);
+    }
+
+
     ///////////////////////////////////////////////////////////
     // FUNCTION: CRUD
     //      *   Add gold to the calling address
@@ -106,6 +132,7 @@ contract Gold is ERC20
     {
         _mint(origin, amount);
     }
+
 
     ///////////////////////////////////////////////////////////
     // FUNCTION: CRUD
