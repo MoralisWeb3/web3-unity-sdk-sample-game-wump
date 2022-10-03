@@ -54,53 +54,50 @@
 // 08. READ AND UNDERSTAND THE FILE "./SmartContracts/Hardhat/hardhat.config.js"
 
 
-// 09. CREATE NEW TEXT FILE OF "./SmartContracts/Hardhat/.evn". Add the following contents and replace the ""
-
-    // Populate from MetaMask Chrome Extension, from https://metamask.io, after sign-in. 
-    WEB3_WALLET_PRIVATE_KEY = ""
-    
-    // Populate from https://cronoscan.com/myapikey, after sign-in 
-    CRONOSCAN_TESTNET_API_KEY = "" 
+// 09. RENAME "./SmartContracts/Hardhat/.evn.videostart" as "./SmartContracts/Hardhat/.evn". 
 
 
-// 10. VERIFY INSTALL via COMMAND LINE. COMMAND FINISHES WITH NO RED ERRORS = SUCCESS :)
+// 10. POPULATE ALL VALUES WITHIN "./SmartContracts/Hardhat/.evn". 
+
+
+// 11. VERIFY INSTALL via COMMAND LINE. COMMAND FINISHES WITH NO RED ERRORS = SUCCESS :)
 
     npx hardhat 
 
 
-// 11. CLEAN SMART CONTRACT via COMMAND LINE
+// 12. CLEAN SMART CONTRACT via COMMAND LINE
 
     npx hardhat clean
 
 
-// 12. COMPILE SMART CONTRACT via COMMAND LINE
+// 13. COMPILE SMART CONTRACT via COMMAND LINE
     
     npx hardhat compile
 
 
-// 13. (OPTIONAL STEP) TEST SMART CONTRACT via COMMAND LINE
+// 14. (OPTIONAL STEP) TEST SMART CONTRACT via COMMAND LINE
     
     npx hardhat coverage
 
     npx hardhat test
 
 
-// 14. DEPLOY SMART CONTRACT via COMMAND LINE
+// 15. DEPLOY SMART CONTRACT via COMMAND LINE
 
-    npx hardhat run scripts/deployTheGameContract.js --network cronosTestnet
+    npx hardhat run scripts/deployTheGameContract.js --network polygonMumbai
         
         
-// 15. UPON SUCCESS SEE OUTPUT via COMMAND LINE WHICH RESEMBLES "deployed to: {YourContractAddress}"
+// 16. (OPTIONAL) SEE TERMINAL OUTPUT via COMMAND LINE OF "deployed to: {YourContractAddress}"
 
-    Visit "https://testnet.cronoscan.com/{YourContractAddress}" to see 
+    Visit "https://testnet.cronoscan.com/{YourContractAddress}" to see deployed contract
      
 
-// 16. PASTE {YourContractAddress} and the {YourABI} WITHIN
+// 17. PASTE {YourContractAddress} and the {YourABI} WITHIN
 
-    "./Unity/Assets/Moralis Web3 Unity SDK Samples/Web3MagicTreasureChest/Scripts/Runtime/MVCS/Model/Data/Types/TheGameContract.cs
+    "Path/To/Model/Data/Types/TheGameContract.cs"
  
 
- // 17. RUN THE RELEVANT SCENE IN UNITY
+ // `8`. RUN THE RELEVANT SCENE IN UNITY
 
     Congratulations, you are done!
 

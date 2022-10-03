@@ -3,12 +3,12 @@
     "@cronos-labs/hardhat-cronoscan": "^0.0.4",
     "@nomicfoundation/hardhat-toolbox": "^1.0.2",
     "@nomiclabs/hardhat-etherscan": "^3.1.0",
-    "@openzeppelin/contracts": "^4.7.2",
-    "hardhat": "^2.10.1",
-    "hardhat-gas-reporter": "^1.0.8",
-    "solidity-coverage": "^0.7.21"
+    "@openzeppelin/contracts": "^4.7.3",
+    "hardhat": "^2.11.2",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solidity-coverage": "^0.7.22"
   },
   "dependencies": {
-    "dotenv": "^16.0.1"
+    "dotenv": "^16.0.3"
   }
 }
