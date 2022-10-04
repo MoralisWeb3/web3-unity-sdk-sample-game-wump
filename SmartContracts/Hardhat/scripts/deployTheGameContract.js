@@ -68,7 +68,21 @@ async function main()
   ///////////////////////////////////////////////////////////
   // VERIFY
   ///////////////////////////////////////////////////////////
-  console.log("VERIFICATION STARTING ...");
+  console.log("VERIFICATION STARTING (gold)...");
+  console.log("\n");
+  await hre.run("verify:verify", {
+    address: gold.address,
+    constructorArguments: [],
+  });
+
+  console.log("VERIFICATION STARTING (prize)...");
+  console.log("\n");
+  await hre.run("verify:verify", {
+    address: prize.address,
+    constructorArguments: [],
+  });
+
+  console.log("VERIFICATION STARTING (theGameContract)...");
   console.log("\n");
   await hre.run("verify:verify", {
     address: theGameContract.address,

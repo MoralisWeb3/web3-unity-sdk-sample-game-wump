@@ -28,10 +28,11 @@ namespace MoralisUnity.Samples.TheGame.Controller
         //  Unity Methods----------------------------------
         protected async void Start()
         {
-            _ui.IsAuthenticatedButton.Button.onClick.AddListener(IsAuthenticatedButton_OnClicked);
+            _ui.IsAuthenticatedButton.Button.onClick.AddListener( async () => await IsAuthenticatedButton_OnClicked());
             _ui.IsRegisteredButton.Button.onClick.AddListener(async () => await IsRegisteredButton_OnClicked());
             _ui.RegisterButton.Button.onClick.AddListener(RegisterButton_OnClicked);
             _ui.UnregisterButton.Button.onClick.AddListener(UnregisterButton_OnClicked);
+            _ui.GetPrizesButton.Button.onClick.AddListener(GetPrizesButton_OnClicked);
             _ui.TransferGoldButton.Button.onClick.AddListener(TransferGoldButton_OnClicked);
             _ui.TransferPrizeButton.Button.onClick.AddListener(TransferPrizeButton_OnClicked);
             _ui.SafeReregisterButton.Button.onClick.AddListener(SafeReregisterButton_OnClicked);
@@ -42,7 +43,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
   
             // Mimic button clicks
             await RefreshUIAsync();
-            IsAuthenticatedButton_OnClicked();
+            await IsAuthenticatedButton_OnClicked();
             if (_isAuthenticated)
             {
                 await IsRegisteredButton_OnClicked();
@@ -60,10 +61,10 @@ namespace MoralisUnity.Samples.TheGame.Controller
             //
             _ui.IsAuthenticatedButton.IsInteractable = true;
             _ui.IsRegisteredButton.IsInteractable = _isAuthenticated;
-            _ui.RegisterButton.IsInteractable = !_isRegistered;
-            _ui.UnregisterButton.IsInteractable = _isRegistered;
+            _ui.RegisterButton.IsInteractable = _isAuthenticated && !_isRegistered;
+            _ui.UnregisterButton.IsInteractable = _isAuthenticated && _isRegistered;
             _ui.TransferGoldButton.IsInteractable = _isAuthenticated && _isRegistered;
-            _ui.TransferPrizeButton.IsInteractable = _isAuthenticated && _isRegistered;;
+            _ui.TransferPrizeButton.IsInteractable = _isAuthenticated && _isRegistered;
             _ui.BackButton.IsInteractable = true;
         }
         
@@ -75,7 +76,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
         }
         
         
-        private async void IsAuthenticatedButton_OnClicked()
+        private async UniTask IsAuthenticatedButton_OnClicked()
         {
             TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
 
@@ -124,7 +125,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
             if (_isRegistered)
             {
                 await TheGameSingleton.Instance.TheGameController.ShowMessageCustomAsync(
-                    "Already Registered", 1000);
+                    TheGameConstants.MustNotBeRegistered, 1000);
             }
             else
             {
@@ -134,12 +135,8 @@ namespace MoralisUnity.Samples.TheGame.Controller
                     {
                         await TheGameSingleton.Instance.TheGameController.RegisterAsync();
 
+                        //Populate UI
                         await IsRegisteredButton_OnClicked();
-
-                        _outputTextStringBuilder.Clear();
-                        _outputTextStringBuilder.AppendHeaderLine($"RegisterAsync()");
-                        _outputTextStringBuilder.AppendBullet($"IsRegistered = {_isRegistered}");
-       
                         await RefreshUIAsync();
                     });
             }
@@ -153,7 +150,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
             if (!_isRegistered)
             {
                 await TheGameSingleton.Instance.TheGameController.ShowMessageCustomAsync(
-                    "Already Unregistered", 1000);
+                    TheGameConstants.MustBeRegistered, 1000);
             }
             else
             {
@@ -163,11 +160,33 @@ namespace MoralisUnity.Samples.TheGame.Controller
                     {
                         await TheGameSingleton.Instance.TheGameController.UnregisterAsync();
 
+                        //Populate UI
                         await IsRegisteredButton_OnClicked();
+                        await RefreshUIAsync();
+                    });
+            }
+            
+            await RefreshUIAsync();
+        }
+
+        private async void GetPrizesButton_OnClicked()
+        {
+            if (!_isRegistered)
+            {
+                await TheGameSingleton.Instance.TheGameController.ShowMessageCustomAsync(
+                    TheGameConstants.MustBeRegistered, 1000);
+            }
+            else
+            {
+                await TheGameSingleton.Instance.TheGameController.ShowMessageActiveAsync(
+                    TheGameConstants.GettingPrizes,
+                    async delegate ()
+                    {
+                        await TheGameSingleton.Instance.TheGameController.GetPrizesAsync();
 
                         _outputTextStringBuilder.Clear();
-                        _outputTextStringBuilder.AppendHeaderLine($"UnregisterAsync()");
-                        _outputTextStringBuilder.AppendBullet($"IsRegistered = {_isRegistered}");
+                        _outputTextStringBuilder.AppendHeaderLine($"GetPrizesAsync()");
+                        _outputTextStringBuilder.AppendBullet($"result = see ui above");
        
                         await RefreshUIAsync();
                     });
@@ -176,13 +195,15 @@ namespace MoralisUnity.Samples.TheGame.Controller
             await RefreshUIAsync();
         }
 
+
         
+            
         private async void TransferGoldButton_OnClicked()
         {
             if (!_isRegistered)
             {
                 await TheGameSingleton.Instance.TheGameController.ShowMessageCustomAsync(
-                    "Must Be Registered", 1000);
+                    TheGameConstants.MustBeRegistered, 1000);
             }
             else
             {
@@ -191,8 +212,6 @@ namespace MoralisUnity.Samples.TheGame.Controller
                     async delegate ()
                     {
                         await TheGameSingleton.Instance.TheGameController.TransferGoldAsync();
-
-                        await IsRegisteredButton_OnClicked();
 
                         _outputTextStringBuilder.Clear();
                         _outputTextStringBuilder.AppendHeaderLine($"TransferGoldAsync()");
@@ -210,17 +229,15 @@ namespace MoralisUnity.Samples.TheGame.Controller
             if (!_isRegistered)
             {
                 await TheGameSingleton.Instance.TheGameController.ShowMessageCustomAsync(
-                    "Must Be Registered", 1000);
+                    TheGameConstants.MustBeRegistered, 1000);
             }
             else
             {
                 await TheGameSingleton.Instance.TheGameController.ShowMessageActiveAsync(
-                    TheGameConstants.TransferingGold,
+                    TheGameConstants.TransferingPrize,
                     async delegate ()
                     {
                         await TheGameSingleton.Instance.TheGameController.TransferPrizeAsync();
-
-                        await IsRegisteredButton_OnClicked();
 
                         _outputTextStringBuilder.Clear();
                         _outputTextStringBuilder.AppendHeaderLine($"TransferGoldAsync()");
@@ -235,7 +252,18 @@ namespace MoralisUnity.Samples.TheGame.Controller
         
         private async void SafeReregisterButton_OnClicked()
         {
-            await TheGameSingleton.Instance.TheGameController.SafeReregisterDeleteAllPrizesAsync();
+            await TheGameSingleton.Instance.TheGameController.ShowMessageActiveAsync(
+                TheGameConstants.SafeReregistering,
+                async delegate ()
+                {
+                    await TheGameSingleton.Instance.TheGameController.SafeReregisterDeleteAllPrizesAsync();
+                    
+                    //Populate UI
+                    await IsRegisteredButton_OnClicked();
+                    await RefreshUIAsync();
+                });
+            
+            
             await RefreshUIAsync();
         }
 

@@ -119,6 +119,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public async UniTask<List<Prize>> GetPrizesAsync()
 		{
 			List<Prize> prizes = await _theGameService.GetPrizesAsync();
+			Debug.Log("prizes: " + prizes.Count);
 			return prizes;
 		}
 		
