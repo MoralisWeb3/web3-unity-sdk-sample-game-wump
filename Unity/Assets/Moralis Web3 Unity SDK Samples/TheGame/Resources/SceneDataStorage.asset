@@ -18,5 +18,9 @@ MonoBehaviour:
     _sceneName: Scene01_Intro
   - _scene: {fileID: 102900000, guid: 2915f7ee87395e345ab2cec573420b4a, type: 3}
     _sceneName: Scene02_Authentication
+  - _scene: {fileID: 102900000, guid: edb971288910f714e82bfc9c7b3073f8, type: 3}
+    _sceneName: Scene03_Settings
+  - _scene: {fileID: 102900000, guid: 62202ffebe062ca499b23540ddff96b4, type: 3}
+    _sceneName: Scene04_DeveloperConsole
   - _scene: {fileID: 102900000, guid: b5b386d0b9ddcdf44bef8a21c690a845, type: 3}
-    _sceneName: Scene03_Game
+    _sceneName: Scene05_Game

@@ -110,6 +110,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			return _theGameModel.IsRegistered.Value;
 		}
 
+		//TODO: use or remove this?
 		public bool GetIsRegisteredCached()
 		{
 			return _theGameModel.IsRegistered.Value;

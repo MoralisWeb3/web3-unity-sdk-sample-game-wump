@@ -9,7 +9,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
     /// <summary>
     /// Core Scene Behavior - Using <see cref="Scene03_SettingsUI"/>
     /// </summary>
-    public class Scene03_Settings : Scene_UIWithTop
+    public class Scene03_Settings : MonoBehaviour
     {
         //  Properties ------------------------------------
  
@@ -20,9 +20,10 @@ namespace MoralisUnity.Samples.TheGame.Controller
 
         
         //  Unity Methods----------------------------------
-        protected override async void Start()
+        protected async void Start()
         {
-           // _ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);
+            _ui.ResetButton.Button.onClick.AddListener(ResetButton_OnClicked);
+           _ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);
   
             await RefreshUIAsync();
         }
@@ -37,6 +38,18 @@ namespace MoralisUnity.Samples.TheGame.Controller
         
         
         //  Event Handlers --------------------------------
+        private async void ResetButton_OnClicked()
+        {
+            await TheGameSingleton.Instance.TheGameController.ShowMessageActiveAsync(
+                TheGameConstants.SafeReregistering,
+                async delegate ()
+                {
+                    await TheGameSingleton.Instance.TheGameController.SafeReregisterDeleteAllPrizesAsync();
+                    await RefreshUIAsync();
+                });
+            
+            await RefreshUIAsync();
+        }
 
         private async void BackButton_OnClicked()
         {

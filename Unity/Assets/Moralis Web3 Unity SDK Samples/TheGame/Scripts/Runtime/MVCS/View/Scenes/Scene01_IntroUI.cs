@@ -1,6 +1,5 @@
 using MoralisUnity.Samples.Shared.UI;
 using MoralisUnity.Samples.TheGame.Controller;
-using MoralisUnity.Samples.TheGame.MVCS.View.UI;
 using UnityEngine;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.View
@@ -11,7 +10,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
     public class Scene01_IntroUI : Scene_UIWithTop
     {
         //  Properties ------------------------------------
-        public BaseButtonUI PlayGameButtonUI { get { return _playGameButtonUI; } }
+        public BaseButtonUI PlayGameButton { get { return _playGameButton; } }
+        public BaseButtonUI SettingsButton { get { return _settingsButton; } }
         public AuthenticationButtonUI AuthenticationButtonUI { get { return _authenticationButtonUI; } }
 
 
@@ -19,8 +19,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
         [Header ("References (Scene)")]
 
         [SerializeField]
-        private BaseButtonUI _playGameButtonUI = null;
+        private BaseButtonUI _playGameButton = null;
 
+        [SerializeField]
+        private BaseButtonUI _settingsButton = null;
+
+        
         [SerializeField]
         private AuthenticationButtonUI _authenticationButtonUI = null;
 

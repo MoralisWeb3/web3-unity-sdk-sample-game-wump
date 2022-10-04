@@ -30,6 +30,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 		}
 	
 		// Fields -----------------------------------------
+		[Header ("References (Base)")]
 		[SerializeField]
 		private TopUI _topUI = null;
 		

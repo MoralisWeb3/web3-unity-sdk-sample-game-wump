@@ -12,6 +12,12 @@ EditorBuildSettings:
     path: Assets/Moralis Web3 Unity SDK Samples/TheGame/Scenes/Scene02_Authentication.unity
     guid: 2915f7ee87395e345ab2cec573420b4a
   - enabled: 1
+    path: Assets/Moralis Web3 Unity SDK Samples/TheGame/Scenes/Scene03_Settings.unity
+    guid: edb971288910f714e82bfc9c7b3073f8
+  - enabled: 1
+    path: Assets/Moralis Web3 Unity SDK Samples/TheGame/Scenes/Scene04_DeveloperConsole.unity
+    guid: 62202ffebe062ca499b23540ddff96b4
+  - enabled: 1
     path: Assets/Moralis Web3 Unity SDK Samples/TheGame/Scenes/Scene05_Game.unity
     guid: b5b386d0b9ddcdf44bef8a21c690a845
   m_configObjects: {}
