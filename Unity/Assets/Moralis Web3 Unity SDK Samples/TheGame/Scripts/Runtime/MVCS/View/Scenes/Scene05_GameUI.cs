@@ -5,9 +5,9 @@ using UnityEngine;
 namespace MoralisUnity.Samples.TheGame.View
 {
     /// <summary>
-    /// The UI for Core Scene Behavior of <see cref="Scene03_Game"/>
+    /// The UI for Core Scene Behavior of <see cref="Scene05_Game"/>
     /// </summary>
-    public class Scene03_GameUI : MonoBehaviour
+    public class Scene05_GameUI : MonoBehaviour
     {
         //  Properties ------------------------------------
         public BaseButtonUI BackButton { get { return _backButton; } }

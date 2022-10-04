@@ -80,7 +80,14 @@ namespace MoralisUnity.Samples.Shared
 
 
 		// General Methods --------------------------------
-		public async UniTask<bool> HasMoralisUserAsync()
+		public async UniTask<bool> IsAuthenticatedAsync()
+		{
+			RequireIsInitialized();
+
+			return await HasMoralisUserAsync();
+		}
+		
+		private async UniTask<bool> HasMoralisUserAsync()
 		{
 			RequireIsInitialized();
 
@@ -105,7 +112,7 @@ namespace MoralisUnity.Samples.Shared
 			string functionName, object[] args, bool isLogging)
 		{
 
-			MoralisUser moralisUser = await Moralis.GetUserAsync();
+			MoralisUser moralisUser = await GetMoralisUserAsync();
 
 			if (moralisUser == null)
 			{
@@ -113,7 +120,7 @@ namespace MoralisUnity.Samples.Shared
 			}
 
 
-			if (WalletConnect.Instance == null)
+			if (!HasWalletConnectInstance)
 			{
 				throw new NullReferenceException("ExecuteContractFunction() failed. " +
 				                                 SharedConstants.WalletConnectNullReferenceException);
@@ -157,7 +164,7 @@ namespace MoralisUnity.Samples.Shared
 			object[] abiObject, Dictionary<string, object> args, bool isLogging)
 		{
 
-			MoralisUser moralisUser = await Moralis.GetUserAsync();
+			MoralisUser moralisUser = await GetMoralisUserAsync();
 
 			if (moralisUser == null)
 			{

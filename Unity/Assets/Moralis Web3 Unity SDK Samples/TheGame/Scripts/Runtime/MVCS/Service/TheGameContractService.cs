@@ -1,8 +1,8 @@
 using System.Collections.Generic;
+using System.Security.Authentication;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Data.Types;
-using MoralisUnity.Samples.Shared.Exceptions;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using Nft = MoralisUnity.Samples.Shared.Data.Types.Nft;
@@ -75,18 +75,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
             List<TreasurePrizeDto> treasurePrizeDtos = new List<TreasurePrizeDto>();
 
             // Check System Status
-            bool hasMoralisUser = await MyMoralisWrapper.Instance.HasMoralisUserAsync();
-            if (!hasMoralisUser)
+            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.IsAuthenticatedAsync();
+            if (!isAuthenticated)
             {
                 // Sometimes, ONLY warn
-                throw new RequiredMoralisUserException();
+                throw new AuthenticationException();
             }
 
             // Get NFT Info
             string ethAddress = await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
             MyMoralisWrapper.CustomNftOwnerCollection customNftOwnerCollection = await MyMoralisWrapper.Instance.GetNFTsForContract(
                 ethAddress,
-                _theGameContract.TreasurePrizeContractAddress);
+                _theGameContract.PrizeContractAddress);
 
             // Create Method Return Value
             foreach (MyMoralisWrapper.CustomNftOwner customNftOwner in customNftOwnerCollection.CustomResult)
@@ -94,8 +94,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
                 string ownerAddress = customNftOwner.OwnerOf;
                 string tokenIdString = customNftOwner.TokenId;
                 string metadata = customNftOwner.TokenUri;
-                TreasurePrizeDto treasurePrizeDto = Nft.CreateNewFromMetadata<TreasurePrizeDto>(ownerAddress, tokenIdString, metadata);
-                treasurePrizeDtos.Add(treasurePrizeDto);
+                TreasurePrizeDto prizeDto = Nft.CreateNewFromMetadata<TreasurePrizeDto>(ownerAddress, tokenIdString, metadata);
+                treasurePrizeDtos.Add(prizeDto);
             }
 
             // Finalize Method Return Value
@@ -138,16 +138,16 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         }
 
 
-        public async UniTask AddTreasurePrizeAsync(TreasurePrizeDto treasurePrizeToAdd)
+        public async UniTask AddTreasurePrizeAsync(TreasurePrizeDto prizeToAdd)
         {
-            string result = await _theGameContract.AddTreasurePrize(treasurePrizeToAdd);
+            string result = await _theGameContract.AddTreasurePrize(prizeToAdd);
             //Debug.Log($"AddTreasurePrizeAsync() result = {result}");
         }
 
 
-        public async UniTask SellTreasurePrizeAsync(TreasurePrizeDto treasurePrizeDto)
+        public async UniTask SellTreasurePrizeAsync(TreasurePrizeDto prizeDto)
         {
-            string result = await _theGameContract.SellTreasurePrize(treasurePrizeDto);
+            string result = await _theGameContract.SellTreasurePrize(prizeDto);
             //Debug.Log($"SellTreasurePrizeAsync() result = {result}");
         }
 

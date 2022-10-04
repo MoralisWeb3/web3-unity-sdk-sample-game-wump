@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using MoralisUnity.Samples.Shared;
@@ -58,6 +59,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 
 
 		// General Methods --------------------------------
+		
+		///////////////////////////////////////////
+		// Related To: MyMoralisWrapper
+		///////////////////////////////////////////
+		public async UniTask<bool> IsAuthenticatedAsync()
+		{
+			return await MyMoralisWrapper.Instance.IsAuthenticatedAsync();
+		}
 
 		///////////////////////////////////////////
 		// Related To: Model
@@ -155,9 +164,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 
 
-		public async UniTask<List<TreasurePrizeDto>> AddTreasurePrizeAsync(TreasurePrizeDto treasurePrizeDto)
+		public async UniTask<List<TreasurePrizeDto>> AddTreasurePrizeAsync(TreasurePrizeDto prizeDto)
 		{
-			await _theGameService.AddTreasurePrizeAsync(treasurePrizeDto);
+			await _theGameService.AddTreasurePrizeAsync(prizeDto);
 			
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();
@@ -168,9 +177,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 
 
-		public async UniTask<List<TreasurePrizeDto>> SellTreasurePrizeAsync(TreasurePrizeDto treasurePrizeDto)
+		public async UniTask<List<TreasurePrizeDto>> SellTreasurePrizeAsync(TreasurePrizeDto prizeDto)
 		{
-			await _theGameService.SellTreasurePrizeAsync(treasurePrizeDto);
+			await _theGameService.SellTreasurePrizeAsync(prizeDto);
 
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();
@@ -386,6 +395,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 
 
-
+	
 	}
 }

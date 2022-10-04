@@ -37,8 +37,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 		UniTask SetGoldAsync(int targetBalance);
 		UniTask SetGoldByAsync(int deltaBalance);
 		UniTask StartGameAndGiveRewardsAsync(int goldAmount);
-		UniTask AddTreasurePrizeAsync(TreasurePrizeDto treasurePrizeToAdd);
-		UniTask SellTreasurePrizeAsync(TreasurePrizeDto treasurePrizeDto);
+		UniTask AddTreasurePrizeAsync(TreasurePrizeDto prizeToAdd);
+		UniTask SellTreasurePrizeAsync(TreasurePrizeDto prizeDto);
 		UniTask DeleteAllTreasurePrizeAsync();
 		UniTask SafeReregisterDeleteAllTreasurePrizeAsync();
 	}

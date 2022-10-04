@@ -1,4 +1,5 @@
 using MoralisUnity.Samples.Shared;
+using MoralisUnity.Samples.TheGame.MVCS;
 using MoralisUnity.Samples.TheGame.View;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,16 +8,16 @@ using UnityEngine.SceneManagement;
 namespace MoralisUnity.Samples.TheGame.Controller
 {
     /// <summary>
-    /// Core Scene Behavior - Using <see cref="Scene03_GameUI"/>
+    /// Core Scene Behavior - Using <see cref="Scene05_GameUI"/>
     /// </summary>
-    public class Scene03_Game : MonoBehaviour
+    public class Scene05_Game : MonoBehaviour
     {
         //  Properties ------------------------------------
  
 		
         //  Fields ----------------------------------------
         [SerializeField]
-        private Scene03_GameUI _ui;
+        private Scene05_GameUI _ui;
 
         
         //  Unity Methods----------------------------------
@@ -31,7 +32,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
         //  General Methods -------------------------------
         private async void RefreshUIAsync()
         {
-            bool isAuthenticated = await MyMoralisWrapper.Instance.HasMoralisUserAsync();
+            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.IsAuthenticatedAsync();
             _ui.BackButton.IsInteractable = true;
         }
         

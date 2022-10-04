@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 223259702}
   - component: {fileID: 223259703}
   m_Layer: 0
-  m_Name: Scene03_Game
+  m_Name: Scene05_Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -262,6 +262,17 @@ Transform:
   m_Father: {fileID: 976913286}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &922604414 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 97963375204132362, guid: 37ace6b9232436e489b03bb65acde0cd, type: 3}
+  m_PrefabInstance: {fileID: 7374069769556334647}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a130c563f316a544a60ea5c9dcd01ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &976913285
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,9 +398,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 976913286}
     m_Modifications:
+    - target: {fileID: 4001537684392154687, guid: 37ace6b9232436e489b03bb65acde0cd, type: 3}
+      propertyPath: _backButton
+      value: 
+      objectReference: {fileID: 922604414}
     - target: {fileID: 7181014349409107347, guid: 37ace6b9232436e489b03bb65acde0cd, type: 3}
       propertyPath: m_Name
-      value: Scene03_GameUI
+      value: Scene05_GameUI
       objectReference: {fileID: 0}
     - target: {fileID: 7541565989069472826, guid: 37ace6b9232436e489b03bb65acde0cd, type: 3}
       propertyPath: m_Pivot.x

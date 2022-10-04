@@ -7,7 +7,7 @@ using UnityEngine;
 namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
 {
     /// <summary>
-    /// Observable wrapper invoking events for <see cref="TreasurePrizeDto"/>
+    /// Observable wrapper invoking events for <see cref="MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.PrizeDto"/>
     /// </summary>
     [Serializable]
     public class ObservableTreasurePrizeDtos : Observable<List<TreasurePrizeDto>>

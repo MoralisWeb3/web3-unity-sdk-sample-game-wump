@@ -9,27 +9,27 @@ namespace MoralisUnity.Samples.Shared.UI
     public class AuthenticationButtonUI : BaseButtonUI
     {
         //  Properties  ---------------------------------------
-        public bool IsAuthenticated { get { return _hasMoralisUser;}}
+        public bool IsAuthenticated { get { return _isAuthenticated;}}
       
         //  Fields  ---------------------------------------
-        private bool _hasMoralisUser = false;
+        private bool _isAuthenticated = false;
         
         //  Unity Methods  --------------------------------
         public async void Awake()
         {
-            await CheckHasMoralisUserAsync();
+            await CheckIsAuthenticatedAsync();
         }
         
         //  General Methods -------------------------------
-        private async Task CheckHasMoralisUserAsync()
+        private async Task CheckIsAuthenticatedAsync()
         {
-            _hasMoralisUser = await MyMoralisWrapper.Instance.HasMoralisUserAsync();
+            _isAuthenticated = await MyMoralisWrapper.Instance.IsAuthenticatedAsync();
             await RefreshUI();
         }
         
         private async Task RefreshUI()
         {
-            if (_hasMoralisUser)
+            if (_isAuthenticated)
             {
                 Text.text = SharedConstants.Logout;
             }

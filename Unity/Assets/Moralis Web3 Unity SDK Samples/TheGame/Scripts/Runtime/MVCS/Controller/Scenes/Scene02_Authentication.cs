@@ -1,5 +1,6 @@
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.UI;
+using MoralisUnity.Samples.TheGame.MVCS;
 using MoralisUnity.Samples.TheGame.View;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -26,7 +27,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
   
             RefreshUIAsync();
 
-            bool isAuthenticated = await MyMoralisWrapper.Instance.HasMoralisUserAsync();
+            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.IsAuthenticatedAsync();
             if (isAuthenticated)
             {
                 _ui.MyAuthenticationKitWrapper.OnDisconnected.AddListener(AuthenticationUI_OnDisconnected);
@@ -41,7 +42,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
         //  General Methods -------------------------------
         private async void RefreshUIAsync()
         {
-            bool isAuthenticated = await MyMoralisWrapper.Instance.HasMoralisUserAsync();
+            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.IsAuthenticatedAsync();
             _ui.CancelButton.IsInteractable = true;
         }
 

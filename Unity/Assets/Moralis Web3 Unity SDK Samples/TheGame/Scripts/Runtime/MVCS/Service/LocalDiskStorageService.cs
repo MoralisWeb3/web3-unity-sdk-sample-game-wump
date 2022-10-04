@@ -195,7 +195,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         }
 
 
-        public async UniTask AddTreasurePrizeAsync(TreasurePrizeDto treasurePrizeToAdd)
+        public async UniTask AddTreasurePrizeAsync(TreasurePrizeDto prizeToAdd)
         {
 	        await UniTask.Delay(DelaySimulatedPerMethod);
 	        
@@ -203,13 +203,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 
 	        int index = localDiskStorageData.TreasurePrizeDtos.FindIndex((next) =>
 	        {
-		        return next.Title == treasurePrizeToAdd.Title &&
-		               next.Price == treasurePrizeToAdd.Price;
+		        return next.Title == prizeToAdd.Title &&
+		               next.Price == prizeToAdd.Price;
 	        });
 
 	        if (index == -1)
 	        {
-		        localDiskStorageData.TreasurePrizeDtos.Add(treasurePrizeToAdd);
+		        localDiskStorageData.TreasurePrizeDtos.Add(prizeToAdd);
 		        SaveLocalDiskStorageData(localDiskStorageData);
 	        }
 	        else
@@ -219,7 +219,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         }
 
         
-        public async UniTask SellTreasurePrizeAsync(TreasurePrizeDto treasurePrizeToDelete)
+        public async UniTask SellTreasurePrizeAsync(TreasurePrizeDto prizeToDelete)
         {
 	        await UniTask.Delay(DelaySimulatedPerMethod);
 
@@ -229,8 +229,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 
 	        int index = localDiskStorageData.TreasurePrizeDtos.FindIndex((next) =>
 	        {
-		        return next.Title == treasurePrizeToDelete.Title &&
-		               next.Price == treasurePrizeToDelete.Price;
+		        return next.Title == prizeToDelete.Title &&
+		               next.Price == prizeToDelete.Price;
 	        });
 
 	        if (index != -1)
@@ -239,7 +239,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 		        SaveLocalDiskStorageData(localDiskStorageData);
 		        
 		        //Give gold
-		        int gold = (int)treasurePrizeToDelete.Price;
+		        int gold = (int)prizeToDelete.Price;
 		        Custom.Debug.Log($"Paying {gold} per Treasure sold");
 		        await SetGoldByAsync(gold);
 	        }
@@ -325,9 +325,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 			        Price = price
 		        };
 		        string metadata = TheGameHelper.ConvertMetadataObjectToString(treasurePrizeMetadata);
-		        TreasurePrizeDto treasurePrizeDto = new TreasurePrizeDto(moralisUserEthAddress, metadata);
+		        TreasurePrizeDto prizeDto = new TreasurePrizeDto(moralisUserEthAddress, metadata);
 		        
-		        await AddTreasurePrizeAsync(treasurePrizeDto);
+		        await AddTreasurePrizeAsync(prizeDto);
 	        }
 	        
 	        // RELATES TO NFT OR GOLD
