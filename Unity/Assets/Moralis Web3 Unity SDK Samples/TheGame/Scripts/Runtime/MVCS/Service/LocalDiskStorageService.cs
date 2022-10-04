@@ -23,7 +23,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 		//  Fields ----------------------------------------
 		public bool IsRegistered = false;
 		public int Gold = 0;
-		public List<TreasurePrizeDto> TreasurePrizeDtos = new List<TreasurePrizeDto>();
+		public List<Prize> TreasurePrizeDtos = new List<Prize>();
 	}
 	
 	
@@ -49,7 +49,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 		private static readonly int DelayExtraSimulatedAfterStateChange = 500;
 		
 		//
-		private Reward _lastReward;
+		private TransferLog _lastTransferLog;
 		
 		
 		// Initialization Methods -------------------------
@@ -67,9 +67,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 		}
 		
 		//  GETTER - LocalDiskStorage Methods --------------------------------
-		public UniTask<Reward> GetRewardsHistoryAsync()
+		public UniTask<TransferLog> GetRewardsHistoryAsync()
 		{
-			return new UniTask<Reward>(_lastReward); 
+			return new UniTask<TransferLog>(_lastTransferLog); 
 		}
 
 		public async UniTask<bool> GetIsRegisteredAsync()
@@ -89,7 +89,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 			return localDiskStorageData.Gold;
 		}
 		
-		public async UniTask<List<TreasurePrizeDto>> GetTreasurePrizesAsync()
+		public async UniTask<List<Prize>> GetPrizesAsync()
 		{
 			await UniTask.Delay(DelaySimulatedPerMethod);
 
@@ -195,7 +195,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         }
 
 
-        public async UniTask AddTreasurePrizeAsync(TreasurePrizeDto prizeToAdd)
+        public async UniTask AddTreasurePrizeAsync(Prize prizeToAdd)
         {
 	        await UniTask.Delay(DelaySimulatedPerMethod);
 	        
@@ -219,7 +219,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         }
 
         
-        public async UniTask SellTreasurePrizeAsync(TreasurePrizeDto prizeToDelete)
+        public async UniTask SellTreasurePrizeAsync(Prize prizeToDelete)
         {
 	        await UniTask.Delay(DelaySimulatedPerMethod);
 
@@ -325,13 +325,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 			        Price = price
 		        };
 		        string metadata = TheGameHelper.ConvertMetadataObjectToString(treasurePrizeMetadata);
-		        TreasurePrizeDto prizeDto = new TreasurePrizeDto(moralisUserEthAddress, metadata);
+		        Prize prize = new Prize(moralisUserEthAddress, metadata);
 		        
-		        await AddTreasurePrizeAsync(prizeDto);
+		        await AddTreasurePrizeAsync(prize);
 	        }
 	        
 	        // RELATES TO NFT OR GOLD
-	        _lastReward = new Reward
+	        _lastTransferLog = new TransferLog
 	        {
 		        Title = title,
 		        Type = theType,

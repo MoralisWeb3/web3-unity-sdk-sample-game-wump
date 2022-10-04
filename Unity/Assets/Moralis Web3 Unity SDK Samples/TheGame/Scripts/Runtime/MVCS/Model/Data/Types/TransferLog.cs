@@ -3,7 +3,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
     /// <summary>
     /// The reward the server gives to the player
     /// </summary>
-    public class Reward 
+    public class TransferLog 
     {
         public string Title;
         public uint Type;

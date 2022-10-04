@@ -10,7 +10,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
     /// Observable wrapper invoking events for <see cref="MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.PrizeDto"/>
     /// </summary>
     [Serializable]
-    public class ObservableTreasurePrizeDtos : Observable<List<TreasurePrizeDto>>
+    public class ObservablePrizes : Observable<List<Prize>>
     {
         //  Properties ------------------------------------
 
@@ -18,9 +18,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
         //  Fields ----------------------------------------
 
         //  Constructor Methods ---------------------------
-        public ObservableTreasurePrizeDtos()
+        public ObservablePrizes()
         {
-            Value = new List<TreasurePrizeDto>();
+            Value = new List<Prize>();
         }
 
         //  General Methods -------------------------------

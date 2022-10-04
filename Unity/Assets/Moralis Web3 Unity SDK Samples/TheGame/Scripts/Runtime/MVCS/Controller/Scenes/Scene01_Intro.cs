@@ -1,4 +1,4 @@
-using MoralisUnity.Samples.TheGame.View;
+using MoralisUnity.Samples.TheGame.MVCS.View;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

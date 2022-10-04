@@ -249,6 +249,7 @@ namespace MoralisUnity.Samples.Shared
 				customNftOwners.Add(customNftOwner);
 			}
 
+			customNftOwnerCollection.CustomResult = customNftOwners;
 			return customNftOwnerCollection;
 
 		}

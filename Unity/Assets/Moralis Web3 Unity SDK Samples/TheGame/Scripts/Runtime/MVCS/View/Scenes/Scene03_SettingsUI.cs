@@ -6,9 +6,9 @@ using UnityEngine;
 namespace MoralisUnity.Samples.TheGame.MVCS.View
 {
     /// <summary>
-    /// The UI for Core Scene Behavior of <see cref="Scene02_Authentication"/>
+    /// The UI for Core Scene Behavior of <see cref="Scene03_Settings"/>
     /// </summary>
-    public class Scene02_AuthenticationUI : MonoBehaviour
+    public class Scene03_SettingsUI : MonoBehaviour
     {
         //  Properties ------------------------------------
         public BaseButtonUI CancelButton { get { return _cancelButton; } }

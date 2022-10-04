@@ -76,9 +76,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS
             return 3;
         }
         
-        public static int GetAudioClipIndexByReward(Reward reward)
+        public static int GetAudioClipIndexByReward(TransferLog transferLog)
         {
-            if (reward.Type == 1)
+            if (transferLog.Type == 1)
             {
                 return 4;
             }
@@ -166,7 +166,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS
                 Price = price
             };
         }
-        public static Reward ConvertRewardStringToObject(string result)
+        public static TransferLog ConvertRewardStringToObject(string result)
         {
             List<string> tokens = result.Split("|").ToList();
             string title = tokens[0].Split("=")[1];
@@ -178,13 +178,22 @@ namespace MoralisUnity.Samples.TheGame.MVCS
                 throw new ArgumentException();
             }
 
-            return new Reward
+            return new TransferLog
             {
                 Title = title,
                 Type = type,
                 Price = price,
             };
         }
-  
+
+        public static string FormatGoldCornerText(int amount)
+        {
+            return string.Format("{000:000}/100", amount);
+        }
+
+        public static string FormatPrizeCornerText(int amount)
+        {
+            return string.Format("{000:000}/10", amount);
+        }
     }
 }

@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _goldCornerUI: {fileID: 971838849840994920}
-  _collectionUI: {fileID: 2162532968567657221}
+  _prizeCornerUI: {fileID: 2162532968567657221}
 --- !u!1001 &5092957790215330579
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,7 +1,5 @@
-using MoralisUnity.Samples.Shared;
-using MoralisUnity.Samples.Shared.UI;
 using MoralisUnity.Samples.TheGame.MVCS;
-using MoralisUnity.Samples.TheGame.View;
+using MoralisUnity.Samples.TheGame.MVCS.View;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

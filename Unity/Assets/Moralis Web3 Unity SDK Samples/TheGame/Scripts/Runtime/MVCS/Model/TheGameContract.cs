@@ -114,7 +114,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		}
 
 
-		public async UniTask<Reward> GetRewardsHistory()
+		public async UniTask<TransferLog> GetRewardsHistory()
 		{
 			string moralisUserEthAddress = await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
 			Dictionary<string, object> args = new Dictionary<string, object>();
@@ -122,9 +122,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 
 			var result = await RunContractFunctionAsync("getRewardsHistory", args, IsLogging);
 			
-			Reward reward = TheGameHelper.ConvertRewardStringToObject(result);
+			TransferLog transferLog = TheGameHelper.ConvertRewardStringToObject(result);
 			//Debug.Log($"getRewardsHistory() result = {reward}");
-			return reward;
+			return transferLog;
 		}
 
 
@@ -182,9 +182,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		}
 
 
-		public async UniTask<string> AddTreasurePrize (TreasurePrizeDto prizeDto)
+		public async UniTask<string> AddTreasurePrize (Prize prize)
 		{
-			string metadata = prizeDto.Metadata;
+			string metadata = prize.Metadata;
 			object[] args =
 			{
 				metadata
@@ -195,11 +195,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		}
 		
 
-		public async UniTask<string> SellTreasurePrize(TreasurePrizeDto prizeDto)
+		public async UniTask<string> SellTreasurePrize(Prize prize)
 		{
-			int tokenId = prizeDto.TokenId;
+			int tokenId = prize.TokenId;
 			
-			if (tokenId == TreasurePrizeDto.NullTokenId)
+			if (tokenId == Prize.NullTokenId)
 			{
 				TheGameSingleton.Debug.Log("BurnNftAsync() failed. tokenId must be NOT null. " +
 				          "Was this NFT just created? Leave and return to Scene so it gets loaded from online");
@@ -216,14 +216,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		}
 
 		
-		private int[] GetTokenIds(List<TreasurePrizeDto> treasurePrizeDtos)
+		private int[] GetTokenIds(List<Prize> treasurePrizeDtos)
 		{
 			int[] tokenIds = new int[treasurePrizeDtos.Count];
 			for (int i = 0; i < treasurePrizeDtos.Count; i++)
 			{
 				int tokenId = treasurePrizeDtos[i].TokenId;
 
-				if (tokenId == TreasurePrizeDto.NullTokenId)
+				if (tokenId == Prize.NullTokenId)
 				{
 					throw new Exception("GetTokenIds() failed. tokenId must be NOT null. " +
 					          "Was this NFT just created? Leave and return to Scene so it gets loaded from online");
@@ -236,7 +236,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		}
 		
 		
-		public async UniTask<string> DeleteAllTreasurePrizes(List<TreasurePrizeDto> treasurePrizeDtos)
+		public async UniTask<string> DeleteAllTreasurePrizes(List<Prize> treasurePrizeDtos)
 		{
 			int[] tokenIds = GetTokenIds(treasurePrizeDtos);
 			object[] args =
@@ -250,7 +250,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		}
 		
 		
-		public async UniTask<string> SafeReregisterAndDeleteAllTreasurePrizes(List<TreasurePrizeDto> treasurePrizeDtos)
+		public async UniTask<string> SafeReregisterAndDeleteAllTreasurePrizes(List<Prize> treasurePrizeDtos)
 		{
 			int[] tokenIds = GetTokenIds(treasurePrizeDtos);
 			object[] args =

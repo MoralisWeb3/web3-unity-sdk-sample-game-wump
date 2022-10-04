@@ -377,22 +377,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 976913286}
     m_Modifications:
-    - target: {fileID: 1004461658153304133, guid: fb1f5a1615b21f542a5f9e0981552ad7, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1004461658153304133, guid: fb1f5a1615b21f542a5f9e0981552ad7, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1004461658153304133, guid: fb1f5a1615b21f542a5f9e0981552ad7, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1004461658153304133, guid: fb1f5a1615b21f542a5f9e0981552ad7, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5115376015849227864, guid: fb1f5a1615b21f542a5f9e0981552ad7, type: 3}
       propertyPath: _authenticationKit
       value: 

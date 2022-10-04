@@ -55,9 +55,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         }
         
         
-        public async UniTask<Reward> GetRewardsHistoryAsync()
+        public async UniTask<TransferLog> GetRewardsHistoryAsync()
         {
-            Reward result = await _theGameContract.GetRewardsHistory();
+            TransferLog result = await _theGameContract.GetRewardsHistory();
             return result;
         }
 
@@ -69,10 +69,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         }
         
         
-        public async UniTask<List<TreasurePrizeDto>> GetTreasurePrizesAsync()
+        public async UniTask<List<Prize>> GetPrizesAsync()
         {
             // Create Method Return Value
-            List<TreasurePrizeDto> treasurePrizeDtos = new List<TreasurePrizeDto>();
+            List<Prize> treasurePrizeDtos = new List<Prize>();
 
             // Check System Status
             bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.IsAuthenticatedAsync();
@@ -94,9 +94,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
                 string ownerAddress = customNftOwner.OwnerOf;
                 string tokenIdString = customNftOwner.TokenId;
                 string metadata = customNftOwner.TokenUri;
-                TreasurePrizeDto prizeDto = Nft.CreateNewFromMetadata<TreasurePrizeDto>(ownerAddress, tokenIdString, metadata);
-                treasurePrizeDtos.Add(prizeDto);
+                Prize prize = Nft.CreateNewFromMetadata<Prize>(ownerAddress, tokenIdString, metadata);
+                treasurePrizeDtos.Add(prize);
             }
+
 
             // Finalize Method Return Value
             return treasurePrizeDtos;
@@ -138,23 +139,23 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         }
 
 
-        public async UniTask AddTreasurePrizeAsync(TreasurePrizeDto prizeToAdd)
+        public async UniTask AddTreasurePrizeAsync(Prize prizeToAdd)
         {
             string result = await _theGameContract.AddTreasurePrize(prizeToAdd);
             //Debug.Log($"AddTreasurePrizeAsync() result = {result}");
         }
 
 
-        public async UniTask SellTreasurePrizeAsync(TreasurePrizeDto prizeDto)
+        public async UniTask SellTreasurePrizeAsync(Prize prize)
         {
-            string result = await _theGameContract.SellTreasurePrize(prizeDto);
+            string result = await _theGameContract.SellTreasurePrize(prize);
             //Debug.Log($"SellTreasurePrizeAsync() result = {result}");
         }
 
         
         public async UniTask DeleteAllTreasurePrizeAsync()
         {
-            List<TreasurePrizeDto> treasurePrizeDtos = await GetTreasurePrizesAsync();
+            List<Prize> treasurePrizeDtos = await GetPrizesAsync();
             string result = await _theGameContract.DeleteAllTreasurePrizes(treasurePrizeDtos);
             //Debug.Log($"DeleteAllTreasurePrizeAsync() result = {result}");
         }
@@ -165,7 +166,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         /// </summary>
         public async UniTask SafeReregisterDeleteAllTreasurePrizeAsync()
         {
-            List<TreasurePrizeDto> treasurePrizeDtos = await GetTreasurePrizesAsync();
+            List<Prize> treasurePrizeDtos = await GetPrizesAsync();
             string result = await _theGameContract.SafeReregisterAndDeleteAllTreasurePrizes(treasurePrizeDtos);
             //Debug.Log($"SafeReregisterDeleteAllTreasurePrizeAsync() result = {result}");
         }

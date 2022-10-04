@@ -1,6 +1,6 @@
-using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.TheGame.MVCS;
-using MoralisUnity.Samples.TheGame.View;
+using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.View;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,9 +24,13 @@ namespace MoralisUnity.Samples.TheGame.Controller
         protected async void Start()
         {
             _ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);
+            TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(TheGameSingleton_OnTheGameModelChanged);
+            TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
   
             RefreshUIAsync();
         }
+
+
 
 
         //  General Methods -------------------------------
@@ -49,7 +53,8 @@ namespace MoralisUnity.Samples.TheGame.Controller
             }
             else
             {
-                await TheGameSingleton.Instance.TheGameController.UnregisterAsync();
+                // MAKE ABI OBJECTS *BEFORE* CALLING THIS
+                //await TheGameSingleton.Instance.TheGameController.UnregisterAsync();
             }
             
             bool isRegistered2 = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAsync();
@@ -60,6 +65,10 @@ namespace MoralisUnity.Samples.TheGame.Controller
         
         
         //  Event Handlers --------------------------------
+        private void TheGameSingleton_OnTheGameModelChanged(TheGameModel theGameModel)
+        {
+            //
+        }
 
         private async void BackButton_OnClicked()
         {

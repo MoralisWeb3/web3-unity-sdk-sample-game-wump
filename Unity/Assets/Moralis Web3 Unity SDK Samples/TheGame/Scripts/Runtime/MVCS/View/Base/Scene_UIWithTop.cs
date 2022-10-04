@@ -59,8 +59,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 			{
 				return;
 			}
-			_topUI.GoldCornerUI.Text.text = string.Format("{000:000}", theGameModel.Gold.Value);
-			_topUI.CollectionUI.Text.text = string.Format("{00:00}/10", theGameModel.TreasurePrizeDtos.Value.Count);
+			_topUI.GoldCornerUI.Text.text = TheGameHelper.FormatGoldCornerText(theGameModel.Gold.Value);
+			_topUI.PrizeCornerUI.Text.text = TheGameHelper.FormatPrizeCornerText(theGameModel.Prizes.Value.Count);
 		}
 	}
 }

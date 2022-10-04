@@ -9,7 +9,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.UI
 	{
 		// Properties -------------------------------------
 		public CornerUI GoldCornerUI { get { return _goldCornerUI; }}
-		public CornerUI CollectionUI { get { return _collectionUI; } }
+		public CornerUI PrizeCornerUI { get { return _prizeCornerUI; } }
 
 		// Fields -----------------------------------------
 		[Header("References (Scene)")] 
@@ -17,7 +17,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.UI
 		private CornerUI _goldCornerUI = null;
 
 		[SerializeField]
-		private CornerUI _collectionUI = null;
+		private CornerUI _prizeCornerUI = null;
 
 		//[Header("References (Project)")] 
 

@@ -24,12 +24,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 		UniTask DoExtraDelayAsync();
 
 		// Web3 API Call - Various Return Types
-		UniTask<List<TreasurePrizeDto>> GetTreasurePrizesAsync();
+		UniTask<List<Prize>> GetPrizesAsync();
 
 		// RunContractFunction - Various Return Types
 		UniTask<bool> GetIsRegisteredAsync();
 		UniTask<int> GetGoldAsync();
-		UniTask<Reward> GetRewardsHistoryAsync();
+		UniTask<TransferLog> GetRewardsHistoryAsync();
 
 		// ExecuteContractFunction - Must Be String Return Type
 		UniTask RegisterAsync();
@@ -37,8 +37,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 		UniTask SetGoldAsync(int targetBalance);
 		UniTask SetGoldByAsync(int deltaBalance);
 		UniTask StartGameAndGiveRewardsAsync(int goldAmount);
-		UniTask AddTreasurePrizeAsync(TreasurePrizeDto prizeToAdd);
-		UniTask SellTreasurePrizeAsync(TreasurePrizeDto prizeDto);
+		UniTask AddTreasurePrizeAsync(Prize prizeToAdd);
+		UniTask SellTreasurePrizeAsync(Prize prize);
 		UniTask DeleteAllTreasurePrizeAsync();
 		UniTask SafeReregisterDeleteAllTreasurePrizeAsync();
 	}

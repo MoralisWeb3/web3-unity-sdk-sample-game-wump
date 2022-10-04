@@ -7,22 +7,22 @@ using UnityEngine.SceneManagement;
 namespace MoralisUnity.Samples.TheGame.Controller
 {
     /// <summary>
-    /// Core Scene Behavior - Using <see cref="Scene05_GameUI"/>
+    /// Core Scene Behavior - Using <see cref="Scene03_SettingsUI"/>
     /// </summary>
-    public class Scene05_Game : MonoBehaviour
+    public class Scene03_Settings : Scene_UIWithTop
     {
         //  Properties ------------------------------------
  
 		
         //  Fields ----------------------------------------
         [SerializeField]
-        private Scene05_GameUI _ui;
+        private Scene03_SettingsUI _ui;
 
         
         //  Unity Methods----------------------------------
         protected async void Start()
         {
-            _ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);
+           // _ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);
   
             RefreshUIAsync();
         }
@@ -32,7 +32,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
         private async void RefreshUIAsync()
         {
             bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.IsAuthenticatedAsync();
-            _ui.BackButton.IsInteractable = true;
+           // _ui.BackButton.IsInteractable = true;
         }
         
         

@@ -15,11 +15,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		public TheGameConfiguration TheGameConfiguration { get { return TheGameConfiguration.Instance; }  }
 		public Observable<int> Gold { get { return _gold; } }
 		public Observable<bool> IsRegistered { get { return _isRegistered; } }
-		public Observable<List<TreasurePrizeDto>> TreasurePrizeDtos { get { return _treasurePrizeDtos; } }
+		public Observable<List<Prize>> Prizes { get { return _prizes; } }
 
 		// Fields -----------------------------------------
 		private Observable<int> _gold = new Observable<int>();
-		private ObservableTreasurePrizeDtos _treasurePrizeDtos = new ObservableTreasurePrizeDtos();
+		private ObservablePrizes _prizes = new ObservablePrizes();
 		private Observable<bool> _isRegistered = new Observable<bool>();
 
 		// Initialization Methods -------------------------
@@ -39,7 +39,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		public void ResetAllData()
 		{
 			_gold.Value = 0;
-			_treasurePrizeDtos.Value = new List<TreasurePrizeDto>();
+			_prizes.Value = new List<Prize>();
 			_isRegistered.Value = false;
 		}
 		

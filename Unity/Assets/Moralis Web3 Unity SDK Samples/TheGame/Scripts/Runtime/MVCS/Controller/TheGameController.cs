@@ -53,7 +53,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			_theGameView.SceneManagerComponent.OnSceneLoadedEvent.AddListener(SceneManagerComponent_OnSceneLoadedEvent);
 
 			_theGameModel.Gold.OnValueChanged.AddListener((a) => OnTheGameModelChangedRefresh());
-			_theGameModel.TreasurePrizeDtos.OnValueChanged.AddListener((a) => OnTheGameModelChangedRefresh());
+			_theGameModel.Prizes.OnValueChanged.AddListener((a) => OnTheGameModelChangedRefresh());
 			_theGameModel.IsRegistered.OnValueChanged.AddListener((a) => OnTheGameModelChangedRefresh());
 		}
 
@@ -78,6 +78,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		///////////////////////////////////////////
 
 		// GETTER Methods -------------------------
+		
+		/// <summary>
+		/// The checks "IsRegistered" *AND* if true, it loads
+		/// some other data.
+		///
+		/// TODO: Does this method load too many things?
+		/// </summary>
+		/// <returns></returns>
 		public async UniTask<bool> GetIsRegisteredAsync()
 		{
 			// Call Service. Sync Model
@@ -91,8 +99,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 				_theGameModel.Gold.Value = gold;
 
 				// Call Service. Sync Model
-				List<TreasurePrizeDto> treasurePrizeDtos = await GetTreasurePrizesAsync();
-				_theGameModel.TreasurePrizeDtos.Value = treasurePrizeDtos;
+				List<Prize> prizes = await GetPrizesAsync();
+				_theGameModel.Prizes.Value = prizes;
 			}
 			
 			// Call Service
@@ -108,9 +116,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 
 		
-		public async UniTask<List<TreasurePrizeDto>> GetTreasurePrizesAsync()
+		public async UniTask<List<Prize>> GetPrizesAsync()
 		{
-			List<TreasurePrizeDto> treasurePrizeDtos = await _theGameService.GetTreasurePrizesAsync();
+			List<Prize> treasurePrizeDtos = await _theGameService.GetPrizesAsync();
 			return treasurePrizeDtos;
 		}
 		
@@ -120,9 +128,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			return gold;
 		}
 		
-		public async UniTask<Reward> GetRewardsHistoryAsync()
+		public async UniTask<TransferLog> GetRewardsHistoryAsync()
 		{
-			Reward result = await _theGameService.GetRewardsHistoryAsync();
+			TransferLog result = await _theGameService.GetRewardsHistoryAsync();
 
 			return result;
 		}
@@ -164,22 +172,22 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 
 
-		public async UniTask<List<TreasurePrizeDto>> AddTreasurePrizeAsync(TreasurePrizeDto prizeDto)
+		public async UniTask<List<Prize>> AddTreasurePrizeAsync(Prize prize)
 		{
-			await _theGameService.AddTreasurePrizeAsync(prizeDto);
+			await _theGameService.AddTreasurePrizeAsync(prize);
 			
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();
 			
-			List<TreasurePrizeDto> treasurePrizeDtos = await GetTreasurePrizesAsync();
-			_theGameModel.TreasurePrizeDtos.Value = treasurePrizeDtos;
+			List<Prize> treasurePrizeDtos = await GetPrizesAsync();
+			_theGameModel.Prizes.Value = treasurePrizeDtos;
 			return treasurePrizeDtos;
 		}
 
 
-		public async UniTask<List<TreasurePrizeDto>> SellTreasurePrizeAsync(TreasurePrizeDto prizeDto)
+		public async UniTask<List<Prize>> SellTreasurePrizeAsync(Prize prize)
 		{
-			await _theGameService.SellTreasurePrizeAsync(prizeDto);
+			await _theGameService.SellTreasurePrizeAsync(prize);
 
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();
@@ -187,20 +195,20 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			int gold = await GetGoldAsync();
 			_theGameModel.Gold.Value = gold;
 
-			List<TreasurePrizeDto> treasurePrizeDtos = await GetTreasurePrizesAsync();
-			_theGameModel.TreasurePrizeDtos.Value = treasurePrizeDtos;
+			List<Prize> treasurePrizeDtos = await GetPrizesAsync();
+			_theGameModel.Prizes.Value = treasurePrizeDtos;
 			return treasurePrizeDtos;
 		}
 
-		public async UniTask<List<TreasurePrizeDto>> DeleteAllTreasurePrizeAsync()
+		public async UniTask<List<Prize>> DeleteAllTreasurePrizeAsync()
 		{
 			await _theGameService.DeleteAllTreasurePrizeAsync();
 
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();
 
-			List<TreasurePrizeDto> treasurePrizeDtos = await GetTreasurePrizesAsync();
-			_theGameModel.TreasurePrizeDtos.Value = treasurePrizeDtos;
+			List<Prize> treasurePrizeDtos = await GetPrizesAsync();
+			_theGameModel.Prizes.Value = treasurePrizeDtos;
 			return treasurePrizeDtos;
 		}
 		
@@ -212,7 +220,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			await DelayExtraAfterStateChangeAsync();
 		}
 
-		public async UniTask<Reward> StartGameAndGiveRewardsAsync(int goldAmount)
+		public async UniTask<TransferLog> StartGameAndGiveRewardsAsync(int goldAmount)
 		{
 			if (goldAmount > _theGameModel.Gold.Value)
             {
@@ -224,8 +232,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 				await _theGameService.StartGameAndGiveRewardsAsync(goldAmount);
 
 				// Call Service. Sync Model
-				List<TreasurePrizeDto> treasurePrizeDtos = await GetTreasurePrizesAsync();
-				_theGameModel.TreasurePrizeDtos.Value = treasurePrizeDtos;
+				List<Prize> treasurePrizeDtos = await GetPrizesAsync();
+				_theGameModel.Prizes.Value = treasurePrizeDtos;
 			
 				// Call Service. Sync Model
 				int gold = await GetGoldAsync();
@@ -234,8 +242,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 				// Wait for contract values to sync so the client will see the changes
 				await DelayExtraAfterStateChangeAsync();
 			
-				Reward reward = await _theGameService.GetRewardsHistoryAsync();
-				return reward;
+				TransferLog transferLog = await _theGameService.GetRewardsHistoryAsync();
+				return transferLog;
 
 			}
 		}

@@ -14,7 +14,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
 	/// Stores data for the game
 	/// </summary>
 	[Serializable]
-	public class TreasurePrizeDto : Nft
+	public class Prize : Nft
 	{
 		// Properties -------------------------------------
 		public string Title { get { return TheGameHelper.ConvertMetadataStringToObject(Metadata).Title; } }
@@ -25,11 +25,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
 
 
 		// Initialization Methods -------------------------
-		public TreasurePrizeDto (string ownerAddress, string metadata) : base(ownerAddress, metadata) 
+		public Prize (string ownerAddress, string metadata) : base(ownerAddress, metadata) 
 		{
 
 		}
-		public TreasurePrizeDto () : base() 
+		public Prize () : base() 
 		{
 
 		}
