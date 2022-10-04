@@ -18,29 +18,12 @@ module.exports = {
     polygonMumbai: {
       url: process.env.POLYGON_MUMBAI_NETWORK_URL,
       accounts: [process.env.WEB3_WALLET_PRIVATE_KEY]
-    },
-    cronosTestnet: {
-      url: "https://evm-t3.cronos.org/",
-      chainId: 338,
-      accounts: [process.env.WEB3_WALLET_PRIVATE_KEY],
-      gasPrice: 5000000000000
     }
   },
   etherscan: {
     apiKey: {
-      polygonMumbai: process.env.POLYGON_MUMBAI_API_KEY,
-      cronosTestnet: process.env.CRONOSCAN_TESTNET_API_KEY,
-    },
-    customChains: [
-      {
-        network: "cronosTestnet",
-        chainId: 338,
-        urls: {
-            apiURL: "https://api-testnet.cronoscan.com/api",
-            browserURL: "https://testnet.cronoscan.com/"
-        }
-      }
-    ]
+      polygonMumbai: process.env.POLYGON_MUMBAI_API_KEY
+    }
   },
   gasReporter: {
     currency: 'USD',

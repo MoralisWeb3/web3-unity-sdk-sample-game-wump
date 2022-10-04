@@ -35,6 +35,7 @@ async function main()
         TheGameLibrary: theGameLibrary.address,
     },
   });
+
   const theGameContract = await TheGameContract.deploy(gold.address, prize.address);
   await theGameContract.deployed();
 
