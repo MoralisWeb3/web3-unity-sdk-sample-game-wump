@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.CustomSingletonMonobehaviour;
-using MoralisUnity.Sdk.DesignPatterns.Creational.Singleton.SingletonMonobehaviour;
 using UnityEngine;
 
 namespace MoralisUnity.Samples.Shared.Audio

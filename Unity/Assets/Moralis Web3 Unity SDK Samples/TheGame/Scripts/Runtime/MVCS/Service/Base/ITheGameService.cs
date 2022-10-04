@@ -29,17 +29,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 		// RunContractFunction - Various Return Types
 		UniTask<bool> GetIsRegisteredAsync();
 		UniTask<int> GetGoldAsync();
-		UniTask<TransferLog> GetRewardsHistoryAsync();
+		UniTask<TransferLog> GetTransferLogHistoryAsync();
 
 		// ExecuteContractFunction - Must Be String Return Type
 		UniTask RegisterAsync();
 		UniTask UnregisterAsync();
-		UniTask SetGoldAsync(int targetBalance);
-		UniTask SetGoldByAsync(int deltaBalance);
-		UniTask StartGameAndGiveRewardsAsync(int goldAmount);
-		UniTask AddTreasurePrizeAsync(Prize prizeToAdd);
-		UniTask SellTreasurePrizeAsync(Prize prize);
-		UniTask DeleteAllTreasurePrizeAsync();
-		UniTask SafeReregisterDeleteAllTreasurePrizeAsync();
+		UniTask TransferGoldAsync();
+		UniTask TransferPrizeAsync();
+		UniTask SafeReregisterDeleteAllPrizesAsync();
 	}
 }

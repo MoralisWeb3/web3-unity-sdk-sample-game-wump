@@ -35,11 +35,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS
         ///////////////////////////////////////////
         public const string Registering = "Registering Player";
         public const string Unregistering = "Unregistering Player";
-        public const string Opening = "Opening Treasure Chest";
-        public const string Updating = "Updating Game";
-        public const string Deleting = "Deleting Prize";
-        public const string Selling = "Selling Prize";
-        public const string Resetting = "Resetting Data";
+        public const string TransferingGold = "Transfering Gold";
+        public const string TransferingPrize = "Transfering Prize";
         
     }
 }

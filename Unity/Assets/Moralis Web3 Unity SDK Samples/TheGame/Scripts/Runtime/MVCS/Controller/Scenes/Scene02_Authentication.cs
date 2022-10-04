@@ -25,7 +25,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
   
             RefreshUIAsync();
 
-            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.IsAuthenticatedAsync();
+            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
             if (isAuthenticated)
             {
                 _ui.MyAuthenticationKitWrapper.OnDisconnected.AddListener(AuthenticationUI_OnDisconnected);
@@ -40,7 +40,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
         //  General Methods -------------------------------
         private async void RefreshUIAsync()
         {
-            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.IsAuthenticatedAsync();
+            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
             _ui.CancelButton.IsInteractable = true;
         }
 
@@ -51,7 +51,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
             Destroy(_ui.gameObject);
             
             // Leave
-            SceneManager.LoadSceneAsync("Scene01_Intro", LoadSceneMode.Single);
+            TheGameSingleton.Instance.TheGameController.LoadIntroSceneAsync();
         }
         
         

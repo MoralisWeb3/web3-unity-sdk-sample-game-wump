@@ -1,7 +1,7 @@
+using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.TheGame.MVCS;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 #pragma warning disable 1998
 namespace MoralisUnity.Samples.TheGame.Controller
@@ -20,18 +20,18 @@ namespace MoralisUnity.Samples.TheGame.Controller
 
         
         //  Unity Methods----------------------------------
-        protected async void Start()
+        protected override async void Start()
         {
            // _ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);
   
-            RefreshUIAsync();
+            await RefreshUIAsync();
         }
 
 
         //  General Methods -------------------------------
-        private async void RefreshUIAsync()
+        private async UniTask RefreshUIAsync()
         {
-            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.IsAuthenticatedAsync();
+            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
            // _ui.BackButton.IsInteractable = true;
         }
         
@@ -40,7 +40,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
 
         private async void BackButton_OnClicked()
         {
-            SceneManager.LoadSceneAsync("Scene01_Intro", LoadSceneMode.Single);
+            TheGameSingleton.Instance.TheGameController.LoadIntroSceneAsync();
         }
     }
 }

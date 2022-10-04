@@ -19,8 +19,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration
         public SceneData AuthenticationSceneData { get { return _sceneDataStorage.SceneDatas[1];}}
         public SceneData SettingsSceneData { get { return _sceneDataStorage.SceneDatas[2];}}
         public SceneData DeveloperConsoleSceneData { get { return _sceneDataStorage.SceneDatas[3];}}
-        public SceneData ViewCollectionSceneData { get { return _sceneDataStorage.SceneDatas[4];}}
-        public SceneData GameSceneData { get { return _sceneDataStorage.SceneDatas[5]; } }
+        public SceneData GameSceneData { get { return _sceneDataStorage.SceneDatas[4]; } }
 
         public TheGameServiceType TheGameServiceType { get { return _theGameServiceType;}}
         

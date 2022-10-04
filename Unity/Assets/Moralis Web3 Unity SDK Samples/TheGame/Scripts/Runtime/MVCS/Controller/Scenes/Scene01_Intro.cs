@@ -1,3 +1,4 @@
+using MoralisUnity.Samples.TheGame.MVCS;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -40,13 +41,13 @@ namespace MoralisUnity.Samples.TheGame.Controller
 
         private async void AuthenticationButtonUI_OnClicked()
         {
-            SceneManager.LoadSceneAsync("Scene02_Authentication", LoadSceneMode.Single);
+            TheGameSingleton.Instance.TheGameController.LoadAuthenticationSceneAsync();
         }
    
         
         private async void PlayGameButtonUI_OnClicked()
         {
-            SceneManager.LoadSceneAsync("Scene03_Game", LoadSceneMode.Single);
+            TheGameSingleton.Instance.TheGameController.LoadGameSceneAsync();
         }
     }
 }

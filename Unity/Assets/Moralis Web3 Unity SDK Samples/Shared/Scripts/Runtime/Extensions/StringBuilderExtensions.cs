@@ -46,7 +46,7 @@ namespace MoralisUnity.Samples.Shared
                 // Indent just TAB per level to allow for
                 // 1. Save the precious horizontal room
                 // 2. while still being OBVIOUSLY indented
-                indentString += "\t";
+                indentString += " ";
             }
             
             sb.AppendLine($"{indentString}• {message}");

@@ -35,8 +35,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
        }
 
 
-
-
 		/// <summary>
 		/// Format for ABI:
 		///		*  ExecuteContractFunction - requires string
@@ -114,13 +112,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		}
 
 
-		public async UniTask<TransferLog> GetRewardsHistory()
+		public async UniTask<TransferLog> GetTransferLogHistoryAsync()
 		{
 			string moralisUserEthAddress = await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
 			Dictionary<string, object> args = new Dictionary<string, object>();
 			args.Add("address", moralisUserEthAddress);
 
-			var result = await RunContractFunctionAsync("getRewardsHistory", args, IsLogging);
+			var result = await RunContractFunctionAsync("getTransferLogHistory", args, IsLogging);
 			
 			TransferLog transferLog = TheGameHelper.ConvertRewardStringToObject(result);
 			//Debug.Log($"getRewardsHistory() result = {reward}");
@@ -153,75 +151,39 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 			return result;
 		}
 
-
-		public async UniTask<string> setGold(int targetBalance2)
+		public async UniTask<string> TransferGold()
 		{
-			int targetBalance = targetBalance2;
+			//Second account for testing
+			string address = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e"; //await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
 			object[] args =
 			{
-				targetBalance
+				address
 			};
 
-			string result = await ExecuteContractFunctionAsync("setGold", args, IsLogging);
-
+			string result = await ExecuteContractFunctionAsync("transferGold", args, IsLogging);
 			return result;
 		}
-
 		
-		public async UniTask<string> setGoldBy(int deltaBalance)
+		public async UniTask<string> TransferPrize()
 		{
-			int delta = deltaBalance;
+			//Second account for testing
+			string address = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e"; //await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
 			object[] args =
 			{
-				delta
-			};
-
-			string result = await ExecuteContractFunctionAsync("setGoldBy", args, IsLogging);
-
-			return result;
-		}
-
-
-		public async UniTask<string> AddTreasurePrize (Prize prize)
-		{
-			string metadata = prize.Metadata;
-			object[] args =
-			{
-				metadata
+				address
 			};
 			
-			string result = await ExecuteContractFunctionAsync("addTreasurePrize", args, IsLogging);
+			string result = await ExecuteContractFunctionAsync("transferPrize", args, IsLogging);
 			return result;
 		}
 		
 
-		public async UniTask<string> SellTreasurePrize(Prize prize)
+		private int[] GetTokenIds(List<Prize> prizes)
 		{
-			int tokenId = prize.TokenId;
-			
-			if (tokenId == Prize.NullTokenId)
+			int[] tokenIds = new int[prizes.Count];
+			for (int i = 0; i < prizes.Count; i++)
 			{
-				TheGameSingleton.Debug.Log("BurnNftAsync() failed. tokenId must be NOT null. " +
-				          "Was this NFT just created? Leave and return to Scene so it gets loaded from online");
-				return "";
-			}
-				
-			object[] args =
-			{
-				tokenId
-			};
-			
-			const bool isLogging = true;
-			return await ExecuteContractFunctionAsync("sellTreasurePrize", args, isLogging);
-		}
-
-		
-		private int[] GetTokenIds(List<Prize> treasurePrizeDtos)
-		{
-			int[] tokenIds = new int[treasurePrizeDtos.Count];
-			for (int i = 0; i < treasurePrizeDtos.Count; i++)
-			{
-				int tokenId = treasurePrizeDtos[i].TokenId;
+				int tokenId = prizes[i].TokenId;
 
 				if (tokenId == Prize.NullTokenId)
 				{
@@ -235,47 +197,20 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 			return tokenIds;
 		}
 		
-		
-		public async UniTask<string> DeleteAllTreasurePrizes(List<Prize> treasurePrizeDtos)
+		public async UniTask<string> SafeReregisterAndDeleteAllPrizes(List<Prize> prizes)
 		{
-			int[] tokenIds = GetTokenIds(treasurePrizeDtos);
+			int[] tokenIds = GetTokenIds(prizes);
 			object[] args =
 			{
 				tokenIds
 			};
 
 			const bool isLogging = true;
-			string result = await ExecuteContractFunctionAsync("deleteAllTreasurePrizes", args, isLogging);
-			return result;
-		}
-		
-		
-		public async UniTask<string> SafeReregisterAndDeleteAllTreasurePrizes(List<Prize> treasurePrizeDtos)
-		{
-			int[] tokenIds = GetTokenIds(treasurePrizeDtos);
-			object[] args =
-			{
-				tokenIds
-			};
-
-			const bool isLogging = true;
-			string result = await ExecuteContractFunctionAsync("safeReregisterAndDeleteAllTreasurePrizes", args, isLogging);
+			string result = await ExecuteContractFunctionAsync("safeReregisterAndDeleteAllPrizes", args, isLogging);
 			return result;
 		}
 
 
-		public async UniTask<string> StartGameAndGiveRewards(int goldAmount)
-		{
-			object[] args =
-			{
-				goldAmount
-			};
-
-			string result = await ExecuteContractFunctionAsync("startGameAndGiveRewards", args, IsLogging);
-			return result;
-		}
-
-		
 		// Event Handlers ---------------------------------
 		
 	}

@@ -67,7 +67,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 		}
 		
 		//  GETTER - LocalDiskStorage Methods --------------------------------
-		public UniTask<TransferLog> GetRewardsHistoryAsync()
+		public UniTask<TransferLog> GetTransferLogHistoryAsync()
 		{
 			return new UniTask<TransferLog>(_lastTransferLog); 
 		}
@@ -173,7 +173,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 			SaveLocalDiskStorageData(localDiskStorageData);
 
 		}
-        
+
+        public UniTask TransferGoldAsync()
+        {
+	        throw new NotImplementedException();
+        }
+
+        public UniTask TransferPrizeAsync()
+        {
+	        throw new NotImplementedException();
+        }
+
 
         public async UniTask SetGoldAsync(int targetBalance)
         {
@@ -265,7 +275,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         /// Called from the "reset all data" button.
         /// Combine several operations into 1 to smooth the user experience
         /// </summary>
-        public async UniTask SafeReregisterDeleteAllTreasurePrizeAsync()
+        public async UniTask SafeReregisterDeleteAllPrizesAsync()
         {
 	        bool isRegistered = await GetIsRegisteredAsync();
 	        if (isRegistered)

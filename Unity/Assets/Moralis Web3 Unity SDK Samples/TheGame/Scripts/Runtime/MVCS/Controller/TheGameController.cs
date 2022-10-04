@@ -63,7 +63,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		///////////////////////////////////////////
 		// Related To: MyMoralisWrapper
 		///////////////////////////////////////////
-		public async UniTask<bool> IsAuthenticatedAsync()
+		public async UniTask<bool> GetIsAuthenticatedAsync()
 		{
 			return await MyMoralisWrapper.Instance.IsAuthenticatedAsync();
 		}
@@ -118,8 +118,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		public async UniTask<List<Prize>> GetPrizesAsync()
 		{
-			List<Prize> treasurePrizeDtos = await _theGameService.GetPrizesAsync();
-			return treasurePrizeDtos;
+			List<Prize> prizes = await _theGameService.GetPrizesAsync();
+			return prizes;
 		}
 		
 		public async UniTask<int> GetGoldAsync()
@@ -128,14 +128,24 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			return gold;
 		}
 		
-		public async UniTask<TransferLog> GetRewardsHistoryAsync()
+		public async UniTask<TransferLog> GetTransferLogHistoryAsync()
 		{
-			TransferLog result = await _theGameService.GetRewardsHistoryAsync();
+			TransferLog result = await _theGameService.GetTransferLogHistoryAsync();
 
 			return result;
 		}
 
 		// SETTER Methods -------------------------
+		public async UniTask RegisterAsync()
+		{
+			await _theGameService.RegisterAsync();
+			_theGameModel.IsRegistered.Value = await GetIsRegisteredAsync();
+			
+			// Wait for contract values to sync so the client will see the changes
+			await DelayExtraAfterStateChangeAsync();
+		}
+
+		
 		public async UniTask UnregisterAsync()
 		{
 			await _theGameService.UnregisterAsync();
@@ -147,105 +157,20 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 
 
-
-		public async UniTask RegisterAsync()
+		public async UniTask TransferGoldAsync()
 		{
-			await _theGameService.RegisterAsync();
-			_theGameModel.IsRegistered.Value = await GetIsRegisteredAsync();
-			
-			// Wait for contract values to sync so the client will see the changes
-			await DelayExtraAfterStateChangeAsync();
+			await _theGameService.TransferGoldAsync();
 		}
 
-
-        public async UniTask<int> SetGoldByAsync(int delta)
+		
+		public async UniTask TransferPrizeAsync()
 		{
-			await _theGameService.SetGoldByAsync(delta);
-			
-			int gold = await GetGoldAsync();
-			_theGameModel.Gold.Value = gold;
-			
-			// Wait for contract values to sync so the client will see the changes
-			await DelayExtraAfterStateChangeAsync();
-			
-			return gold;
-		}
-
-
-		public async UniTask<List<Prize>> AddTreasurePrizeAsync(Prize prize)
-		{
-			await _theGameService.AddTreasurePrizeAsync(prize);
-			
-			// Wait for contract values to sync so the client will see the changes
-			await DelayExtraAfterStateChangeAsync();
-			
-			List<Prize> treasurePrizeDtos = await GetPrizesAsync();
-			_theGameModel.Prizes.Value = treasurePrizeDtos;
-			return treasurePrizeDtos;
-		}
-
-
-		public async UniTask<List<Prize>> SellTreasurePrizeAsync(Prize prize)
-		{
-			await _theGameService.SellTreasurePrizeAsync(prize);
-
-			// Wait for contract values to sync so the client will see the changes
-			await DelayExtraAfterStateChangeAsync();
-			
-			int gold = await GetGoldAsync();
-			_theGameModel.Gold.Value = gold;
-
-			List<Prize> treasurePrizeDtos = await GetPrizesAsync();
-			_theGameModel.Prizes.Value = treasurePrizeDtos;
-			return treasurePrizeDtos;
-		}
-
-		public async UniTask<List<Prize>> DeleteAllTreasurePrizeAsync()
-		{
-			await _theGameService.DeleteAllTreasurePrizeAsync();
-
-			// Wait for contract values to sync so the client will see the changes
-			await DelayExtraAfterStateChangeAsync();
-
-			List<Prize> treasurePrizeDtos = await GetPrizesAsync();
-			_theGameModel.Prizes.Value = treasurePrizeDtos;
-			return treasurePrizeDtos;
+			await _theGameService.TransferPrizeAsync();
 		}
 		
-		public async UniTask SafeReregisterDeleteAllTreasurePrizeAsync()
+		public async UniTask SafeReregisterDeleteAllPrizesAsync()
 		{
-			await _theGameService.SafeReregisterDeleteAllTreasurePrizeAsync();
-			
-			// Wait for contract values to sync so the client will see the changes
-			await DelayExtraAfterStateChangeAsync();
-		}
-
-		public async UniTask<TransferLog> StartGameAndGiveRewardsAsync(int goldAmount)
-		{
-			if (goldAmount > _theGameModel.Gold.Value)
-            {
-				//Not enough gold to play
-				return null;
-            }
-			else
-			{
-				await _theGameService.StartGameAndGiveRewardsAsync(goldAmount);
-
-				// Call Service. Sync Model
-				List<Prize> treasurePrizeDtos = await GetPrizesAsync();
-				_theGameModel.Prizes.Value = treasurePrizeDtos;
-			
-				// Call Service. Sync Model
-				int gold = await GetGoldAsync();
-				_theGameModel.Gold.Value = gold;
-			
-				// Wait for contract values to sync so the client will see the changes
-				await DelayExtraAfterStateChangeAsync();
-			
-				TransferLog transferLog = await _theGameService.GetRewardsHistoryAsync();
-				return transferLog;
-
-			}
+			await _theGameService.SafeReregisterDeleteAllPrizesAsync();
 		}
 
 		///////////////////////////////////////////
@@ -277,16 +202,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			await UniTask.Delay(DelayLoadSceneMilliseconds);
 
 			string sceneName = _theGameModel.TheGameConfiguration.AuthenticationSceneData.SceneName;
-			_theGameView.SceneManagerComponent.LoadScene(sceneName);
-		}
-
-
-		public async void LoadViewCollectionSceneAsync()
-		{
-			// Wait, So click sound is audible before scene changes
-			await UniTask.Delay(DelayLoadSceneMilliseconds);
-
-			string sceneName = _theGameModel.TheGameConfiguration.ViewCollectionSceneData.SceneName;
 			_theGameView.SceneManagerComponent.LoadScene(sceneName);
 		}
 
@@ -403,6 +318,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 
 
-	
+
 	}
 }

@@ -31,7 +31,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
         //  General Methods -------------------------------
         private async void RefreshUIAsync()
         {
-            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.IsAuthenticatedAsync();
+            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
             _ui.BackButton.IsInteractable = true;
         }
         
@@ -40,7 +40,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
 
         private async void BackButton_OnClicked()
         {
-            SceneManager.LoadSceneAsync("Scene01_Intro", LoadSceneMode.Single);
+            TheGameSingleton.Instance.TheGameController.LoadIntroSceneAsync();
         }
     }
 }

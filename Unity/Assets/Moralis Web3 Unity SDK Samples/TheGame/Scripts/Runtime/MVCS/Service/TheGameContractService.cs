@@ -55,9 +55,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         }
         
         
-        public async UniTask<TransferLog> GetRewardsHistoryAsync()
+        public async UniTask<TransferLog> GetTransferLogHistoryAsync()
         {
-            TransferLog result = await _theGameContract.GetRewardsHistory();
+            TransferLog result = await _theGameContract.GetTransferLogHistoryAsync();
             return result;
         }
 
@@ -75,7 +75,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
             List<Prize> treasurePrizeDtos = new List<Prize>();
 
             // Check System Status
-            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.IsAuthenticatedAsync();
+            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
             if (!isAuthenticated)
             {
                 // Sometimes, ONLY warn
@@ -111,63 +111,32 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         }
 
 
-        public async UniTask StartGameAndGiveRewardsAsync(int goldAmount)
-        {
-            string result = await _theGameContract.StartGameAndGiveRewards(goldAmount);
-            //Debug.Log($"StartGameAndGiveRewardsAsync() result = {result}");
-        }
-
-
         public async UniTask UnregisterAsync()
         {
             string result = await _theGameContract.Unregister();
             //Debug.Log($"UnregisterAsync() result = {result}");
         }
 
-
-        public async UniTask SetGoldAsync(int targetBalance)
+        public async UniTask TransferGoldAsync()
         {
-            string result = await _theGameContract.setGold(targetBalance);
-            //Debug.Log($"SetGoldAsync() result = {result}");
+            string result = await _theGameContract.TransferGold();
+            //Debug.Log($"UnregisterAsync() result = {result}");
         }
 
-        
-        public async UniTask SetGoldByAsync(int deltaBalance)
+        public async UniTask TransferPrizeAsync()
         {
-            string result = await _theGameContract.setGoldBy(deltaBalance);
-            //Debug.Log($"SetGoldByAsync() result = {result}");
-        }
-
-
-        public async UniTask AddTreasurePrizeAsync(Prize prizeToAdd)
-        {
-            string result = await _theGameContract.AddTreasurePrize(prizeToAdd);
-            //Debug.Log($"AddTreasurePrizeAsync() result = {result}");
-        }
-
-
-        public async UniTask SellTreasurePrizeAsync(Prize prize)
-        {
-            string result = await _theGameContract.SellTreasurePrize(prize);
-            //Debug.Log($"SellTreasurePrizeAsync() result = {result}");
-        }
-
-        
-        public async UniTask DeleteAllTreasurePrizeAsync()
-        {
-            List<Prize> treasurePrizeDtos = await GetPrizesAsync();
-            string result = await _theGameContract.DeleteAllTreasurePrizes(treasurePrizeDtos);
-            //Debug.Log($"DeleteAllTreasurePrizeAsync() result = {result}");
+            string result = await _theGameContract.TransferPrize();
+            //Debug.Log($"UnregisterAsync() result = {result}");
         }
 
         /// <summary>
         /// Called from the "reset all data" button.
         /// Combine several operations into 1 to smooth the user experience
         /// </summary>
-        public async UniTask SafeReregisterDeleteAllTreasurePrizeAsync()
+        public async UniTask SafeReregisterDeleteAllPrizesAsync()
         {
             List<Prize> treasurePrizeDtos = await GetPrizesAsync();
-            string result = await _theGameContract.SafeReregisterAndDeleteAllTreasurePrizes(treasurePrizeDtos);
+            string result = await _theGameContract.SafeReregisterAndDeleteAllPrizes(treasurePrizeDtos);
             //Debug.Log($"SafeReregisterDeleteAllTreasurePrizeAsync() result = {result}");
         }
         
