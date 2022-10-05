@@ -241,7 +241,7 @@ describe("The Game Contract", function ()
     ///////////////////////////////////////////////////////////
     // TEST
     ///////////////////////////////////////////////////////////
-    it("Sets result to DEFAULTS when deployed, getTransferLogHistory", async function ()
+    it("Sets transferLog to NULL when register, getTransferLogHistory", async function ()
     {
         // Arrange
         const { theGameContract, addr1 } = await loadFixture(deployTokenFixture);
@@ -251,10 +251,26 @@ describe("The Game Contract", function ()
         var transferLog = await theGameContract.connect(addr1).getTransferLogHistory (addr1.address);
 
         // Expect
-        expect(transferLog.length).to.not.equal(0);
+        expect(transferLog.length).to.equal(0);
     }),
 
-    
+    ///////////////////////////////////////////////////////////
+    // TEST
+    ///////////////////////////////////////////////////////////
+    it("Sets transferLog to NOT NULL when register, transfer, getTransferLogHistory", async function ()
+    {
+        // Arrange
+        const { theGameContract, addr1, addr2 } = await loadFixture(deployTokenFixture);
+        await theGameContract.connect(addr1).register();
+        await theGameContract.connect(addr2).register();
+        await theGameContract.connect(addr1).transferGold(addr2.address);
+
+        // Act
+        var transferLog = await theGameContract.connect(addr1).getTransferLogHistory (addr1.address);
+
+        // Expect
+        var expected = "FromAddress="+addr1.address+"|ToAddress="+addr2.address+"|Type=1|Amount=25";
+    }),
 
     ///////////////////////////////////////////////////////////
     // TEST

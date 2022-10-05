@@ -15,12 +15,19 @@ namespace MoralisUnity.Samples.TheGame.MVCS
     /// </summary>
     public static class TheGameHelper
     {
+                
+        // Fields -----------------------------------------
+
+        public const string GiftGold = "GOLD";
+        public const string GiftPrize = "PRIZE";
+
+        
         // General Methods --------------------------------
         
 
-        public static uint GetRewardType(string name)
+        public static uint GetGiftType(string name)
         {
-            if (name == RewardGold)
+            if (name == GiftGold)
             {
                 return 1;
             }
@@ -30,21 +37,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS
             }
         }
 
-        public static string CreateNewRewardTitle(string name)
-        {
-            if (name == RewardGold)
-            {
-                return "Gold";
-            }
-            else
-            {
-                List<string> words = new List<string> { "Great", "Amazing", "Worthy" };
-                string word = words[UnityEngine.Random.Range(0, words.Count)];
-                return $"{word} Prize";
-            }
-        }
-        
-        public static string GetRewardTypeNameByType(uint t)
+        public static string GetGiftTypeNameByType(uint t)
         {
             if (t == 1)
             {
@@ -87,10 +80,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS
                 return 5;
             }
         }
-        
-        
-        public const string RewardGold = "GOLD";
-        public const string RewardPrize = "PRIZE";
 
         public static T InstantiatePrefab<T>(T prefab, Transform parent, Vector3 worldPosition) where T : Component
         {
@@ -118,71 +107,57 @@ namespace MoralisUnity.Samples.TheGame.MVCS
             tmp_Text.text = text;
         }
 
-        public static void SetButtonVisibility(Button button, bool isVisible)
-        {
-            CanvasGroup canvasGroup = button.GetComponentInChildren<CanvasGroup>();
-
-            if (isVisible)
-            {
-                canvasGroup.alpha = 1;
-            }
-            else
-            {
-                canvasGroup.alpha = 0;
-            }
-        }
-
-        public static string FormatTextGold(int gold)
-        {
-            return $"({gold} Gold)";
-        }
-        
-        
         /// <summary>
         /// Add custom parsing outside of class hierarchy (thus, use static)
         /// </summary>
-        public static string ConvertMetadataObjectToString (TreasurePrizeMetadata treasurePrizeMetadata)
+        public static string ConvertMetadataObjectToString (PrizeMetadata prizeMetadata)
         {
-            return $"Title={treasurePrizeMetadata.Title}|Price={treasurePrizeMetadata.Price}";
+            return $"ImageUrl={prizeMetadata.ImageUrl}";
         }
 
         /// <summary>
         /// Add custom parsing outside of class hierarchy (thus, use static)
         /// </summary>
-        public static TreasurePrizeMetadata ConvertMetadataStringToObject(string result)
+        public static PrizeMetadata ConvertMetadataStringToObject(string result)
         {
-            List<string> tokens = result.Split("|").ToList();
-            string title = tokens[0].Split("=")[1];
-            uint price = uint.Parse(tokens[1].Split("=")[1]);
+            //  Sometimes we store many values packed into the NFT uri
+            //  Here we store just one
+            //  So no split-parsing needed
+            //
+            // List<string> tokens = result.Split("|").ToList();
+            // string title = tokens[0].Split("=")[1];
+            // uint price = uint.Parse(tokens[1].Split("=")[1]);
 
-            if (title.Length ==0 || price == 0)
+            if (result.Length ==0)
             {
                 throw new ArgumentException();
             }
 
-            return new TreasurePrizeMetadata
+            return new PrizeMetadata
             {
-                Title = title,
-                Price = price
+                ImageUrl = result
             };
         }
-        public static TransferLog ConvertRewardStringToObject(string result)
+        public static TransferLog ConvertTransferLogStringToObject(string result)
         {
             List<string> tokens = result.Split("|").ToList();
-            string title = tokens[0].Split("=")[1];
-            uint type = uint.Parse(tokens[1].Split("=")[1]);
-            uint price = uint.Parse(tokens[2].Split("=")[1]);
+            string fromAddress = tokens[0].Split("=")[1];
+            string toAddress = tokens[1].Split("=")[1];
+            uint type = uint.Parse(tokens[2].Split("=")[1]);
+            uint amount = uint.Parse(tokens[2].Split("=")[1]);
 
-            if (title.Length == 0 || type == 0 || price == 0)
+            if (fromAddress.Length == 0 || toAddress.Length == 0 || type == 0 || amount == 0)
             {
+                Debug.Log("error with : " + result);
                 throw new ArgumentException();
             }
-
+            
             return new TransferLog
             {
-                Title = title,
+                FromAddress = fromAddress,
+                ToAddress = toAddress,
                 Type = type,
-                Price = price,
+                Amount = amount,
             };
         }
 

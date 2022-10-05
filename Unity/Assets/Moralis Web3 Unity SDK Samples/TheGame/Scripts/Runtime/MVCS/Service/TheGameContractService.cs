@@ -5,6 +5,7 @@ using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
+using UnityEngine;
 using Nft = MoralisUnity.Samples.Shared.Data.Types.Nft;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.Service
@@ -50,21 +51,33 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         // GETTER Methods -------------------------
         public async UniTask<bool> GetIsRegisteredAsync()
         {
-            bool result = await _theGameContract.getIsRegistered();
+            bool result = await _theGameContract.getIsRegisteredAsync();
             return result;
         }
         
         
         public async UniTask<TransferLog> GetTransferLogHistoryAsync()
         {
-            TransferLog result = await _theGameContract.GetTransferLogHistoryAsync();
-            return result;
+            TransferLog transferLog = await _theGameContract.GetTransferLogHistoryAsync();
+
+            if (transferLog != null)
+            {
+                //IDEA: The MULTIPLAYER CLIENT can poll every 5 seconds for "What is the log history for My web3 address?"
+                // And if there is a result it can send a SERVER RPC to tell EVERYONE to display this message top the screen for 5 seconds
+                string fromAddress = MyMoralisWrapper.Instance.GetWeb3AddressShortFormat(transferLog.FromAddress);
+                string toAddress = MyMoralisWrapper.Instance.GetWeb3AddressShortFormat(transferLog.ToAddress);
+                string type = TheGameHelper.GetGiftTypeNameByType(transferLog.Type);
+                string amount = transferLog.Amount.ToString();
+                Debug.Log($"{amount} {type} sent from {fromAddress} to {toAddress}!");
+            }
+         
+            return transferLog;
         }
 
 
         public async UniTask<int> GetGoldAsync()
         {
-            int result = await _theGameContract.getGold();
+            int result = await _theGameContract.getGoldAsync();
             return result;
         }
         
@@ -72,7 +85,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         public async UniTask<List<Prize>> GetPrizesAsync()
         {
             // Create Method Return Value
-            List<Prize> treasurePrizeDtos = new List<Prize>();
+            List<Prize> prizes = new List<Prize>();
 
             // Check System Status
             bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
@@ -95,37 +108,38 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
                 string tokenIdString = customNftOwner.TokenId;
                 string metadata = customNftOwner.TokenUri;
                 Prize prize = Nft.CreateNewFromMetadata<Prize>(ownerAddress, tokenIdString, metadata);
-                treasurePrizeDtos.Add(prize);
+                prizes.Add(prize);
             }
 
-
+            Debug.Log("GetPrizesAsync() count = " + prizes.Count);
             // Finalize Method Return Value
-            return treasurePrizeDtos;
+            return prizes;
         }
         
         // SETTER Methods -------------------------
         public async UniTask RegisterAsync()
         {
-            string result = await _theGameContract.Register();
+            string result = await _theGameContract.RegisterAsync();
             //Debug.Log($"RegisterAsync() result = {result}");
         }
 
 
         public async UniTask UnregisterAsync()
         {
-            string result = await _theGameContract.Unregister();
+            List<Prize> prizes = await GetPrizesAsync();
+            string result = await _theGameContract.UnregisterAsync(prizes);
             //Debug.Log($"UnregisterAsync() result = {result}");
         }
 
         public async UniTask TransferGoldAsync()
         {
-            string result = await _theGameContract.TransferGold();
+            string result = await _theGameContract.TransferGoldAsync();
             //Debug.Log($"UnregisterAsync() result = {result}");
         }
 
         public async UniTask TransferPrizeAsync()
         {
-            string result = await _theGameContract.TransferPrize();
+            string result = await _theGameContract.TransferPrizeAsync();
             //Debug.Log($"UnregisterAsync() result = {result}");
         }
 
@@ -135,9 +149,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
         /// </summary>
         public async UniTask SafeReregisterDeleteAllPrizesAsync()
         {
-            List<Prize> treasurePrizeDtos = await GetPrizesAsync();
-            string result = await _theGameContract.SafeReregisterAndDeleteAllPrizes(treasurePrizeDtos);
-            //Debug.Log($"SafeReregisterDeleteAllTreasurePrizeAsync() result = {result}");
+            List<Prize> prizes = await GetPrizesAsync();
+            string result = await _theGameContract.SafeReregisterAndDeleteAllPrizesAsync(prizes);
+            //Debug.Log($"SafeReregisterDeleteAllPrizesAsync() result = {result}");
         }
         
         // Event Handlers ---------------------------------

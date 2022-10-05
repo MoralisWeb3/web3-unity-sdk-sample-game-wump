@@ -120,7 +120,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public async UniTask<List<Prize>> GetPrizesAsync()
 		{
 			List<Prize> prizes = await _theGameService.GetPrizesAsync();
-			Debug.Log("prizes: " + prizes.Count);
 			return prizes;
 		}
 		
@@ -133,7 +132,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public async UniTask<TransferLog> GetTransferLogHistoryAsync()
 		{
 			TransferLog result = await _theGameService.GetTransferLogHistoryAsync();
-
 			return result;
 		}
 

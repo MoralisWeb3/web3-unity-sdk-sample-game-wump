@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using MoralisUnity.Sdk.Utilities;
 
 #pragma warning disable 1998
 namespace MoralisUnity.Samples.Shared.UI
@@ -32,6 +33,9 @@ namespace MoralisUnity.Samples.Shared.UI
             if (_isAuthenticated)
             {
                 Text.text = SharedConstants.Logout;
+                string moralisUserEthAddressAsync = await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
+                moralisUserEthAddressAsync = Formatters.GetWeb3AddressShortFormat(moralisUserEthAddressAsync);
+                Text.text = string.Format(SharedConstants.LogoutEthAddress, moralisUserEthAddressAsync);
             }
             else
             {

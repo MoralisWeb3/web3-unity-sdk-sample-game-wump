@@ -10,6 +10,7 @@ using MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.CustomSing
 using MoralisUnity.Samples.Shared.Exceptions;
 using MoralisUnity.Sdk.Constants;
 using MoralisUnity.Sdk.Interfaces;
+using MoralisUnity.Sdk.Utilities;
 using MoralisUnity.Web3Api.Models;
 using UnityEngine;
 using WalletConnectSharp.Unity;
@@ -108,6 +109,11 @@ namespace MoralisUnity.Samples.Shared
 			return await Moralis.GetUserAsync();
 		}
 
+		public string GetWeb3AddressShortFormat(string str, int n = 6)
+		{
+			return Formatters.GetWeb3AddressShortFormat(str, n);
+		}
+			
 		public async UniTask<String> ExecuteContractFunction(string _address, string _abi,
 			string functionName, object[] args, bool isLogging)
 		{
@@ -235,17 +241,17 @@ namespace MoralisUnity.Samples.Shared
 			{
 				CustomNftOwner customNftOwner = new CustomNftOwner();
 				customNftOwner.Amount = nftOwner.Amount;
-				customNftOwner.Amount = nftOwner.Metadata;
-				customNftOwner.Amount = nftOwner.Name;
-				customNftOwner.Amount = nftOwner.Symbol;
-				customNftOwner.Amount = nftOwner.BlockNumber;
-				customNftOwner.Amount = nftOwner.ContractType;
-				customNftOwner.Amount = nftOwner.OwnerOf;
-				customNftOwner.Amount = nftOwner.SyncedAt;
-				customNftOwner.Amount = nftOwner.TokenAddress;
-				customNftOwner.Amount = nftOwner.TokenId;
-				customNftOwner.Amount = nftOwner.TokenUri;
-				customNftOwner.Amount = nftOwner.BlockNumberMinted;
+				customNftOwner.Metadata = nftOwner.Metadata;
+				customNftOwner.Name = nftOwner.Name;
+				customNftOwner.Symbol = nftOwner.Symbol;
+				customNftOwner.BlockNumber = nftOwner.BlockNumber;
+				customNftOwner.ContractType = nftOwner.ContractType;
+				customNftOwner.OwnerOf = nftOwner.OwnerOf;
+				customNftOwner.SyncedAt = nftOwner.SyncedAt;
+				customNftOwner.TokenAddress = nftOwner.TokenAddress;
+				customNftOwner.TokenId = nftOwner.TokenId;
+				customNftOwner.TokenUri = nftOwner.TokenUri;
+				customNftOwner.BlockNumberMinted = nftOwner.BlockNumberMinted;
 				customNftOwners.Add(customNftOwner);
 			}
 

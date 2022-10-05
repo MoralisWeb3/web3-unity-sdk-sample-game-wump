@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
+using UnityEngine;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.Model
 {
@@ -24,15 +25,15 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 
 
 		// Initialization Methods -------------------------
-
 		protected override void SetContractDetails()
-		{
+       {
 
-		     _prizeContractAddress  = "0x67612ceF7D53f50Dc0E5A82ADCD5a984260CC833";
-		     _address  = "0x496745d30CFa7b3734d34C04Ff2Ed603f9F155ED";
-		     _abi      = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"goldContractAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"prizeContractAddress\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"tokenURI\",\"type\":\"string\"}],\"name\":\"addPrize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"tokenIds\",\"type\":\"uint256[]\"}],\"name\":\"deleteAllPrizes\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"userAddress\",\"type\":\"address\"}],\"name\":\"getGold\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getIsOwnerOfPrize\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isOwnerOfPrize\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"userAddress\",\"type\":\"address\"}],\"name\":\"getIsRegistered\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isRegistered\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"userAddress\",\"type\":\"address\"}],\"name\":\"getTransferLogHistory\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"transferLogString\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"register\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"tokenIds\",\"type\":\"uint256[]\"}],\"name\":\"safeReregisterAndDeleteAllPrizes\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"targetBalance\",\"type\":\"uint256\"}],\"name\":\"setGold\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"delta\",\"type\":\"int256\"}],\"name\":\"setGoldBy\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"toAddress\",\"type\":\"address\"}],\"name\":\"transferGold\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"toAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"transferPrize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"tokenIds\",\"type\":\"uint256[]\"}],\"name\":\"unregister\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]";
+           _prizeContractAddress  = "0x93B61fA36d4dAfc192ff8bCC2527319114FF665a";
+           _address  = "0x946B62576721e5623954c51f5504544e3D87c1E3";
+           _abi      = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"goldContractAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"prizeContractAddress\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"tokenURI\",\"type\":\"string\"}],\"name\":\"addPrize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"tokenIds\",\"type\":\"uint256[]\"}],\"name\":\"deleteAllPrizes\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"userAddress\",\"type\":\"address\"}],\"name\":\"getGold\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getIsOwnerOfPrize\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isOwnerOfPrize\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"userAddress\",\"type\":\"address\"}],\"name\":\"getIsRegistered\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isRegistered\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"userAddress\",\"type\":\"address\"}],\"name\":\"getTransferLogHistory\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"transferLogString\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"register\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"tokenIds\",\"type\":\"uint256[]\"}],\"name\":\"safeReregisterAndDeleteAllPrizes\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"targetBalance\",\"type\":\"uint256\"}],\"name\":\"setGold\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"delta\",\"type\":\"int256\"}],\"name\":\"setGoldBy\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"toAddress\",\"type\":\"address\"}],\"name\":\"transferGold\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"toAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"transferPrize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"tokenIds\",\"type\":\"uint256[]\"}],\"name\":\"unregister\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]";
 
-		}
+       }
+
 
 		/// <summary>
 		/// Format for ABI:
@@ -45,13 +46,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 			ContractAbi contractAbi = new ContractAbi();
 			List<object> cInputParams = new List<object>();
 			cInputParams.Add(new { internalType = "address", name = "goldContractAddress", type = "address" });
-			cInputParams.Add(new { internalType = "address", name = "treasurePrizeContractAddress", type = "address" });
+			cInputParams.Add(new { internalType = "address", name = "prizeContractAddress", type = "address" });
 			contractAbi.AddConstructor(cInputParams);
 			
-			
-			//NOTE: Its ONLY required to manually recreate the methods
-			//		here which you choose to call via **RunContractFunction**
-			
+			///////////////////////////////////////////////////////////
+			//	NOTE: Its ONLY required to manually recreate 
+			//		  methods called via **RunContractFunction**
+			///////////////////////////////////////////////////////////
+	
 			// getIsRegistered
 			List<object> isRegistered_Input = new List<object>();
 			isRegistered_Input.Add(new { internalType = "address", name = "address", type = "address" });
@@ -66,12 +68,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 			getGold_Output.Add(new { internalType = "uint256", name = "balance", type = "uint256" });
 			contractAbi.AddFunction("getGold", "view", getGold_Input, getGold_Output);
 
-			// getRewardsHistory
-			List<object> getRewardsHistory_Input = new List<object>();
-			getRewardsHistory_Input.Add(new { internalType = "address", name = "address", type = "address" });
-			List<object> getRewardsHistory_Output = new List<object>();
-			getRewardsHistory_Output.Add(new { internalType = "string", name = "rewardString", type = "string" });
-			contractAbi.AddFunction("getRewardsHistory", "view", getRewardsHistory_Input, getRewardsHistory_Output);
+			// getTransferLogHistory
+			List<object> getTransferLogHistory_Input = new List<object>();
+			getTransferLogHistory_Input.Add(new { internalType = "address", name = "address", type = "address" });
+			List<object> getTransferLogHistory_Output = new List<object>();
+			getTransferLogHistory_Output.Add(new { internalType = "string", name = "transferLogString", type = "string" });
+			contractAbi.AddFunction("getTransferLogHistory", "view", getTransferLogHistory_Input, getTransferLogHistory_Output);
 
 			return contractAbi.ToObjectArray();
 		}
@@ -82,7 +84,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 
 		
 		// General Methods --------------------------------
-		public async UniTask<bool> getIsRegistered()
+		public async UniTask<bool> getIsRegisteredAsync()
 		{
 			if (!await MyMoralisWrapper.Instance.IsAuthenticatedAsync())
 			{
@@ -99,7 +101,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		}
 
 		
-		public async UniTask<int> getGold()
+		public async UniTask<int> getGoldAsync()
 		{
 			string moralisUserEthAddress = await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
 			Dictionary<string, object> args = new Dictionary<string, object>();
@@ -118,8 +120,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 			args.Add("address", moralisUserEthAddress);
 
 			var result = await RunContractFunctionAsync("getTransferLogHistory", args, IsLogging);
-			
-			TransferLog transferLog = TheGameHelper.ConvertRewardStringToObject(result);
+
+			//Sometimes there is no history yet. That is ok
+			if (string.IsNullOrEmpty(result))
+			{
+				return null;
+			}
+			TransferLog transferLog = TheGameHelper.ConvertTransferLogStringToObject(result);
 			//Debug.Log($"getRewardsHistory() result = {reward}");
 			return transferLog;
 		}
@@ -128,7 +135,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		///////////////////////////////////////////////////////////
 		// ExecuteContractFunctionAsync
 		///////////////////////////////////////////////////////////
-		public async UniTask<string> Register()
+		public async UniTask<string> RegisterAsync()
 		{
 			object[] args =
 			{
@@ -140,17 +147,19 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		}
 
 		
-		public async UniTask<string> Unregister()
+		public async UniTask<string> UnregisterAsync(List<Prize> prizes)
 		{
+			int[] tokenIds = GetTokenIds(prizes);
 			object[] args =
 			{
+				tokenIds
 			};
 
 			string result = await ExecuteContractFunctionAsync("unregister", args, IsLogging);
 			return result;
 		}
 
-		public async UniTask<string> TransferGold()
+		public async UniTask<string> TransferGoldAsync()
 		{
 			//Second account for testing
 			string address = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e"; //await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
@@ -163,7 +172,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 			return result;
 		}
 		
-		public async UniTask<string> TransferPrize()
+		public async UniTask<string> TransferPrizeAsync()
 		{
 			//Second account for testing
 			string address = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e"; //await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
@@ -192,11 +201,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 
 				tokenIds[i] = tokenId;
 			}
+			
+			Debug.Log("GetTokenIds()");
+			for (int i = 0; i < tokenIds.Length; i++)
+			{
+				Debug.Log(" " + tokenIds[i]);
+			}
 
 			return tokenIds;
 		}
 		
-		public async UniTask<string> SafeReregisterAndDeleteAllPrizes(List<Prize> prizes)
+		public async UniTask<string> SafeReregisterAndDeleteAllPrizesAsync(List<Prize> prizes)
 		{
 			int[] tokenIds = GetTokenIds(prizes);
 			object[] args =

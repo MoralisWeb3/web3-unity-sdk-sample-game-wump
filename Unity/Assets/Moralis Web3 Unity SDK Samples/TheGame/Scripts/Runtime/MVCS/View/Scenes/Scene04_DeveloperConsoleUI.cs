@@ -20,6 +20,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
         public BaseButtonUI TransferPrizeButton { get { return _transferPrizeButton; } }
         public BaseButtonUI SafeReregisterButton { get { return _safeReregisterButton; } }
         public BaseButtonUI GetPrizesButton { get { return _getPrizesButton; } }
+        public BaseButtonUI GetTransferLogHistoryButton { get { return _getTransferLogHistoryButton; } }
         
         public BaseButtonUI BackButton { get { return _backButton; } }
 
@@ -47,6 +48,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
         [SerializeField]
         private BaseButtonUI _transferGoldButton = null;
 
+        [SerializeField]
+        private BaseButtonUI _getTransferLogHistoryButton = null;
+
+        
         [SerializeField]
         private BaseButtonUI _transferPrizeButton = null;
 

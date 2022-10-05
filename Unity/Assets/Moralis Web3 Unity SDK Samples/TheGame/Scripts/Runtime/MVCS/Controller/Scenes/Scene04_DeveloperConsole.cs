@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using System.Text;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.TheGame.MVCS;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using UnityEngine;
 
@@ -33,6 +35,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
             _ui.RegisterButton.Button.onClick.AddListener(RegisterButton_OnClicked);
             _ui.UnregisterButton.Button.onClick.AddListener(UnregisterButton_OnClicked);
             _ui.GetPrizesButton.Button.onClick.AddListener(GetPrizesButton_OnClicked);
+            _ui.GetTransferLogHistoryButton.Button.onClick.AddListener(GetTransferLogHistoryButton_OnClicked);
             _ui.TransferGoldButton.Button.onClick.AddListener(TransferGoldButton_OnClicked);
             _ui.TransferPrizeButton.Button.onClick.AddListener(TransferPrizeButton_OnClicked);
             _ui.SafeReregisterButton.Button.onClick.AddListener(SafeReregisterButton_OnClicked);
@@ -57,14 +60,25 @@ namespace MoralisUnity.Samples.TheGame.Controller
         //  General Methods -------------------------------
         private async UniTask RefreshUIAsync()
         {
-            _ui.OutputText.text = _outputTextStringBuilder.ToString();
+            // Header content
+            StringBuilder summary = new StringBuilder();
+            summary.AppendLine($"isAuthenticated = {_isAuthenticated}. isRegistered = {_isRegistered}");
+            
+            // Recent content
+            summary.Append(_outputTextStringBuilder);
+            _ui.OutputText.text = summary.ToString();
+            
+            
             //
             _ui.IsAuthenticatedButton.IsInteractable = true;
             _ui.IsRegisteredButton.IsInteractable = _isAuthenticated;
             _ui.RegisterButton.IsInteractable = _isAuthenticated && !_isRegistered;
             _ui.UnregisterButton.IsInteractable = _isAuthenticated && _isRegistered;
+            _ui.GetPrizesButton.IsInteractable = _isAuthenticated && _isRegistered;
+            _ui.GetTransferLogHistoryButton.IsInteractable = _isAuthenticated && _isRegistered;
             _ui.TransferGoldButton.IsInteractable = _isAuthenticated && _isRegistered;
             _ui.TransferPrizeButton.IsInteractable = _isAuthenticated && _isRegistered;
+            _ui.SafeReregisterButton.IsInteractable = _isAuthenticated && _isRegistered;
             _ui.BackButton.IsInteractable = true;
         }
         
@@ -85,10 +99,6 @@ namespace MoralisUnity.Samples.TheGame.Controller
                 {
                     //TODO: Maybe move ALL local isAuth bool into the TheGameModel instead?
                     _isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
-                    
-                    _outputTextStringBuilder.Clear();
-                    _outputTextStringBuilder.AppendHeaderLine($"IsAuthenticated()");
-                    _outputTextStringBuilder.AppendBullet($"result = {_isAuthenticated}");
 
                     await RefreshUIAsync();
                 });
@@ -107,10 +117,6 @@ namespace MoralisUnity.Samples.TheGame.Controller
                 async delegate ()
                 {
                     _isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAsync();
-
-                    _outputTextStringBuilder.Clear();
-                    _outputTextStringBuilder.AppendHeaderLine($"isRegistered()");
-                    _outputTextStringBuilder.AppendBullet($"result = {_isRegistered}");
 
                     await RefreshUIAsync();
                 });
@@ -182,11 +188,47 @@ namespace MoralisUnity.Samples.TheGame.Controller
                     TheGameConstants.GettingPrizes,
                     async delegate ()
                     {
-                        await TheGameSingleton.Instance.TheGameController.GetPrizesAsync();
+                        List<Prize> prizes = await TheGameSingleton.Instance.TheGameController.GetPrizesAsync();
 
                         _outputTextStringBuilder.Clear();
                         _outputTextStringBuilder.AppendHeaderLine($"GetPrizesAsync()");
-                        _outputTextStringBuilder.AppendBullet($"result = see ui above");
+                        _outputTextStringBuilder.AppendBullet($"result = {prizes.Count}");
+       
+                        await RefreshUIAsync();
+                    });
+            }
+            
+            await RefreshUIAsync();
+        }
+
+        
+        private async void GetTransferLogHistoryButton_OnClicked()
+        {
+            if (!_isRegistered)
+            {
+                await TheGameSingleton.Instance.TheGameController.ShowMessageCustomAsync(
+                    TheGameConstants.MustBeRegistered, 1000);
+            }
+            else
+            {
+                await TheGameSingleton.Instance.TheGameController.ShowMessageActiveAsync(
+                    TheGameConstants.GettingTransferLogHistory,
+                    async delegate ()
+                    {
+                        TransferLog transferLog = await TheGameSingleton.Instance.TheGameController.GetTransferLogHistoryAsync();
+
+                        _outputTextStringBuilder.Clear();
+                        _outputTextStringBuilder.AppendHeaderLine($"GetTransferLogHistoryAsync()");
+
+                        if (transferLog == null)
+                        {
+                            _outputTextStringBuilder.AppendBullet($"result = Null");
+                        }
+                        else
+                        {
+                            _outputTextStringBuilder.AppendBullet($"result = {transferLog}");
+                        }
+                        
        
                         await RefreshUIAsync();
                     });
@@ -197,7 +239,6 @@ namespace MoralisUnity.Samples.TheGame.Controller
 
 
         
-            
         private async void TransferGoldButton_OnClicked()
         {
             if (!_isRegistered)
@@ -215,7 +256,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
 
                         _outputTextStringBuilder.Clear();
                         _outputTextStringBuilder.AppendHeaderLine($"TransferGoldAsync()");
-                        _outputTextStringBuilder.AppendBullet($"result = see ui above");
+                        _outputTextStringBuilder.AppendBullet($"result = See Game UI");
        
                         await RefreshUIAsync();
                     });
@@ -241,7 +282,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
 
                         _outputTextStringBuilder.Clear();
                         _outputTextStringBuilder.AppendHeaderLine($"TransferGoldAsync()");
-                        _outputTextStringBuilder.AppendBullet($"result = see ui above");
+                        _outputTextStringBuilder.AppendBullet($"result = See Game UI");
        
                         await RefreshUIAsync();
                     });

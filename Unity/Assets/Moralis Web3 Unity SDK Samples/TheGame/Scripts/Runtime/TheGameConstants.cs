@@ -37,6 +37,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS
         public const string Unregistering = "Unregistering Player";
         public const string SafeReregistering = "Safely Unregistering & Registering";
         public const string GettingPrizes = "Getting Prizes";
+        public const string GettingTransferLogHistory = "Getting Transfer Log History";
         public const string TransferingGold = "Transfering Gold";
         public const string TransferingPrize = "Transfering Prize";
         public const string MustBeRegistered = "Must Be Registered";

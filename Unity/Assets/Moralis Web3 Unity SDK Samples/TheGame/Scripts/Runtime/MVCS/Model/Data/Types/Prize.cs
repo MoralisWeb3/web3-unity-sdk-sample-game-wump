@@ -5,11 +5,13 @@ using MoralisUnity.Samples.Shared.Data.Types;
 namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
 {
 	[Serializable]
-	public class TreasurePrizeMetadata
+	public class PrizeMetadata
 	{
-		public string Title = "";
-		public uint Price = 0;
+		//Sometimes we store many values packed into the NFT uri
+		//Here we store just one
+		public string ImageUrl = "";
 	}
+	
 	/// <summary>
 	/// Stores data for the game
 	/// </summary>
@@ -17,9 +19,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
 	public class Prize : Nft
 	{
 		// Properties -------------------------------------
-		public string Title { get { return TheGameHelper.ConvertMetadataStringToObject(Metadata).Title; } }
-		public uint Price { get { return TheGameHelper.ConvertMetadataStringToObject(Metadata).Price; } }
-
+		public string ImageUrl { get { return TheGameHelper.ConvertMetadataStringToObject(Metadata).ImageUrl; } }
 
 		// Fields -----------------------------------------
 

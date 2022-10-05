@@ -5,13 +5,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
     /// </summary>
     public class TransferLog 
     {
-        public string Title;
-        public uint Type;
-        public uint Price;
+        public string FromAddress;
+        public string ToAddress;
+        public uint Type; 
+        public uint Amount;
 
         public override string ToString()
         {
-            return $"[{GetType().Name}(Title = {Title}, Type = {Type}, Price = {Price})]";
+            return $"[{GetType().Name}(FromAddress = {FromAddress}, ToAddress = {ToAddress}, Type = {Type}, Amount = {Amount})]";
         }
     }
 }

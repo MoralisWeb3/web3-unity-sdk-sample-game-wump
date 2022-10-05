@@ -42,6 +42,7 @@ namespace MoralisUnity.Samples.Shared
         // Display Text
         public const string Authenticate = "Authenticate";
         public const string Logout = "Logout";
+        public const string LogoutEthAddress = "Logout ({0})";
         public static string WalletConnectNullReferenceException = $"WalletConnect.Instance must not be null. Add the WalletConnect.prefab to your scene.";
         
     }

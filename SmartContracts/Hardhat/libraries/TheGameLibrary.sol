@@ -37,10 +37,12 @@ library TheGameLibrary
     ///////////////////////////////////////////////////////////
     function convertTransferLogToString (TransferLog memory transferLog) public pure returns (string memory transferLogString) 
     {
+        require (transferLog.Type != 0, "Transfer Log Type Must Not Be 0");
         string memory fromAddressString = Strings.toHexString(transferLog.FromAddress);
         string memory toAddressString = Strings.toHexString(transferLog.ToAddress);
         string memory typeString = Strings.toString(transferLog.Type);
         string memory amountString = Strings.toString(transferLog.Amount);
+
 
         if (bytes(typeString).length == 0)
         {
@@ -59,15 +61,12 @@ library TheGameLibrary
     //TODO: This works great. It exists only for use in testTheGameLibrary.js. Can I move it from here?
     function createNewTransferLogForTesting () public pure returns (TransferLog memory transferLog)
     {
-        uint theType = 0;
-        uint amount = 0;
-
         transferLog = TransferLog (
         {
             FromAddress: address(0),
             ToAddress: address(0),
-            Type: theType,
-            Amount: amount
+            Type: GoldType,
+            Amount: 1
         });
     }
 

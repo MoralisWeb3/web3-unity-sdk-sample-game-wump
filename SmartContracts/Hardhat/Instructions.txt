@@ -92,10 +92,10 @@
     Visit "https://testnet.cronoscan.com/{YourContractAddress}" to see deployed contract
      
 
-// 17. PASTE {YourContractAddress} and the {YourABI} WITHIN
+// 17. PASTE {YourContractAddress} and the {YourABI} WITHIN THIS FILE...
 
-    "Path/To/Model/Data/Types/TheGameContract.cs"
- 
+    "Unity\Assets\Moralis Web3 Unity SDK Samples\TheGame\Scripts\Runtime\MVCS\Model\TheGameContract.cs"
+
 
  // `8`. RUN THE RELEVANT SCENE IN UNITY
 

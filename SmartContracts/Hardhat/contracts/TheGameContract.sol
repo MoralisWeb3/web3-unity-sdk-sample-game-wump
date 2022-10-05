@@ -88,7 +88,15 @@ contract TheGameContract
 
     function getTransferLogHistory(address userAddress) external view ensureIsRegistered (userAddress) returns (string memory transferLogString)
     {
-        transferLogString =  TheGameLibrary.convertTransferLogToString(_lastTransferLog[userAddress]);
+        //Check for null
+        if (_lastTransferLog[userAddress].Type == 0)
+        {
+            transferLogString = "";
+        }
+        else 
+        {
+            transferLogString =  TheGameLibrary.convertTransferLogToString(_lastTransferLog[userAddress]);
+        }
     }
 
 
@@ -99,12 +107,14 @@ contract TheGameContract
     {
         _isRegistered[msg.sender] = true;
 
+        // Give prizes to new registrant
         for (uint i = 0; i < TheGameLibrary.PrizesOnRegister; i++)
         {
             string memory imageUrl = TheGameLibrary.getRandomImageUrl();
             addPrize (imageUrl);
         }
 
+        // Give gold to new registrant
         setGold(TheGameLibrary.GoldOnRegister);
     }
 
@@ -136,7 +146,6 @@ contract TheGameContract
         }
 
         register();
-        deleteAllPrizes(tokenIds);
     }
 
 
@@ -198,6 +207,7 @@ contract TheGameContract
         });
     }
 
+    //TODO: Keep this?
 
     function getIsOwnerOfPrize(uint256 tokenId) public view returns (bool isOwnerOfPrize) 
     {

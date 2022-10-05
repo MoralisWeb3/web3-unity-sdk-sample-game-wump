@@ -55,10 +55,10 @@ describe("TheGameLibrary", function ()
         const transferLog = await theGameLibrary.createNewTransferLogForTesting();
         
         // Expect
-        expect(transferLog.FromAddress).to.equal(EmptyAddress);
+       expect(transferLog.FromAddress).to.equal(EmptyAddress);
         expect(transferLog.ToAddress).to.equal(EmptyAddress);
-        expect(transferLog.Type).to.equal(0);
-        expect(transferLog.Amount).to.equal(0);
+        expect(transferLog.Type).to.equal(1);
+        expect(transferLog.Amount).to.equal(1);
     }),
 
     
@@ -74,7 +74,7 @@ describe("TheGameLibrary", function ()
         var result = await theGameLibrary.convertTransferLogToStringForTesting();
         
         // Expect
-        var expectedString = "FromAddress="+EmptyAddress+"|ToAddress="+EmptyAddress+"|Type=0|Amount=0";
+        var expectedString = "FromAddress="+EmptyAddress+"|ToAddress="+EmptyAddress+"|Type=1|Amount=1";
         expect(result).to.equal(expectedString);
     })
 });

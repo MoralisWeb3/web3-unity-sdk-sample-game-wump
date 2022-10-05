@@ -1,7 +1,7 @@
+using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.TheGame.MVCS;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 #pragma warning disable 1998
 namespace MoralisUnity.Samples.TheGame.Controller
@@ -18,17 +18,24 @@ namespace MoralisUnity.Samples.TheGame.Controller
         [SerializeField]
         private Scene02_AuthenticationUI _ui;
 
+        private bool _isAuthenticatedOnStart = false;
+
         //  Unity Methods----------------------------------
         protected async void Start()
         {
             _ui.CancelButton.Button.onClick.AddListener(CancelButton_OnClicked);
-  
+            
             RefreshUIAsync();
 
-            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
-            if (isAuthenticated)
+            _isAuthenticatedOnStart = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
+            if (_isAuthenticatedOnStart)
             {
-                _ui.MyAuthenticationKitWrapper.OnDisconnected.AddListener(AuthenticationUI_OnDisconnected);
+                //BUG: Mysteriously the AuthenticationKit will DISCONNECT in this situation
+                
+                //HACK: So wait one frame, then trigger the desired game-specific response as
+                //      if the user clicked a non-existent 'disconnect' button
+                await UniTask.NextFrame();
+                AuthenticationUI_OnDisconnected();
             }
             else
             {
@@ -40,13 +47,15 @@ namespace MoralisUnity.Samples.TheGame.Controller
         //  General Methods -------------------------------
         private async void RefreshUIAsync()
         {
-            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
             _ui.CancelButton.IsInteractable = true;
         }
 
         //  Event Handlers --------------------------------
-        private void CancelButton_OnClicked()
+        private async void CancelButton_OnClicked()
         {
+            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
+            //Debug.Log($"CancelButton_OnClicked() wasA = {_isAuthenticatedOnStart}, isA = {isAuthenticated}");
+            
             // Stop any processes
             Destroy(_ui.gameObject);
             
@@ -55,16 +64,16 @@ namespace MoralisUnity.Samples.TheGame.Controller
         }
         
         
-        private void AuthenticationUI_OnConnected()
+        private async void AuthenticationUI_OnConnected()
         {
-            Debug.Log("AuthenticationUI_OnConnected");
+            //Debug.Log($"AuthenticationUI_OnConnected()");
             CancelButton_OnClicked();
         }
 
         
         private void AuthenticationUI_OnDisconnected()
         {
-            Debug.Log("AuthenticationUI_OnConnected");
+           // Debug.Log("AuthenticationUI_OnConnected");
             CancelButton_OnClicked();
         }
     }
