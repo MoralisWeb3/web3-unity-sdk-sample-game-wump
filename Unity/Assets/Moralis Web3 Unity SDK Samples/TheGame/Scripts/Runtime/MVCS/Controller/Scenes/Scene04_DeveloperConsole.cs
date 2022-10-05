@@ -188,7 +188,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
                     TheGameConstants.GettingPrizes,
                     async delegate ()
                     {
-                        List<Prize> prizes = await TheGameSingleton.Instance.TheGameController.GetPrizesAsync();
+                        List<Prize> prizes = await TheGameSingleton.Instance.TheGameController.GetPrizesAndUpdateModelAsync();
 
                         _outputTextStringBuilder.Clear();
                         _outputTextStringBuilder.AppendHeaderLine($"GetPrizesAsync()");
@@ -226,7 +226,7 @@ namespace MoralisUnity.Samples.TheGame.Controller
                         }
                         else
                         {
-                            _outputTextStringBuilder.AppendBullet($"result = {transferLog}");
+                            _outputTextStringBuilder.AppendBullet($"result = {TheGameHelper.GetTransferLogDisplayText(transferLog)}");
                         }
                         
        
@@ -252,12 +252,21 @@ namespace MoralisUnity.Samples.TheGame.Controller
                     TheGameConstants.TransferingGold,
                     async delegate ()
                     {
+                        int gold = await TheGameSingleton.Instance.TheGameController.GetGoldAndUpdateModelAsync();
+                        if (gold < TheGameConstants.GoldOnTransfer)
+                        {
+                            Debug.LogWarning($"TransferPrizeAsync() failed. gold = {gold}.");
+                        }
+        
                         await TheGameSingleton.Instance.TheGameController.TransferGoldAsync();
 
+                        // Again Update The Model
+                        await TheGameSingleton.Instance.TheGameController.GetGoldAndUpdateModelAsync();
+                        
+                        // UI
                         _outputTextStringBuilder.Clear();
                         _outputTextStringBuilder.AppendHeaderLine($"TransferGoldAsync()");
                         _outputTextStringBuilder.AppendBullet($"result = See Game UI");
-       
                         await RefreshUIAsync();
                     });
             }
@@ -278,12 +287,21 @@ namespace MoralisUnity.Samples.TheGame.Controller
                     TheGameConstants.TransferingPrize,
                     async delegate ()
                     {
-                        await TheGameSingleton.Instance.TheGameController.TransferPrizeAsync();
+                        List<Prize> prizes = await TheGameSingleton.Instance.TheGameController.GetPrizesAndUpdateModelAsync();
+                        if (prizes.Count < TheGameConstants.PrizesOnTransfer)
+                        {
+                            Debug.LogWarning($"TransferPrizeAsync() failed. prizes.Count = {prizes.Count}.");
+                        }
+                        
+                        await TheGameSingleton.Instance.TheGameController.TransferPrizeAsync(prizes[0]);
 
+                        // Again Update The Model
+                        await TheGameSingleton.Instance.TheGameController.GetPrizesAndUpdateModelAsync();
+                        
+                        // UI
                         _outputTextStringBuilder.Clear();
                         _outputTextStringBuilder.AppendHeaderLine($"TransferGoldAsync()");
                         _outputTextStringBuilder.AppendBullet($"result = See Game UI");
-       
                         await RefreshUIAsync();
                     });
             }

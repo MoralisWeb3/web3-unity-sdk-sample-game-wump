@@ -196,7 +196,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 			throw new NotImplementedException();
 		}
 
-		public UniTask TransferPrizeAsync()
+		public UniTask TransferPrizeAsync(Prize prize)
 		{
 			throw new NotImplementedException();
 		}

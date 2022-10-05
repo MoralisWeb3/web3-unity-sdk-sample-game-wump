@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.View.UI;
@@ -144,7 +145,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS
             string fromAddress = tokens[0].Split("=")[1];
             string toAddress = tokens[1].Split("=")[1];
             uint type = uint.Parse(tokens[2].Split("=")[1]);
-            uint amount = uint.Parse(tokens[2].Split("=")[1]);
+            uint amount = uint.Parse(tokens[3].Split("=")[1]);
 
             if (fromAddress.Length == 0 || toAddress.Length == 0 || type == 0 || amount == 0)
             {
@@ -163,12 +164,21 @@ namespace MoralisUnity.Samples.TheGame.MVCS
 
         public static string FormatGoldCornerText(int amount)
         {
-            return string.Format("{000:000}/100", amount);
+            return string.Format("{000:000}/{001:000}", amount, TheGameConstants.GoldMax);
         }
 
         public static string FormatPrizeCornerText(int amount)
         {
-            return string.Format("{000:000}/10", amount);
+            return string.Format("{000:00}/{001:00}", amount, TheGameConstants.PrizesMax);
+        }
+
+        public static object GetTransferLogDisplayText(TransferLog transferLog)
+        {
+            string fromAddress = MyMoralisWrapper.Instance.GetWeb3AddressShortFormat(transferLog.FromAddress);
+            string toAddress = MyMoralisWrapper.Instance.GetWeb3AddressShortFormat(transferLog.ToAddress);
+            string type = TheGameHelper.GetGiftTypeNameByType(transferLog.Type);
+            string amount = transferLog.Amount.ToString();
+            return $"Player ({fromAddress}) sent {amount} {type} to Player ({toAddress})";
         }
     }
 }

@@ -20,6 +20,7 @@ library TheGameLibrary
     uint constant GoldOnUnregister = 0;  
     uint constant PrizesOnRegister = 3;
     uint constant GoldOnTransfer = 25;   
+    uint constant PrizesOnTransfer = 1;   
     uint constant GoldType = 1;  
     uint constant PrizeType = 2;  
 

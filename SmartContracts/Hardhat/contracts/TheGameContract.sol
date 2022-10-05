@@ -158,7 +158,8 @@ contract TheGameContract
     }
 
 
-    function transferGold(address toAddress) ensureIsRegistered (msg.sender) ensureIsRegistered (toAddress) public
+    // For simplicity: The toAddress is not required to be IsRegistered
+    function transferGold(address toAddress) ensureIsRegistered (msg.sender) public
     {
         uint256 amount = TheGameLibrary.GoldOnTransfer;
         Gold(_goldContractAddress).transferGold(msg.sender, toAddress, amount);
@@ -193,17 +194,18 @@ contract TheGameContract
         Prize(_prizeContractAddress).burnNfts(tokenIds); 
     }
 
-
-    function transferPrize(address toAddress, uint256 tokenId) ensureIsRegistered (msg.sender) ensureIsRegistered (toAddress) public
+    // For simplicity: The toAddress is not required to be IsRegistered
+    function transferPrize(address toAddress, uint256 tokenId) ensureIsRegistered (msg.sender) public
     {
         Prize(_prizeContractAddress).transferNft(msg.sender, toAddress, tokenId);
 
+        uint256 amount = TheGameLibrary.PrizesOnTransfer;
         _lastTransferLog[msg.sender] = TransferLog (
         {
             FromAddress: msg.sender,
             ToAddress: toAddress,
             Type: TheGameLibrary.PrizeType,
-            Amount: 1
+            Amount: amount 
         });
     }
 

@@ -62,13 +62,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 
             if (transferLog != null)
             {
-                //IDEA: The MULTIPLAYER CLIENT can poll every 5 seconds for "What is the log history for My web3 address?"
+                //TODO: IDEA: The MULTIPLAYER CLIENT can poll every 5 seconds for "What is the log history for My web3 address?"
                 // And if there is a result it can send a SERVER RPC to tell EVERYONE to display this message top the screen for 5 seconds
-                string fromAddress = MyMoralisWrapper.Instance.GetWeb3AddressShortFormat(transferLog.FromAddress);
-                string toAddress = MyMoralisWrapper.Instance.GetWeb3AddressShortFormat(transferLog.ToAddress);
-                string type = TheGameHelper.GetGiftTypeNameByType(transferLog.Type);
-                string amount = transferLog.Amount.ToString();
-                Debug.Log($"{amount} {type} sent from {fromAddress} to {toAddress}!");
+                Debug.Log(TheGameHelper.GetTransferLogDisplayText(transferLog));
+
             }
          
             return transferLog;
@@ -137,9 +134,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
             //Debug.Log($"UnregisterAsync() result = {result}");
         }
 
-        public async UniTask TransferPrizeAsync()
+        public async UniTask TransferPrizeAsync(Prize prize)
         {
-            string result = await _theGameContract.TransferPrizeAsync();
+            string result = await _theGameContract.TransferPrizeAsync(prize);
             //Debug.Log($"UnregisterAsync() result = {result}");
         }
 

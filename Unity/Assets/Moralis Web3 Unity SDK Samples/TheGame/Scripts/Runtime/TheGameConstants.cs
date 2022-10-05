@@ -42,5 +42,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS
         public const string TransferingPrize = "Transfering Prize";
         public const string MustBeRegistered = "Must Be Registered";
         public const string MustNotBeRegistered = "Must Not Be Registered";
+        //
+        public const uint GoldOnTransfer = 25;
+        public const uint PrizesOnTransfer = 1;
+        //
+        public const uint GoldMax = 100; //May be a ui-only limit
+        public const uint PrizesMax = 6; //May be a ui-only limit
     }
 }

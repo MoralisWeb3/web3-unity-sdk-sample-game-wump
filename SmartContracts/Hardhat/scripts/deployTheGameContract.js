@@ -48,12 +48,12 @@ async function main()
   console.log("\n");
   console.log("DEPLOYMENT COMPLETE: COPY TO UNITY...");
   console.log("\n");
-  console.log("       protected override void SetContractDetails()");
-  console.log("       {\n");
-  console.log("           _prizeContractAddress  = \"%s\";", prize.address);
-  console.log("           _address  = \"%s\";", theGameContract.address);
-  console.log("           _abi      = \"%s\";\n", abi);
-  console.log("       }\n");
+  console.log("\tprotected override void SetContractDetails()");
+  console.log   ("\t{\n");
+  console.log   ("\t\t_prizeContractAddress  = \"%s\";", prize.address);
+  console.log   ("\t\t_address  = \"%s\";", theGameContract.address);
+  console.log   ("\t\t_abi      = \"%s\";\n", abi);
+  console.log   ("\t}\n");
   console.log("\n");
 
 

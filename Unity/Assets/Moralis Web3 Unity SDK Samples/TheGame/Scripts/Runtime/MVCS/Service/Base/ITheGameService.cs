@@ -35,7 +35,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service
 		UniTask RegisterAsync();
 		UniTask UnregisterAsync();
 		UniTask TransferGoldAsync();
-		UniTask TransferPrizeAsync();
+		UniTask TransferPrizeAsync(Prize prize);
 		UniTask SafeReregisterDeleteAllPrizesAsync();
 	}
 }

@@ -94,13 +94,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 
 			if (_theGameModel.IsRegistered.Value)
 			{
-				// Call Service. Sync Model
-				int gold = await GetGoldAsync();
-				_theGameModel.Gold.Value = gold;
-
-				// Call Service. Sync Model
-				List<Prize> prizes = await GetPrizesAsync();
-				_theGameModel.Prizes.Value = prizes;
+				await GetGoldAndUpdateModelAsync();
+				await GetPrizesAndUpdateModelAsync();
 			}
 			
 			// Call Service
@@ -116,17 +111,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			return _theGameModel.IsRegistered.Value;
 		}
 
-		
-		public async UniTask<List<Prize>> GetPrizesAsync()
-		{
-			List<Prize> prizes = await _theGameService.GetPrizesAsync();
-			return prizes;
-		}
-		
-		public async UniTask<int> GetGoldAsync()
+		public async UniTask<int> GetGoldAndUpdateModelAsync()
 		{
 			int gold = await _theGameService.GetGoldAsync();
-			return gold;
+			_theGameModel.Gold.Value = gold;
+			return _theGameModel.Gold.Value;
+		}
+		
+		public async UniTask<List<Prize>> GetPrizesAndUpdateModelAsync()
+		{
+			List<Prize> prizes = await _theGameService.GetPrizesAsync();
+			_theGameModel.Prizes.Value = prizes;
+			return _theGameModel.Prizes.Value;
 		}
 		
 		public async UniTask<TransferLog> GetTransferLogHistoryAsync()
@@ -160,17 +156,30 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public async UniTask TransferGoldAsync()
 		{
 			await _theGameService.TransferGoldAsync();
+			
+			// Wait for contract values to sync so the client will see the changes
+			await DelayExtraAfterStateChangeAsync();
 		}
 
 		
-		public async UniTask TransferPrizeAsync()
+		public async UniTask TransferPrizeAsync(Prize prize)
 		{
-			await _theGameService.TransferPrizeAsync();
+			if (prize == null)
+			{
+				throw new ArgumentException("TransferPrizeAsync() failed. prize = {prize}");
+			}
+			await _theGameService.TransferPrizeAsync(prize);
+			
+			// Wait for contract values to sync so the client will see the changes
+			await DelayExtraAfterStateChangeAsync();
 		}
 		
 		public async UniTask SafeReregisterDeleteAllPrizesAsync()
 		{
 			await _theGameService.SafeReregisterDeleteAllPrizesAsync();
+			
+			// Wait for contract values to sync so the client will see the changes
+			await DelayExtraAfterStateChangeAsync();
 		}
 
 		///////////////////////////////////////////
