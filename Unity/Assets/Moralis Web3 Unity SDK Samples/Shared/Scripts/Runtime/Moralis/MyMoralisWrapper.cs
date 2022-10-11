@@ -14,7 +14,7 @@ using MoralisUnity.Sdk.Utilities;
 using MoralisUnity.Web3Api.Models;
 using UnityEngine;
 using WalletConnectSharp.Unity;
-using Nethereum.Hex.HexTypes;
+using Nethereum.Hex.HexTypes; //Keep this
 using Newtonsoft.Json;
 
 #pragma warning disable 1998
