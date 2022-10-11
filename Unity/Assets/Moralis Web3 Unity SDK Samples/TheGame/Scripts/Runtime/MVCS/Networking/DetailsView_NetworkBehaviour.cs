@@ -1,4 +1,5 @@
 using System.Text;
+using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using Unity.Netcode;
 using UnityEngine;
@@ -35,7 +36,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                 NetworkVariableReadPermission.Everyone);
             private readonly NetworkVariable<int> _connectedClientsNetworkVariable = new NetworkVariable<int>(0,
                 NetworkVariableReadPermission.Everyone);
+            private readonly NetworkVariable<CustomPlayerInfo> _customPlayerInfo = new NetworkVariable<CustomPlayerInfo>(
+                default(CustomPlayerInfo), 
+                NetworkVariableReadPermission.Everyone, 
+                NetworkVariableWritePermission.Owner);
 
+            private string _web3Address = "";
+            
             //  Unity Methods ---------------------------------
 
             public override void OnNetworkSpawn()
@@ -43,11 +50,16 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                 Assert.IsTrue(transform.parent == null, 
                     "NetworkObjects *manually placed* in scene must be on the root.");
                 
+                TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(
+                    TheGameSingleton_OnTheGameModelChanged);
+                TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
+                _customPlayerInfo.OnValueChanged += CustomPlayerInfo_OnValueChanged;
+                
                 // Trigger Early to "Blank out" the text temporarily
                 PlayerCountNetworkVariable_OnValueChanged(0, 0);
                 _sharedStatusNetworkBehaviour.OnSharedStatusChanged.AddListener(StatusNetworkBehaviour_OnStatusChanged);
                 StatusNetworkBehaviour_OnStatusChanged();
-                UpdatePlayerName();
+                UpdatePlayerDetails();
                 
                 _detailsView.OnSharedStatusUpdateRequested.AddListener(TheGameView_OnSharedStatusUpdateRequested);
                 
@@ -56,7 +68,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                 _connectedClientsNetworkVariable.OnValueChanged += ConnectedClientsNetworkVariable_OnValueChanged;
 
 				//Setup
-                UpdatePlayerName();
+                UpdatePlayerDetails();
 
 				// Observe
                 if (!IsServer) return;
@@ -85,7 +97,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                 _sharedStatusNetworkBehaviour.SharedStatusUpdateRequest();
             }
             
-            private void UpdatePlayerName()
+            private void UpdatePlayerDetails()
             {
                 StringBuilder _playerDetailsStringBuilder = new StringBuilder();
                 _playerDetailsStringBuilder.Clear();
@@ -93,6 +105,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                 _playerDetailsStringBuilder.AppendLine($" Host: {IsHost}");
                 _playerDetailsStringBuilder.AppendLine($" Client: {IsClient}");
                 _playerDetailsStringBuilder.AppendLine($" Server: {IsServer}");
+                _playerDetailsStringBuilder.AppendLine($" Web3Address: {_web3Address}");
+                
                 ulong _playerIndex = PlayerView.GetPlayerIndexByClientId(NetworkManager.Singleton.LocalClientId);
                 _playerDetailsStringBuilder.AppendLine($" Player #: {_playerIndex} of " +
                     $"{_playerCountNetworkVariable.Value}/{_connectedClientsNetworkVariable.Value}");
@@ -103,6 +117,22 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             
            
             //  Event Handlers --------------------------------
+            private void TheGameSingleton_OnTheGameModelChanged(TheGameModel theGameModel)
+            {
+                // Only the owner may SET the value
+                if (!IsOwner) return;
+                _customPlayerInfo.Value = theGameModel.CustomPlayerInfo.Value;
+            }
+            
+            private void CustomPlayerInfo_OnValueChanged(CustomPlayerInfo old, CustomPlayerInfo customPlayerInfo)
+            {
+                if (!customPlayerInfo.IsNull())
+                {
+                    _web3Address = customPlayerInfo.Web3Address.Value;
+                }
+                UpdatePlayerDetails();
+            }
+            
             private void StatusNetworkBehaviour_OnStatusChanged(string status = "")
             {
                 _detailsView.SharedStatus = status;
@@ -132,12 +162,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             
             private void PlayerCountNetworkVariable_OnValueChanged(int previousvalue, int newvalue)
             {
-                UpdatePlayerName();
+                UpdatePlayerDetails();
             }
             
             private void ConnectedClientsNetworkVariable_OnValueChanged(int previousvalue, int newvalue)
             {
-                UpdatePlayerName();
+                UpdatePlayerDetails();
             }
         }
     }

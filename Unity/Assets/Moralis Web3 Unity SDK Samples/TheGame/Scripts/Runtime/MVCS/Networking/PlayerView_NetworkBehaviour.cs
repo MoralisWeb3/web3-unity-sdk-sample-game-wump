@@ -25,7 +25,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             public UnityEvent OnPlayerAction = new UnityEvent();
 
             //  Properties ------------------------------------
-            private NetworkVariable<CustomPlayerInfo> _customPlayerInfo = new NetworkVariable<CustomPlayerInfo>(
+            private readonly NetworkVariable<CustomPlayerInfo> _customPlayerInfo = new NetworkVariable<CustomPlayerInfo>(
                 default(CustomPlayerInfo), 
                 NetworkVariableReadPermission.Everyone, 
                 NetworkVariableWritePermission.Owner);
