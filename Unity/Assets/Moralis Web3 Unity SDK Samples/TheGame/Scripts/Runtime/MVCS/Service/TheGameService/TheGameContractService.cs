@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Security.Authentication;
+using Codice.Client.BaseCommands;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Data.Types;
@@ -95,13 +96,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
             }
 
             // Get NFT Info
-            string ethAddress = await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
-            MyMoralisWrapper.CustomNftOwnerCollection customNftOwnerCollection = await MyMoralisWrapper.Instance.GetNFTsForContract(
+            string ethAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync(false);
+            CustomNftOwnerCollection customNftOwnerCollection = await CustomWeb3System.Instance.GetNFTsForContract(
                 ethAddress,
                 _theGameContract.PrizeContractAddress);
 
             // Create Method Return Value
-            foreach (MyMoralisWrapper.CustomNftOwner customNftOwner in customNftOwnerCollection.CustomResult)
+            foreach (CustomNftOwner customNftOwner in customNftOwnerCollection.CustomResult)
             {
                 string ownerAddress = customNftOwner.OwnerOf;
                 string tokenIdString = customNftOwner.TokenId;

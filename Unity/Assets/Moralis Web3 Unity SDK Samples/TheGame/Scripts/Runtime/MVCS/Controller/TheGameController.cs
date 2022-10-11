@@ -65,21 +65,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		///////////////////////////////////////////
 		public async UniTask<bool> GetIsAuthenticatedAsync()
 		{
-			return await MyMoralisWrapper.Instance.IsAuthenticatedAsync();
+			return await CustomWeb3System.Instance.IsAuthenticatedAsync();
 		}
 		
-		public async UniTask<string> GetMoralisUserEthAddressAsync(bool useShortFormat)
+		public async UniTask<string> GetWeb3UserAddressAsync(bool useShortFormat)
 		{
-			string moralisUserEthAddress = await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
-
-			if (useShortFormat)
-			{
-				return MyMoralisWrapper.Instance.GetWeb3AddressShortFormat(moralisUserEthAddress);
-			}
-			else
-			{
-				return moralisUserEthAddress;
-			}
+			return await CustomWeb3System.Instance.GetWeb3UserAddressAsync(useShortFormat);
 		}
 
 		///////////////////////////////////////////
@@ -114,7 +105,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 				
 				if (_theGameModel.CustomPlayerInfo.Value.IsNullWeb3Address())
 				{
-					string web3Address = await GetMoralisUserEthAddressAsync(true);
+					string web3Address = await GetWeb3UserAddressAsync(true);
 					SetPlayerWeb3AddressAndUpdateModel(web3Address);
 				}
 				
@@ -333,9 +324,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			// HACK: The WalletConnect prefab is not a robust Singleton pattern.
 			// It does not work well if the prefab is in 2 or more scenes that are used at runtime. The 2 or more instances conflict.
 			// So I manually delete the current one BEFORE the next scene loads. Works 100%
-			if (MyMoralisWrapper.Instance.HasWalletConnectInstance)
+			if (CustomWeb3System.Instance.HasWalletConnectInstance)
 			{
-				MyMoralisWrapper.Instance.DestroyWalletConnectInstance();
+				CustomWeb3System.Instance.DestroyWalletConnectInstance();
 			}
 
 			if (DOTween.TotalPlayingTweens() > 0)

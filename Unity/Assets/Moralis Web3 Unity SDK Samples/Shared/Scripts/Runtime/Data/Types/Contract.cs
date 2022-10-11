@@ -69,7 +69,7 @@ namespace MoralisUnity.Samples.Shared.Data.Types
 
 			RequireIsInitialized();
 
-			string result = await MyMoralisWrapper.Instance.ExecuteContractFunction(_address, _abi, 
+			string result = await CustomWeb3System.Instance.ExecuteContractFunction(_address, _abi, 
 				functionName, args, isLogging);
 
 			if (isLogging)
@@ -86,7 +86,7 @@ namespace MoralisUnity.Samples.Shared.Data.Types
 			RequireIsInitialized();
 
 			object[] abiObject = GetAbiObject();
-			string result = await MyMoralisWrapper.Instance.RunContractFunction<string>(_address, functionName, 
+			string result = await CustomWeb3System.Instance.RunContractFunction<string>(_address, functionName, 
 				abiObject, args, isLogging);
 
 			if (isLogging)

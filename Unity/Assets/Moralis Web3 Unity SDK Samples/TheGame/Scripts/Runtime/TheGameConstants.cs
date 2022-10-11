@@ -10,15 +10,15 @@ namespace MoralisUnity.Samples.TheGame
     {
         // Fields -----------------------------------------
         public const string ProjectName = "Web3 Magic Treasure Chest";
-        public const string PathCreateAssetMenu = MyMoralisWrapper.PathMoralisSamplesCreateAssetMenu + "/" + ProjectName;
+        public const string PathCreateAssetMenu = CustomWeb3SystemConstants.PathMoralisSamplesCreateAssetMenu + "/" + ProjectName;
         
         ///////////////////////////////////////////
         // MenuItem Path
         ///////////////////////////////////////////
         public const string Moralis = "Moralis";
         public const string OpenReadMe = "Open ReadMe";
-        private const string PathMoralisCreateAssetMenu = Moralis + "/" + MyMoralisWrapper.Web3UnitySDK;
-        private const string PathMoralisWindowMenu = "Window/" + Moralis + "/" + MyMoralisWrapper.Web3UnitySDK;
+        private const string PathMoralisCreateAssetMenu = Moralis + "/" + CustomWeb3SystemConstants.Web3UnitySDK;
+        private const string PathMoralisWindowMenu = "Window/" + Moralis + "/" + CustomWeb3SystemConstants.Web3UnitySDK;
 
         ///////////////////////////////////////////
         // MenuItem Priority

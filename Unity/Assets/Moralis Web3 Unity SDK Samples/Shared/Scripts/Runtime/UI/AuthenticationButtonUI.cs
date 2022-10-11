@@ -24,7 +24,7 @@ namespace MoralisUnity.Samples.Shared.UI
         //  General Methods -------------------------------
         private async Task CheckIsAuthenticatedAsync()
         {
-            _isAuthenticated = await MyMoralisWrapper.Instance.IsAuthenticatedAsync();
+            _isAuthenticated = await CustomWeb3System.Instance.IsAuthenticatedAsync();
             await RefreshUI();
         }
         
@@ -33,8 +33,7 @@ namespace MoralisUnity.Samples.Shared.UI
             if (_isAuthenticated)
             {
                 Text.text = SharedConstants.Logout;
-                string moralisUserEthAddressAsync = await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
-                moralisUserEthAddressAsync = Formatters.GetWeb3AddressShortFormat(moralisUserEthAddressAsync);
+                string moralisUserEthAddressAsync = await CustomWeb3System.Instance.GetWeb3UserAddressAsync(true);
                 Text.text = string.Format(SharedConstants.LogoutEthAddress, moralisUserEthAddressAsync);
             }
             else
