@@ -1,0 +1,1095 @@
+fileFormatVersion: 2
+guid: 7e62bc751d8f44d4cacf427cdc5856c0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6710406945664654898
+    second: Bonfire5x5_0
+  - first:
+      213: 3160202065957456498
+    second: Bonfire5x5_1
+  - first:
+      213: -6691064187495210708
+    second: Bonfire5x5_2
+  - first:
+      213: 8318179986570724756
+    second: Bonfire5x5_3
+  - first:
+      213: -966551720701662681
+    second: Bonfire5x5_4
+  - first:
+      213: -7147443186651706820
+    second: Bonfire5x5_5
+  - first:
+      213: 3232087169911790819
+    second: Bonfire5x5_6
+  - first:
+      213: -4159059272376936336
+    second: Bonfire5x5_7
+  - first:
+      213: 8284825252968478881
+    second: Bonfire5x5_8
+  - first:
+      213: 4132353523504148185
+    second: Bonfire5x5_9
+  - first:
+      213: 6192983374441484579
+    second: Bonfire5x5_10
+  - first:
+      213: -5737727923480696357
+    second: Bonfire5x5_11
+  - first:
+      213: 5126936881969976565
+    second: Bonfire5x5_12
+  - first:
+      213: -8339194705677510111
+    second: Bonfire5x5_13
+  - first:
+      213: 5725141607814364962
+    second: Bonfire5x5_14
+  - first:
+      213: -3460119269579215690
+    second: Bonfire5x5_15
+  - first:
+      213: 3102598312950903245
+    second: Bonfire5x5_16
+  - first:
+      213: 3454797591306743065
+    second: Bonfire5x5_17
+  - first:
+      213: -4084351875704967501
+    second: Bonfire5x5_18
+  - first:
+      213: 5206968201502345946
+    second: Bonfire5x5_19
+  - first:
+      213: -3590236838546473026
+    second: Bonfire5x5_20
+  - first:
+      213: -1100277966128108705
+    second: Bonfire5x5_21
+  - first:
+      213: 1877462472425763877
+    second: Bonfire5x5_22
+  - first:
+      213: -688406337096102679
+    second: Bonfire5x5_23
+  - first:
+      213: 6970545550852868012
+    second: Bonfire5x5_24
+  - first:
+      213: -7314249973015267395
+    second: Bonfire5x5_25
+  - first:
+      213: -671778680921258246
+    second: Bonfire5x5_26
+  - first:
+      213: -2330702472344717192
+    second: Bonfire5x5_27
+  - first:
+      213: 7271552131842729228
+    second: Bonfire5x5_28
+  - first:
+      213: 3235908010739049554
+    second: Bonfire5x5_29
+  - first:
+      213: 1460628908710652553
+    second: Bonfire5x5_30
+  - first:
+      213: -6523395856645235385
+    second: Bonfire5x5_31
+  - first:
+      213: -7129840513139852856
+    second: Bonfire5x5_32
+  - first:
+      213: -3623512707576925583
+    second: Bonfire5x5_33
+  - first:
+      213: 287494666935294839
+    second: Bonfire5x5_34
+  - first:
+      213: -3489690034651322645
+    second: Bonfire5x5_35
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 2
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: tvOS
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Lumin
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Bonfire5x5_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 853.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec12859af68dfd2a0800000000000000
+      internalID: -6710406945664654898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_1
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 853.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27a89d7190b4bdb20800000000000000
+      internalID: 3160202065957456498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_2
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 853.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c21a20f72909423a0800000000000000
+      internalID: -6691064187495210708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_3
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 853.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 495cf4d40ac107370800000000000000
+      internalID: 8318179986570724756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_4
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 853.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72ae88eb45e1692f0800000000000000
+      internalID: -966551720701662681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_5
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 853.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3ac65f5a4e2fcc90800000000000000
+      internalID: -7147443186651706820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 683.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ec90bd182eaadc20800000000000000
+      internalID: 3232087169911790819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_7
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 683.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0789d2e90ad0846c0800000000000000
+      internalID: -4159059272376936336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_8
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 683.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a83f553cac99f270800000000000000
+      internalID: 8284825252968478881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_9
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 683.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9de6ccea2a1195930800000000000000
+      internalID: 4132353523504148185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_10
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 683.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3211c753195e1f550800000000000000
+      internalID: 6192983374441484579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_11
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 683.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd9e7177ade7f50b0800000000000000
+      internalID: -5737727923480696357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 513.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f45ba33ee9862740800000000000000
+      internalID: 5126936881969976565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_13
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 513.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12a164f199a354c80800000000000000
+      internalID: -8339194705677510111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_14
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 513.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22f759e85f9c37f40800000000000000
+      internalID: 5725141607814364962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_15
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 513.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6bc2f385bdf2bffc0800000000000000
+      internalID: -3460119269579215690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_16
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 513.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc13a243ab4ae0b20800000000000000
+      internalID: 3102598312950903245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_17
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 513.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91da6b0ea18e1ff20800000000000000
+      internalID: 3454797591306743065
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 343.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3bea7eedb977157c0800000000000000
+      internalID: -4084351875704967501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_19
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 343.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ada4d47ddfdd24840800000000000000
+      internalID: 5206968201502345946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_20
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 343.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ebf7ae20e9aec2ec0800000000000000
+      internalID: -3590236838546473026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_21
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 343.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5baeb2f4070bb0f0800000000000000
+      internalID: -1100277966128108705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_22
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 343.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5247014eb261e0a10800000000000000
+      internalID: 1877462472425763877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_23
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 343.3333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ec4240751a4276f0800000000000000
+      internalID: -688406337096102679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 173.33333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca7c3493f3a5cb060800000000000000
+      internalID: 6970545550852868012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_25
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 173.33333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db7b300f6609e7a90800000000000000
+      internalID: -7314249973015267395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_26
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 173.33333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af6020459dc5da6f0800000000000000
+      internalID: -671778680921258246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_27
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 173.33333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 878b4c2337ea7afd0800000000000000
+      internalID: -2330702472344717192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_28
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 173.33333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c056838332eb9e460800000000000000
+      internalID: 7271552131842729228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_29
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 173.33333
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25421f1f03148ec20800000000000000
+      internalID: 3235908010739049554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3.3333282
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98a6d54f042354410800000000000000
+      internalID: 1460628908710652553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_31
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 3.3333282
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74dd763e70e3875a0800000000000000
+      internalID: -6523395856645235385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_32
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 3.3333282
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c93c1d24d7bd0d90800000000000000
+      internalID: -7129840513139852856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_33
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 3.3333282
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17273c10462b6bdc0800000000000000
+      internalID: -3623512707576925583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_34
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 3.3333282
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77b5f7950e26df300800000000000000
+      internalID: 287494666935294839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bonfire5x5_35
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 3.3333282
+        width: 170.66667
+        height: 170.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be623641761229fc0800000000000000
+      internalID: -3489690034651322645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: e1df7c508762e694a8427942792c6f9e
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Bonfire5x5_13: -8339194705677510111
+      Bonfire5x5_29: 3235908010739049554
+      Bonfire5x5_20: -3590236838546473026
+      Bonfire5x5_30: 1460628908710652553
+      Bonfire5x5_25: -7314249973015267395
+      Bonfire5x5_0: -6710406945664654898
+      Bonfire5x5_32: -7129840513139852856
+      Bonfire5x5_26: -671778680921258246
+      Bonfire5x5_16: 3102598312950903245
+      Bonfire5x5_10: 6192983374441484579
+      Bonfire5x5_6: 3232087169911790819
+      Bonfire5x5_2: -6691064187495210708
+      Bonfire5x5_7: -4159059272376936336
+      Bonfire5x5_3: 8318179986570724756
+      Bonfire5x5_19: 5206968201502345946
+      Bonfire5x5_14: 5725141607814364962
+      Bonfire5x5_11: -5737727923480696357
+      Bonfire5x5_34: 287494666935294839
+      Bonfire5x5_18: -4084351875704967501
+      Bonfire5x5_28: 7271552131842729228
+      Bonfire5x5_23: -688406337096102679
+      Bonfire5x5_1: 3160202065957456498
+      Bonfire5x5_21: -1100277966128108705
+      Bonfire5x5_12: 5126936881969976565
+      Bonfire5x5_4: -966551720701662681
+      Bonfire5x5_15: -3460119269579215690
+      Bonfire5x5_27: -2330702472344717192
+      Bonfire5x5_31: -6523395856645235385
+      Bonfire5x5_24: 6970545550852868012
+      Bonfire5x5_35: -3489690034651322645
+      Bonfire5x5_9: 4132353523504148185
+      Bonfire5x5_17: 3454797591306743065
+      Bonfire5x5_22: 1877462472425763877
+      Bonfire5x5_8: 8284825252968478881
+      Bonfire5x5_5: -7147443186651706820
+      Bonfire5x5_33: -3623512707576925583
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

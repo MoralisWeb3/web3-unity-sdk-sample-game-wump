@@ -1,0 +1,5 @@
+Source Url: 
+* Taken via Package Manager to load Unity Package of "TextMesh"
+
+Changelog: 
+* Moved to /Assets/3rdParty/

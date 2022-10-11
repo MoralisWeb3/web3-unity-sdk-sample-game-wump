@@ -1,0 +1,5 @@
+Source Url: 
+* https://assetstore.unity.com/packages/vfx/particles/fire-vfx-volume-1-216625
+
+Changelog: 
+* Moved to /Assets/3rdParty/

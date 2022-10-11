@@ -1,0 +1,36 @@
+///////////////////////////////////////////////////////////
+// 
+// This is the original developer's to do list. Just an FYI.
+// 
+///////////////////////////////////////////////////////////
+
+
+CHECKLIST - DEVELOPMENT 
+- [X] Scene01_Game - Done 
+
+
+CHECKLIST - DEVELOPMENT 
+- [X] Finish all runtime features
+- [X] Address all "TODO" comments in code
+- [X] 1st-Party Code: Reduce console logging. Ideally to zero. 
+- [X 3rd-Party Code: Reduce console logging. Ideally to zero. Unity has unstoppable logging. Too bad.
+- [X] Revisit every class name, namespace, folder
+- [X] Rename every "async" method as "MethodName{Async}"
+- [X] Add class comments
+- [X] Update/Test ReadMe.asset
+- [X] Update/Test README.md
+- [X] Remove unneeded /3rdParty/ contents
+- [X] Reduce filesize of /Unity/Assets/. Ideally < 100MB
+- [X] Run/Test runtime in Unity Editor
+- [X] Build/Test runtime on Standalone Desktop
+
+
+CHECKLIST - RECORDING VIDEO 
+- [X] Use 16x10 Layout
+- [X] Code editor height set to ~25 lines
+- [X] Release video as unlisted
+
+
+CHECKLIST - RELEASE PROJECT
+- [X] Release repo as public
+

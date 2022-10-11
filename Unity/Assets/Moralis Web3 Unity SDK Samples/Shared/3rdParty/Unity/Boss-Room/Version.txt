@@ -1,0 +1,7 @@
+Source Url: 
+* https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop
+
+Changelog: 
+* Reorganized files
+* Deleted files
+* Moved to /Assets/3rdParty/

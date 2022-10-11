@@ -1,0 +1,5 @@
+Source Url: 
+* Taken as "Samples" after using Package Manager to load Unity Package of "Lobby"
+
+Changelog: 
+* Moved to /Assets/3rdParty/

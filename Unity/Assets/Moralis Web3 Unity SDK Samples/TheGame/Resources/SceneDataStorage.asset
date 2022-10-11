@@ -22,5 +22,5 @@ MonoBehaviour:
     _sceneName: Scene03_Settings
   - _scene: {fileID: 102900000, guid: 62202ffebe062ca499b23540ddff96b4, type: 3}
     _sceneName: Scene04_DeveloperConsole
-  - _scene: {fileID: 102900000, guid: b5b386d0b9ddcdf44bef8a21c690a845, type: 3}
+  - _scene: {fileID: 102900000, guid: 72f7cde6697d6214e927b487784a8bea, type: 3}
     _sceneName: Scene05_Game

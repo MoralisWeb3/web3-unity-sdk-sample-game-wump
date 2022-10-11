@@ -1,0 +1,5 @@
+Source Url: 
+* https://assetstore.unity.com/packages/3d/props/free-beach-essentials-asset-pack-131149
+
+Changelog: 
+* Moved to /Assets/3rdParty/
