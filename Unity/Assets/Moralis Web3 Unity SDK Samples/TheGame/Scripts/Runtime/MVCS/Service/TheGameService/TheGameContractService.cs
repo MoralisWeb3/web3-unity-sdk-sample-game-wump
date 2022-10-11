@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Security.Authentication;
-using Codice.Client.BaseCommands;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Data.Types;
