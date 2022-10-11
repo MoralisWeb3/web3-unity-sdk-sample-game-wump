@@ -5,7 +5,7 @@ using UnityEngine;
 namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
 {
     /// <summary>
-    /// The UI for Core Scene Behavior of <see cref="Scene05_Game"/>
+    /// The UI for Core Scene Behavior of <see cref="Scene05_GameOLD"/>
     /// </summary>
     public class Scene05_GameUI : Scene_UIWithTop
     {

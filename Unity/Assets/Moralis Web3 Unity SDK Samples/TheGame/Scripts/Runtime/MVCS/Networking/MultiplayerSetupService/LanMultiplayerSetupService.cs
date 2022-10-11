@@ -80,9 +80,15 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		{
 			//Regardless of _isAutoStart, this will appear properly as needed
 
-			const int guiWidth = 300;
-			const int guiMargin = 20;
-			GUILayout.BeginArea(new Rect(Screen.width - guiWidth - guiMargin, guiMargin, guiWidth, guiWidth));
+			float guiWidth = Screen.width * 0.2f;
+			float guiHeight = Screen.height * 0.2f;
+			float guiMarginWidth = 10;
+			float guiMarginHeight = 15;
+			GUILayout.BeginArea(new Rect(
+				Screen.width - guiWidth - guiMarginWidth, 
+				Screen.height - guiHeight - guiMarginHeight, 
+				guiWidth, 
+				guiHeight));
 			if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer) 
 			{
 				if (GUILayout.Button("Host"))

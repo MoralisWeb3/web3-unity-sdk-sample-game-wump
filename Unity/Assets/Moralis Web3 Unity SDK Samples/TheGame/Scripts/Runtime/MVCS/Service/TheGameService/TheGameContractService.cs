@@ -77,10 +77,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
             int result = await _theGameContract.getGoldAsync();
             return result;
         }
-        
-        
+
+        private static int tempcallcount = 0;
         public async UniTask<List<Prize>> GetPrizesAsync()
         {
+            Debug.Log($"GetPrizesAsync!!!!!!! (tempcallcount = {++tempcallcount})");
+                
             // Create Method Return Value
             List<Prize> prizes = new List<Prize>();
 

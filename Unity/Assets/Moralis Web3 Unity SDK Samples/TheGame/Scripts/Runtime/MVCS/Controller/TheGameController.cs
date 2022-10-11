@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using MoralisUnity.Samples.Shared;
@@ -55,6 +54,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			_theGameModel.Gold.OnValueChanged.AddListener((a) => OnTheGameModelChangedRefresh());
 			_theGameModel.Prizes.OnValueChanged.AddListener((a) => OnTheGameModelChangedRefresh());
 			_theGameModel.IsRegistered.OnValueChanged.AddListener((a) => OnTheGameModelChangedRefresh());
+			_theGameModel.ResetAllData();
 		}
 
 
@@ -106,16 +106,23 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			bool isRegistered = await _theGameService.GetIsRegisteredAsync();
 			_theGameModel.IsRegistered.Value = isRegistered;
 
+			//TODO: Perhaps pass a parameter of useModelCache to bypass these checks EVERY time?
 			if (_theGameModel.IsRegistered.Value)
 			{
 				await GetGoldAndUpdateModelAsync();
 				await GetPrizesAndUpdateModelAsync();
-				RandomizeNicknameAndUpdateModel();
+				
+				if (_theGameModel.CustomPlayerInfo.Value.IsNullWeb3Address())
+				{
+					string web3Address = await GetMoralisUserEthAddressAsync(true);
+					SetPlayerWeb3AddressAndUpdateModel(web3Address);
+				}
+				
+				if (_theGameModel.CustomPlayerInfo.Value.IsNullNickname())
+				{
+					RandomizeNicknameAndUpdateModel();
+				}
 			}
-			
-			// Call Service
-			//string lastRegisteredAddress = await _theGameService.GetLastRegisteredAddress();
-			//Debug.Log("lastRegisteredAddress: " + lastRegisteredAddress);
 			
 			return _theGameModel.IsRegistered.Value;
 		}
@@ -140,16 +147,25 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			return result;
 		}
 		
-		public void SetNicknameAndUpdateModel(string nickname)
+		public void SetPlayerNicknameAndUpdateModel(string nickname)
 		{
-			_theGameModel.Nickname.Value = new Nickname(nickname);
+			string n = _theGameModel.CustomPlayerInfo.Value.Nickname.Value;
+			string w = _theGameModel.CustomPlayerInfo.Value.Web3Address.Value;
+			_theGameModel.CustomPlayerInfo.Value = new CustomPlayerInfo { Nickname = nickname, Web3Address = w };
+			OnTheGameModelChangedRefresh();
+		}
+		
+		public void SetPlayerWeb3AddressAndUpdateModel(string web3address)
+		{
+			string n = _theGameModel.CustomPlayerInfo.Value.Nickname.Value;
+			_theGameModel.CustomPlayerInfo.Value = new CustomPlayerInfo { Nickname = n, Web3Address = web3address };
 			OnTheGameModelChangedRefresh();
 		}
 		
 		public void RandomizeNicknameAndUpdateModel()
 		{
 			string nickname = TheGameHelper.GetRandomizedNickname();
-			SetNicknameAndUpdateModel(nickname);
+			SetPlayerNicknameAndUpdateModel(nickname);
 		}
 
 		// SETTER Methods -------------------------
@@ -197,6 +213,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		public async UniTask SafeReregisterDeleteAllPrizesAsync()
 		{
+			_theGameModel.ResetAllData();
 			await _theGameService.SafeReregisterDeleteAllPrizesAsync();
 			
 			// Wait for contract values to sync so the client will see the changes

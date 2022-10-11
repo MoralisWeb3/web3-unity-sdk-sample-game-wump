@@ -415,7 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8624fa03256e84bb4346158861d6f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detailsView: {fileID: 0}
+  _detailsView: {fileID: 6739099107650887310}
   _sharedStatusNetworkBehaviour: {fileID: 3752880416992224884}
 --- !u!114 &6739099107650887310
 MonoBehaviour:

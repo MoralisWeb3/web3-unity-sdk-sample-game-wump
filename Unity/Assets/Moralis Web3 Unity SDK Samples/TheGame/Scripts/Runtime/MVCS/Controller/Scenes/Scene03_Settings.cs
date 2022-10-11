@@ -53,13 +53,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         //  Event Handlers --------------------------------
         private void TheGameSingleton_OnTheGameModelChanged(TheGameModel theGameModel)
         {
-            _nickName = theGameModel.Nickname.Value.Text;
+            _nickName = theGameModel.CustomPlayerInfo.Value.Nickname.Value;
             RefreshUIAsync();
         }
         
+        
         private async void RandomizeNicknameButton_OnClicked()
         {
-           
             TheGameSingleton.Instance.TheGameController.RandomizeNicknameAndUpdateModel();
         }
         

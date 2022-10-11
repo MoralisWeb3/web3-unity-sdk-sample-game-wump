@@ -1,24 +1,46 @@
+using System;
 using System.Collections.Generic;
 using MoralisUnity.Samples.Shared.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
+using MoralisUnity.Samples.TheGame.MVCS.Networking;
+using Unity.Collections;
+using Unity.Netcode;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.Model
 {
+	//TODO: move this CustomPlayerInfo class. rename it?
 	/// <summary>
 	/// Observable<t> does not like 'string'. So I created a wrapper class.
 	/// </summary>
-	public class Nickname
+	public struct CustomPlayerInfo : INetworkSerializable
 	{
-		public string Text = "";
-		public Nickname()
+		public FixedString128Bytes Nickname;
+		public FixedString128Bytes Web3Address;
+		
+		/// <summary>
+		/// Required for use in the <see cref="NetworkVariable{T}"/> by <see cref="PlayerView_NetworkBehaviour"/>
+		/// </summary>
+		public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
 		{
-			Text = "";
+			serializer.SerializeValue(ref Nickname);
+			serializer.SerializeValue(ref Web3Address);
 		}
-		public Nickname(string text)
+
+		public bool IsNullNickname()
 		{
-			Text = text;
+			return Nickname == "";
 		}
+		public bool IsNullWeb3Address()
+		{
+			return Web3Address == "";
+		}
+		public bool IsNull()
+		{
+			return IsNullNickname() && IsNullWeb3Address();
+		}
+		
+		
 	}
 	
 	/// <summary>
@@ -31,13 +53,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		public TheGameConfiguration TheGameConfiguration { get { return TheGameConfiguration.Instance; }  }
 		public Observable<int> Gold { get { return _gold; } }
 		public Observable<bool> IsRegistered { get { return _isRegistered; } }
-		public Observable<Nickname> Nickname { get { return _nickname; } }
+		public Observable<CustomPlayerInfo> CustomPlayerInfo { get { return _customPlayerInfo; } }
 		public Observable<List<Prize>> Prizes { get { return _prizes; } }
 
 		// Fields -----------------------------------------
 		private Observable<int> _gold = new Observable<int>();
 		private ObservablePrizes _prizes = new ObservablePrizes();
-		private Observable<Nickname> _nickname = new Observable<Nickname>();
+		private Observable<CustomPlayerInfo> _customPlayerInfo = new Observable<CustomPlayerInfo>();
 		private Observable<bool> _isRegistered = new Observable<bool>();
 
 		// Initialization Methods -------------------------
@@ -50,6 +72,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		// General Methods --------------------------------
 		public bool HasAnyData()
 		{
+			// TODO: Put real check here
 			return false;
 		}
 		
@@ -57,7 +80,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		public void ResetAllData()
 		{
 			_gold.Value = 0;
-			_nickname.Value = new Nickname();
+			_customPlayerInfo.Value = new CustomPlayerInfo();
 			_prizes.Value = new List<Prize>();
 			_isRegistered.Value = false;
 		}

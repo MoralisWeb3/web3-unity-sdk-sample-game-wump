@@ -44,7 +44,7 @@ namespace MoralisUnity.Samples.TheGame
 		{
 			//Set screen size for Standalone
 #if UNITY_STANDALONE
-			Screen.SetResolution(675, 1000, false);
+			Screen.SetResolution(1600, 800, false);
 			Screen.fullScreen = false;
 #endif
 

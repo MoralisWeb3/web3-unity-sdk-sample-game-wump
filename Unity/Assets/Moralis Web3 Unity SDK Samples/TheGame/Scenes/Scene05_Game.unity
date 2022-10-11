@@ -496,58 +496,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 659ebe1bc7274fe4c967bff9140571d8, type: 3}
---- !u!1 &485800752
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 485800754}
-  - component: {fileID: 485800753}
-  m_Layer: 0
-  m_Name: TheGame
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &485800753
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 485800752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95c314f93a66b084e955d4d91e12661e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _unityTransport: {fileID: 1343676086}
-  _detailsViewPrefab: {fileID: 6739099107650887310, guid: e48d8c2f7c45d18429057d9de837b6b8, type: 3}
-  _multiplayerSetupServiceType: 2
-  _isLanAutoStart: 1
-  _lanSimulatorParameters:
-    PacketDelayMS: 0
-    PacketJitterMS: 0
-    PacketDropRate: 0
---- !u!4 &485800754
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 485800752}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &521307519
 GameObject:
   m_ObjectHideFlags: 0
@@ -1237,7 +1185,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1768895861}
-  - component: {fileID: 1768895860}
+  - component: {fileID: 1768895862}
   m_Layer: 0
   m_Name: Scene05_Game
   m_TagString: Untagged
@@ -1245,19 +1193,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1768895860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1768895859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9a85743d7c3a3047bfe6331506238ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ui: {fileID: 1931810161}
 --- !u!4 &1768895861
 Transform:
   m_ObjectHideFlags: 0
@@ -1271,8 +1206,29 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1768895862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768895859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95c314f93a66b084e955d4d91e12661e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detailsViewPrefab: {fileID: 6739099107650887310, guid: e48d8c2f7c45d18429057d9de837b6b8, type: 3}
+  _ui: {fileID: 1931810161}
+  _networkManager: {fileID: 1343676087}
+  _multiplayerSetupServiceType: 1
+  _isLanAutoStart: 1
+  _lanSimulatorParameters:
+    PacketDelayMS: 0
+    PacketJitterMS: 0
+    PacketDropRate: 0
 --- !u!1 &1794521668
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,8 +1,4 @@
 using System;
-using MoralisUnity.Samples.Shared;
-using MoralisUnity.Samples.Shared.Utilities;
-using MoralisUnity.Samples.TheGame;
-using MoralisUnity.Samples.TheGame.MVCS;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using Unity.Netcode;
@@ -15,7 +11,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
 
 
         //  Class Attributes ----------------------------------
-
 
         /// <summary>
         /// The core Player logic that **IS** networking
@@ -30,8 +25,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             public UnityEvent OnPlayerAction = new UnityEvent();
 
             //  Properties ------------------------------------
-           
-            
+            private NetworkVariable<CustomPlayerInfo> _customPlayerInfo = new NetworkVariable<CustomPlayerInfo>(
+                default(CustomPlayerInfo), 
+                NetworkVariableReadPermission.Everyone, 
+                NetworkVariableWritePermission.Owner);
+
             //  Fields ----------------------------------------
             [Header("References (Local)")] 
             [SerializeField]
@@ -39,19 +37,23 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
 
             private Vector3 _movement;
             private ulong _playerIndex;
-            private string _nickname = "";
-   
+
             //  Unity Methods ---------------------------------
             
             public override void OnNetworkSpawn()
             {
+                
                 TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(
                     TheGameSingleton_OnTheGameModelChanged);
                 TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
-                    
+                _customPlayerInfo.OnValueChanged += CustomPlayerInfo_OnValueChanged;
+                
+                
+                
                 //Show : 1, 2, 3, etc...
                 _playerIndex = PlayerView.GetPlayerIndexByClientId(OwnerClientId);
-
+                _playerView.SetColorsByIndex(_playerIndex);
+                
                  if (_playerIndex == 0)
                  {
                      throw new Exception("This value is not allowed");
@@ -87,7 +89,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                  }
                  
                  // Don't await 
-                 UpdatePlayerNameAsync();
+                 SetPlayerViewNameText("");
                 
                 //Set each player facing camera
                 _playerView.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
@@ -97,6 +99,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                 _playerView.CalledByOnNetworkSpawn();
 
             }
+
 
 
 
@@ -155,22 +158,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                     Vector3.up);
             }
             
-            
-            //  Methods ---------------------------------------
-            private async void UpdatePlayerNameAsync()
+            private void SetPlayerViewNameText(string message)
             {
-                string playerAddress = "Not Web3 Authenticated";
-                if (await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync() &&
-                    await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync())
-                {
-                    playerAddress = await TheGameSingleton.Instance.TheGameController.GetMoralisUserEthAddressAsync(true);
-                }
-                
-                string playerName = PlayerView.GetPlayerNameByClientId(OwnerClientId);
-                _playerView.NameText.text = $"{playerName} - {_nickname}\n<size=5>({playerAddress})</size>";
-                _playerView.SetColorsByIndex(_playerIndex);
+                _playerView.NameText.text = message;
             }
             
+            //  Methods ---------------------------------------
+      
             
             private void ChangePlayerRotation(Quaternion quaternion)
             {
@@ -187,8 +181,22 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             
             private void TheGameSingleton_OnTheGameModelChanged(TheGameModel theGameModel)
             {
-                _nickname = theGameModel.Nickname.Value.Text;
-                UpdatePlayerNameAsync();
+                // Only the owner may SET the value
+                if (!IsOwner) return;
+                _customPlayerInfo.Value = theGameModel.CustomPlayerInfo.Value;
+            }
+            
+            private void CustomPlayerInfo_OnValueChanged(CustomPlayerInfo old, CustomPlayerInfo customPlayerInfo)
+            {
+                string result = "";
+                if (!customPlayerInfo.IsNull())
+                {
+                    // Everyone may GET the value
+                    string playerName = PlayerView.GetPlayerNameByClientId(OwnerClientId);
+                    result = $"{playerName} {customPlayerInfo.Nickname}\n<size=5>({customPlayerInfo.Web3Address})</size>";
+                }
+
+                SetPlayerViewNameText(result);
             }
         }
     }

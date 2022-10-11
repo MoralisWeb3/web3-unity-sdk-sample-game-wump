@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: 
-    guid: b5b386d0b9ddcdf44bef8a21c690a845
-  - enabled: 1
     path: Assets/Moralis Web3 Unity SDK Samples/TheGame/Scenes/Scene01_Intro.unity
     guid: e86d776073058a543aa040dcc9919139
   - enabled: 1

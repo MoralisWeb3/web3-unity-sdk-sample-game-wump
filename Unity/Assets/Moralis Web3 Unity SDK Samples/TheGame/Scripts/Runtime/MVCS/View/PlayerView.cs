@@ -110,7 +110,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 IsWalking.SetDirty();
 
                 _reticlesView.OnPointerClicked.AddListener(ReticlesView_OnPointerClicked);
-                MultiplayerGameSingleton.Instance.RegisterPlayerView(this);
+                Scene05_Game.Instance.RegisterPlayerView(this);
                 
                 _playerView_NetworkBehaviour.OnPlayerAction.AddListener(PlayerInputNetworkBehaviour_OnPlayerAction);
                 
@@ -124,7 +124,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 
             protected void OnDestroy()
             {
-                MultiplayerGameSingleton.Instance.UnregisterPlayerView(this);
+                Scene05_Game.Instance.UnregisterPlayerView(this);
             }
 
 
