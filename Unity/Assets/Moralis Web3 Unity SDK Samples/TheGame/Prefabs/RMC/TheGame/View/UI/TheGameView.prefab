@@ -429,6 +429,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d7a31dc833c479d85e6bf18c7c50fc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnSharedStatusUpdateRequested:
+    m_PersistentCalls:
+      m_Calls: []
   _playerDetailsText: {fileID: 3804996965173185537}
   _statusText: {fileID: 6752794863832322652}
 --- !u!1 &3804996966334677293
@@ -467,7 +470,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -100}
   m_SizeDelta: {x: 400, y: 320}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &3804996966334677299
