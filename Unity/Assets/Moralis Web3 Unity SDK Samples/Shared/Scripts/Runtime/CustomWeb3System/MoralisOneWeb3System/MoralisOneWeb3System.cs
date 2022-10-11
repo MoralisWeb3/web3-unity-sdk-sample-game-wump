@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using MoralisUnity.Platform.Objects;
 using MoralisUnity.Samples.Shared.Debugging;
 using MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.CustomSingleton;
 using MoralisUnity.Samples.Shared.Exceptions;
-using MoralisUnity.Sdk.Interfaces;
-using MoralisUnity.Sdk.Utilities;
-using MoralisUnity.Web3Api.Models;
+using MoralisUnity.Samples.Shared.Interfaces;
 using UnityEngine;
+
+//////////////////////
+using MoralisUnity.Web3Api.Models;
 using WalletConnectSharp.Unity;
+using MoralisUnity.Platform.Objects;
 using Nethereum.Hex.HexTypes; //Keep this
+//////////////////////
+
 
 #pragma warning disable 1998
 namespace MoralisUnity.Samples.Shared
@@ -100,7 +103,7 @@ namespace MoralisUnity.Samples.Shared
 
 			if (isShortFormat)
 			{
-				return Formatters.GetWeb3AddressShortFormat(moralisUser.ethAddress, 6);
+				return GetWeb3AddressShortFormat(moralisUser.ethAddress);
 			}
 			else
 			{
@@ -108,19 +111,29 @@ namespace MoralisUnity.Samples.Shared
 			}
 		}
 		
-		public string GetWeb3AddressShortFormat(string address)
+		public string GetWeb3AddressShortFormat(string str)
 		{
-			return Formatters.GetWeb3AddressShortFormat(address, 6);
-		}
+			const int n = 6;
+			if (string.IsNullOrEmpty(str))
+			{
+				return string.Empty;
+			}
+        
+			if (str.Length < n)
+			{
+				return str;
+			}
 
+			return $"{str.Substring(0, n)}...{str.Substring(str.Length - n)}";
+		}
+		
+		
 		public async UniTask<MoralisUser> GetMoralisUserAsync()
 		{
 			RequireIsInitialized();
 			return await Moralis.GetUserAsync();
 		}
 
-	
-			
 		public async UniTask<String> ExecuteContractFunction(string _address, string _abi,
 			string functionName, object[] args, bool isLogging)
 		{
