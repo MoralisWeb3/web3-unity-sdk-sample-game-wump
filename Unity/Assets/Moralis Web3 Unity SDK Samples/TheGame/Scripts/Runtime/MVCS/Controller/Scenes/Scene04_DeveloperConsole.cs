@@ -116,7 +116,8 @@ namespace MoralisUnity.Samples.TheGame.Controller
             await TheGameSingleton.Instance.TheGameController.ShowMessagePassiveAsync(
                 async delegate ()
                 {
-                    _isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAsync();
+                    // Will Also Populate the Top UI
+                    _isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
 
                     await RefreshUIAsync();
                 });

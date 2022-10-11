@@ -86,7 +86,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		/// TODO: Does this method load too many things?
 		/// </summary>
 		/// <returns></returns>
-		public async UniTask<bool> GetIsRegisteredAsync()
+		public async UniTask<bool> GetIsRegisteredAndUpdateModelAsync()
 		{
 			// Call Service. Sync Model
 			bool isRegistered = await _theGameService.GetIsRegisteredAsync();
@@ -102,12 +102,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			//string lastRegisteredAddress = await _theGameService.GetLastRegisteredAddress();
 			//Debug.Log("lastRegisteredAddress: " + lastRegisteredAddress);
 			
-			return _theGameModel.IsRegistered.Value;
-		}
-
-		//TODO: use or remove this?
-		public bool GetIsRegisteredCached()
-		{
 			return _theGameModel.IsRegistered.Value;
 		}
 
@@ -135,7 +129,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public async UniTask RegisterAsync()
 		{
 			await _theGameService.RegisterAsync();
-			_theGameModel.IsRegistered.Value = await GetIsRegisteredAsync();
+			_theGameModel.IsRegistered.Value = await GetIsRegisteredAndUpdateModelAsync();
 			
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();
@@ -145,7 +139,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public async UniTask UnregisterAsync()
 		{
 			await _theGameService.UnregisterAsync();
-			_theGameModel.IsRegistered.Value = await GetIsRegisteredAsync();
+			_theGameModel.IsRegistered.Value = await GetIsRegisteredAndUpdateModelAsync();
 
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();

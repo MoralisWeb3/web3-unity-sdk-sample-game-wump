@@ -32,7 +32,11 @@ namespace MoralisUnity.Samples.TheGame.Controller
         private async void RefreshUIAsync()
         {
             bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
-            _ui.BackButton.IsInteractable = true;
+            if (isAuthenticated)
+            {
+                // Populate the top UI
+                bool isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
+            }
         }
         
         
