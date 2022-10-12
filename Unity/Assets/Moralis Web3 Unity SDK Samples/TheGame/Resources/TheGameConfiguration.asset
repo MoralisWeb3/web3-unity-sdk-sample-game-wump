@@ -12,7 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1a99b9a9bc47da8c2bc37da397e4cf, type: 3}
   m_Name: TheGameConfiguration
   m_EditorClassIdentifier: 
-  _isLogEnabled: 0
-  _theGameViewPrefab: {fileID: 7658312415067987870, guid: 58ebf062fbd0bf54a90ceb725ac64508, type: 3}
+  _isLogEnabled: 1
+  _canPlayerSelectSelf: 1
   _sceneDataStorage: {fileID: 11400000, guid: b26de83d10480624f82cf855ce76b933, type: 2}
+  _theGameViewPrefab: {fileID: 7658312415067987870, guid: 58ebf062fbd0bf54a90ceb725ac64508, type: 3}
+  _transferDialogViewPrefab: {fileID: 3935997937226204647, guid: b647510e864d9794a9a3d86f07225353, type: 3}
+  _networkManagerViewPrefab: {fileID: 6344686579861905540, guid: 155ccbac1773f93468bac20fa9220de5, type: 3}
+  _detailsViewPrefab: {fileID: 6739099107650887310, guid: e48d8c2f7c45d18429057d9de837b6b8, type: 3}
   _theGameServiceType: 1
+  _multiplayerSetupServiceType: 2
+  _multiplayerIsAutoStart: 1
+  _multiplayerIsGuiVisible: 1
+  _lanSimulatorParameters:
+    PacketDelayMS: 0
+    PacketJitterMS: 0
+    PacketDropRate: 0

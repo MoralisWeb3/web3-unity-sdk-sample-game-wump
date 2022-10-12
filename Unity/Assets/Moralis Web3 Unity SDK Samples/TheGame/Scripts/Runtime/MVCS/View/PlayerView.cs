@@ -5,6 +5,7 @@ using RMC.Shared.Data.Types;
 using RMC.Shared.Managers;
 using MoralisUnity.Samples.TheGame.MVCS.Networking;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
 using TMPro;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -36,6 +37,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 
             //  Properties ------------------------------------
             public bool IsLocalPlayer { get { return _playerView_NetworkBehaviour.IsLocalPlayer; } }
+            
+            public ulong OwnerClientId { get { return _playerView_NetworkBehaviour.OwnerClientId; } }
    
             public float SpeedMove { get { return _speedMove;} }
             
@@ -110,7 +113,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 IsWalking.SetDirty();
 
                 _reticlesView.OnPointerClicked.AddListener(ReticlesView_OnPointerClicked);
-                Scene05_Game.Instance.RegisterPlayerView(this);
+                TheGameSingleton.Instance.TheGameController.RegisterPlayerView(this);
                 
                 _playerView_NetworkBehaviour.OnPlayerAction.AddListener(PlayerInputNetworkBehaviour_OnPlayerAction);
                 
@@ -120,11 +123,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 _camera = cameras[0];
             }
 
-
-
             protected void OnDestroy()
             {
-                Scene05_Game.Instance.UnregisterPlayerView(this);
+                if (!TheGameSingleton.IsShuttingDown)
+                {
+                    Debug.Log("in here");
+                    TheGameSingleton.Instance.TheGameController.UnregisterPlayerView(this);
+                }
             }
 
 
@@ -176,15 +181,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             {
                 // Click avatar in 3d to select it. 
                 // Player may not select their own avatar
-                if (_playerView_NetworkBehaviour.IsOwner) return;
-                
-                if (!SelectionManager.Instance.HasSelection())
+                if (TheGameConfiguration.Instance.CanPlayerClickSelf ||
+                    !_playerView_NetworkBehaviour.IsOwner)
                 {
-                    SelectionManager.Instance.Selection = this;
-                }
-                else
-                {
-                    SelectionManager.Instance.Selection = null;
+                    if (!SelectionManager.Instance.HasSelection())
+                    {
+                        SelectionManager.Instance.Selection = this;
+                    }
+                    else
+                    {
+                        SelectionManager.Instance.Selection = null;
+                    }
                 }
             }
         }

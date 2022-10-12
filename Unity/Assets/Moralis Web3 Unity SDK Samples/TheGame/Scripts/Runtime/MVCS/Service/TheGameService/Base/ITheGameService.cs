@@ -33,8 +33,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
 		// ExecuteContractFunction - Must Be String Return Type
 		UniTask RegisterAsync();
 		UniTask UnregisterAsync();
-		UniTask TransferGoldAsync();
-		UniTask TransferPrizeAsync(Prize prize);
+		UniTask TransferGoldAsync(string toAddress);
+		UniTask TransferPrizeAsync(string toAddress, Prize prize);
 		UniTask SafeReregisterDeleteAllPrizesAsync();
 	}
 }

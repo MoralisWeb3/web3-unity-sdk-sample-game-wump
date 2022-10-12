@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening.Core;
@@ -179,8 +180,8 @@ namespace MoralisUnity.Samples.Shared.Helpers
          {
             isComplete = true;
          };
+         
          await UniTask.WaitWhile(() => !isComplete);
-
       }
    }
 }

@@ -1,6 +1,5 @@
 using MoralisUnity.Samples.Shared.Debugging;
 using MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.CustomSingletonMonobehaviour;
-using MoralisUnity.Sdk.DesignPatterns.Creational.Singleton.SingletonMonobehaviour;
 using UnityEngine;
 
 namespace MoralisUnity.Samples.Shared.Architectures.MVCS

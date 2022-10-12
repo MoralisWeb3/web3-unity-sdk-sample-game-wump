@@ -1,4 +1,7 @@
+using RMC.Shared.Managers;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.View
 {
@@ -8,39 +11,25 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
         //  Class Attributes ----------------------------------
 
         /// <summary>
-        /// The circle beneath the character
+        /// The main 3d environment asset
+        ///
+        /// Also captures any click on the 'background' as a deselection for the <see cref="SelectionManager"/>
         /// </summary>
-        public class ReticleView : MonoBehaviour
+        public class NetworkManagerView : MonoBehaviour
         {
             //  Events ----------------------------------------
         
             //  Properties ------------------------------------
-            public bool IsVisible
-            {
-                set
-                {
-                    _renderer.enabled = value;
-                }
-                get
-                {
-                    return _renderer.enabled;
-                }
-            }
-
+            public NetworkManager NetworkManager { get { return _networkManager;}}
+            
             //  Fields ----------------------------------------
-            [SerializeField]
-            private Renderer _renderer;
+            [SerializeField] 
+            private NetworkManager _networkManager = null;
 
             //  Unity Methods ---------------------------------
-            
+
             //  Methods ---------------------------------------
-            public void SetColor(Color color)
-            {
-                _renderer.material.SetColor("_Color", color);
-            }
 
-            
             //  Event Handlers --------------------------------
-
         }
     }

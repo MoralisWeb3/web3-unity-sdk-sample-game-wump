@@ -1,8 +1,10 @@
 using System;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Events;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.Networking
@@ -42,13 +44,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             
             public override void OnNetworkSpawn()
             {
+                Assert.IsNull(transform.parent, TheGameConstants.NetworkTransformParentMustBeNull); 
                 
                 TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(
                     TheGameSingleton_OnTheGameModelChanged);
                 TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
                 _customPlayerInfo.OnValueChanged += CustomPlayerInfo_OnValueChanged;
-                
-                
                 
                 //Show : 1, 2, 3, etc...
                 _playerIndex = PlayerView.GetPlayerIndexByClientId(OwnerClientId);
@@ -58,6 +59,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                  {
                      throw new Exception("This value is not allowed");
                  }
+                 
                  // Put FIRST player in center
                  else if (_playerIndex == 1)
                  {

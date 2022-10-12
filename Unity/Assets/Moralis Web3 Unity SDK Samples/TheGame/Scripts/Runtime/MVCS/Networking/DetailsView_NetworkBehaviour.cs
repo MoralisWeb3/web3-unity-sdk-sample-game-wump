@@ -1,5 +1,6 @@
 using System.Text;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using Unity.Netcode;
 using UnityEngine;
@@ -47,9 +48,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
 
             public override void OnNetworkSpawn()
             {
-                Assert.IsTrue(transform.parent == null, 
-                    "NetworkObjects *manually placed* in scene must be on the root.");
-                
+                Assert.IsNull(transform.parent, TheGameConstants.NetworkTransformParentMustBeNull); 
+
                 TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(
                     TheGameSingleton_OnTheGameModelChanged);
                 TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using RMC.Shared.Exceptions;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
@@ -16,6 +17,7 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 
 using UnityEngine;
+using UnityEngine.Events;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -36,11 +38,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 	public class FullMultiplayerSetupService : IMultiplayerSetupService
 	{
 		//  Events ----------------------------------------
+		private UnityEvent _onConnectionStarted = new UnityEvent();
 		private StringUnityEvent _onStateNameChanged = new StringUnityEvent();
 		private  StringUnityEvent _onConnectionCompleted = new StringUnityEvent();
 
 		//  Properties ------------------------------------
 		public bool IsConnected { get; private set; }
+		public UnityEvent OnConnectionStarted { get { return _onConnectionStarted; } }
 		public StringUnityEvent OnConnectionCompleted { get { return _onConnectionCompleted; } }
 		public StringUnityEvent OnStateNameChanged { get { return _onStateNameChanged; } }
 		
@@ -72,6 +76,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		//  Methods ---------------------------------------
 		public void Connect()
 		{
+			_onConnectionStarted.Invoke();
 			_observableFullMultiplayerState.Value = FullMultiplayerState.Authenticating;
 		}
 
@@ -80,7 +85,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			//Do nothing
 		}
 
-		public async Task DisconnectAsync()
+		public async UniTask DisconnectAsync()
 		{
 			await LeaveLobbySafeAsync();
 			await DisconnectAsync_Internal();

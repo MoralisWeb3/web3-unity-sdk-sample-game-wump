@@ -6865,6 +6865,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ReticlesView
       objectReference: {fileID: 0}
+    - target: {fileID: 8423922539445985392, guid: 0522c14fdeb1cb045b3bfccba281376b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0522c14fdeb1cb045b3bfccba281376b, type: 3}
 --- !u!4 &73952261195010252 stripped

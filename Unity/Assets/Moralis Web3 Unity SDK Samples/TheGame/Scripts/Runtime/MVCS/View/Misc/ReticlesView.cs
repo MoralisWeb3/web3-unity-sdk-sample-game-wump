@@ -15,7 +15,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
         public class ReticlesView : MonoBehaviour, IPointerClickHandler
         {
             //  Events ----------------------------------------
-            [SerializeField]
+            [HideInInspector]
             public UnityEvent OnPointerClicked = new UnityEvent();
             
             //  Properties ------------------------------------

@@ -18,8 +18,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService
         //  Methods ---------------------------------------
         public IMultiplayerSetupService CreateMultiplayerSetupService(
             MultiplayerSetupServiceType multiplayerSetupServiceType,
-            UnityTransport unityTransport, 
-            bool isLanAutoStart,
+            UnityTransport unityTransport,
             UnityTransport.SimulatorParameters lanSimulatorParameters)
         {
             IMultiplayerSetupService multiplayerSetupService = null;
@@ -28,8 +27,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService
             {
                 case MultiplayerSetupServiceType.Lan:
                     
-                    multiplayerSetupService = new LanMultiplayerSetupService(unityTransport, 
-                        isLanAutoStart, lanSimulatorParameters);
+                    multiplayerSetupService = new LanMultiplayerSetupService(unityTransport, lanSimulatorParameters);
                     
                     break;
                 case MultiplayerSetupServiceType.Full:

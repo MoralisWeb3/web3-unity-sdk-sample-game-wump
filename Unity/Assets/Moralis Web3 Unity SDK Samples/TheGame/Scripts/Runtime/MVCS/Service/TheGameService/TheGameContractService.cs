@@ -130,15 +130,15 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
             //Debug.Log($"UnregisterAsync() result = {result}");
         }
 
-        public async UniTask TransferGoldAsync()
+        public async UniTask TransferGoldAsync(string toAddress)
         {
-            string result = await _theGameContract.TransferGoldAsync();
+            string result = await _theGameContract.TransferGoldAsync(toAddress);
             //Debug.Log($"UnregisterAsync() result = {result}");
         }
 
-        public async UniTask TransferPrizeAsync(Prize prize)
+        public async UniTask TransferPrizeAsync(string toAddress, Prize prize)
         {
-            string result = await _theGameContract.TransferPrizeAsync(prize);
+            string result = await _theGameContract.TransferPrizeAsync(toAddress, prize);
             //Debug.Log($"UnregisterAsync() result = {result}");
         }
 

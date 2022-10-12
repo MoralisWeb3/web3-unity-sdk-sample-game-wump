@@ -85,6 +85,7 @@ namespace MoralisUnity.Samples.TheGame
         public static T InstantiatePrefab<T>(T prefab, Transform parent, Vector3 worldPosition) where T : Component
         {
             T instance = GameObject.Instantiate<T>(prefab, parent);
+
             instance.gameObject.name = instance.GetType().Name;
             instance.transform.position = worldPosition;
             return instance;

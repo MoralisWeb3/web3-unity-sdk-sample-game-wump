@@ -163,10 +163,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 			return result;
 		}
 
-		public async UniTask<string> TransferGoldAsync()
+		public async UniTask<string> TransferGoldAsync(string toAddress)
 		{
-			//Second account for testing
-			string address = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e"; //await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
+			string address = toAddress;
 			object[] args =
 			{
 				address
@@ -176,18 +175,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 			return result;
 		}
 		
-		public async UniTask<string> TransferPrizeAsync(Prize prize)
+		public async UniTask<string> TransferPrizeAsync(string toAddress, Prize prize)
 		{
 			int tokenId = GetTokenId(prize);
 			
-			//Second account for testing
-			string address = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e"; //await MyMoralisWrapper.Instance.GetMoralisUserEthAddressAsync();
+			string address = toAddress; 
 			object[] args =
 			{
 				address,
 				tokenId
 			};
 			
+			Debug.Log("calling transfer prize");
 			string result = await ExecuteContractFunctionAsync("transferPrize", args, IsLogging);
 			return result;
 		}

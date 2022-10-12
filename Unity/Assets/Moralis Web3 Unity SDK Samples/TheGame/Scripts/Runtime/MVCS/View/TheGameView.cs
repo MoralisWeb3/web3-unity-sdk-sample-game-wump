@@ -1,11 +1,14 @@
 using System;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using MoralisUnity.Samples.Shared.Audio;
 using MoralisUnity.Samples.Shared.Components;
 using MoralisUnity.Samples.Shared.Helpers;
 using MoralisUnity.Samples.Shared.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
+#pragma warning disable CS4014
 namespace MoralisUnity.Samples.TheGame.MVCS.View
 {
 	/// <summary>
@@ -29,6 +32,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 
 		private static readonly Vector3 SmallScale = new Vector3(.75f, .75f, .75f);
 		private static readonly Vector3 FullScale = new Vector3(1, 1, 1);
+		private static readonly Vector3 NoScale = new Vector3(1, 1, 1);
 		
 		//[Header("References (Project)")] 
 	
@@ -64,7 +68,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 		public async UniTask ShowMessageWithDelayAsync(string message, int delayMilliseconds)
 		{
 			// Empty Message As it fades in
-			BaseScreenCoverUI.MessageText.text = "";
+			BaseScreenCoverUI.MessageText.text = "wait";
 			
 			BaseScreenCoverUI.BlocksRaycasts = true;
 			
@@ -72,7 +76,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 				SmallScale, FullScale, 0.25f, 0);
 			await TweenHelper.AlphaDoFade(BaseScreenCoverUI, 0, 1, 0.25f);
 			
-			UpdateMessageDuringMethod(message, false);
+			UpdateMessageDuringMethod("Ok: " + message, false);
 			await UniTask.Delay(delayMilliseconds);
 			
 			TweenHelper.TransformDoScale(BaseScreenCoverUI.Panel, 
@@ -102,6 +106,24 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 				BaseScreenCoverUI.MessageText.text = message;
 			}
 		}
+		
+		public void HideMessageDuringMethod(bool isAnimated = true)
+		{
+			float duration = 0;
+			if (isAnimated)
+			{
+				duration = 0.25f;
+			}
+
+			DOTween.KillAll(false);
+			TweenHelper.TransformDoScale(BaseScreenCoverUI.Panel,
+				FullScale, NoScale, duration , 0).onComplete = () =>
+			{
+			};
+
+			TweenHelper.AlphaDoFade(BaseScreenCoverUI, 1, 0, duration);
+		}
+		
 
 
 		/// <summary>

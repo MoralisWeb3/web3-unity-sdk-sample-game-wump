@@ -1,5 +1,6 @@
 
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
 using UnityEngine.Events;
 
@@ -11,6 +12,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService
     public interface IMultiplayerSetupService
     {
         //  Properties ------------------------------------
+        UnityEvent OnConnectionStarted { get; }
         StringUnityEvent OnConnectionCompleted { get; }
         StringUnityEvent OnStateNameChanged { get; }
         bool IsConnected { get; }
@@ -18,6 +20,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService
         //  Methods ---------------------------------------
         void Connect();
         void OnGUI();
-        Task DisconnectAsync();
+        UniTask DisconnectAsync();
     }
 }

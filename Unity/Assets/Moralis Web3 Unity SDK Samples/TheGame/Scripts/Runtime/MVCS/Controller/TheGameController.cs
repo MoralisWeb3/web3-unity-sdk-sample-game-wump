@@ -5,58 +5,123 @@ using DG.Tweening;
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Components;
 using MoralisUnity.Samples.Shared.Data.Types;
+using MoralisUnity.Samples.Shared.Exceptions;
+using MoralisUnity.Samples.Shared.Interfaces;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
+using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
+using RMC.Shared.Managers;
 using UnityEngine;
 
+#pragma warning disable CS4014
 namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 {
 	/// <summary>
 	/// Stores data for the game
 	///		* See <see cref="TheGameSingleton"/> - Handles the core functionality of the game
 	/// </summary>
-	public class TheGameController
+	public class TheGameController : IInitializable
 	{
 		// Events -----------------------------------------
 		public TheGameModelUnityEvent OnTheGameModelChanged = new TheGameModelUnityEvent();
 		public void OnTheGameModelChangedRefresh() { OnTheGameModelChanged.Invoke(_theGameModel); }
 
-
 		// Properties -------------------------------------
 		public PendingMessage PendingMessageForDeletion { get { return _theGameService.PendingMessageActive; } }
 		public PendingMessage PendingMessageForSave { get { return _theGameService.PendingMessagePassive; } }
-		
-		// Wait, So click sound is audible before scene changes
-		private const int DelayLoadSceneMilliseconds = 100;
+		public bool IsInitialized { get; private set; }
 
 		// Fields -----------------------------------------
 		private readonly TheGameModel _theGameModel = null;
 		private readonly TheGameView _theGameView = null;
+		private readonly NetworkManagerView _networkManagerView = null;
 		private readonly ITheGameService _theGameService = null;
-	
+		private readonly IMultiplayerSetupService _multiplayerSetupService = null;
+		private readonly DetailsView _detailsView = null;
+		
+		// Wait, So click sound is audible before scene changes
+		private const int DelayLoadSceneMilliseconds = 100;
 
 		// Initialization Methods -------------------------
 		public TheGameController(
 			TheGameModel theGameModel,
 			TheGameView theGameView,
-			ITheGameService theGameService)
+			DetailsView detailsView,
+			NetworkManagerView networkManagerView,
+			ITheGameService theGameService,
+			IMultiplayerSetupService multiplayerSetupService)
 		{
 			_theGameModel = theGameModel;
 			_theGameView = theGameView;
+			_networkManagerView = networkManagerView;
+			_detailsView = detailsView;
 			_theGameService = theGameService;
+			_multiplayerSetupService = multiplayerSetupService;
+			
+			_detailsView.gameObject.SetActive(false);
 
+		}
+
+		public void Initialize()
+		{
+			if (IsInitialized) return;
+			
+			//
+			_multiplayerSetupService.OnConnectionStarted.AddListener(MultiplayerSetupService_OnConnectionStarted);
+			_multiplayerSetupService.OnConnectionCompleted.AddListener( MultiplayerSetupService_OnConnectionCompleted);
+			_multiplayerSetupService.OnStateNameChanged.AddListener( MultiplayerSetupService_OnStateNameChanged);
+			
+			
+			//
 			_theGameView.SceneManagerComponent.OnSceneLoadingEvent.AddListener(SceneManagerComponent_OnSceneLoadingEvent);
 			_theGameView.SceneManagerComponent.OnSceneLoadedEvent.AddListener(SceneManagerComponent_OnSceneLoadedEvent);
-
+			SelectionManager.Instance.OnSelectionChanged.AddListener(SelectionManager_OnSelectionChanged);
+			
+			//TODO: Change this to have ONE invoker inside the model that itself knows when to invoke?
 			_theGameModel.Gold.OnValueChanged.AddListener((a) => OnTheGameModelChangedRefresh());
 			_theGameModel.Prizes.OnValueChanged.AddListener((a) => OnTheGameModelChangedRefresh());
 			_theGameModel.IsRegistered.OnValueChanged.AddListener((a) => OnTheGameModelChangedRefresh());
 			_theGameModel.ResetAllData();
+
+			//
+			IsInitialized = true;
 		}
 
+		
+		public void RequireIsInitialized()
+		{
+			if (!IsInitialized)
+			{
+				throw new NotInitializedException(this);
+			}
+		}
+		
+		// Unity Methods --------------------------------
+		public void OnGUI()
+		{
+			if (IsInitialized && TheGameConfiguration.Instance.MultiplayerIsGuiVisible)
+			{
+				_multiplayerSetupService.OnGUI();
+			}
+		}
+		
+		
+		public async void OnDestroy()
+		{
+			if (!IsInitialized) return;
+			
+			SelectionManager.Instance.OnSelectionChanged.RemoveListener(SelectionManager_OnSelectionChanged);
+			
+			Debug.Log($"{this.GetType().Name} OnDestroy() {_multiplayerSetupService.IsConnected}"); 
+			if (_multiplayerSetupService.IsConnected)
+			{
+				await _multiplayerSetupService.DisconnectAsync();
+			}
+		}
 
 		// General Methods --------------------------------
 		
@@ -67,6 +132,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		{
 			return await CustomWeb3System.Instance.IsAuthenticatedAsync();
 		}
+		
 		
 		public async UniTask<string> GetWeb3UserAddressAsync(bool useShortFormat)
 		{
@@ -118,12 +184,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			return _theGameModel.IsRegistered.Value;
 		}
 
+		
 		public async UniTask<int> GetGoldAndUpdateModelAsync()
 		{
 			int gold = await _theGameService.GetGoldAsync();
 			_theGameModel.Gold.Value = gold;
 			return _theGameModel.Gold.Value;
 		}
+		
 		
 		public async UniTask<List<Prize>> GetPrizesAndUpdateModelAsync()
 		{
@@ -132,11 +200,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			return _theGameModel.Prizes.Value;
 		}
 		
+		
 		public async UniTask<TransferLog> GetTransferLogHistoryAsync()
 		{
 			TransferLog result = await _theGameService.GetTransferLogHistoryAsync();
 			return result;
 		}
+		
 		
 		public void SetPlayerNicknameAndUpdateModel(string nickname)
 		{
@@ -146,6 +216,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			OnTheGameModelChangedRefresh();
 		}
 		
+		
 		public void SetPlayerWeb3AddressAndUpdateModel(string web3address)
 		{
 			string n = _theGameModel.CustomPlayerInfo.Value.Nickname.Value;
@@ -153,12 +224,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			OnTheGameModelChangedRefresh();
 		}
 		
+		
 		public void RandomizeNicknameAndUpdateModel()
 		{
 			string nickname = TheGameHelper.GetRandomizedNickname();
 			SetPlayerNicknameAndUpdateModel(nickname);
 		}
 
+		
 		// SETTER Methods -------------------------
 		public async UniTask RegisterAsync()
 		{
@@ -181,26 +254,27 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 
 
-		public async UniTask TransferGoldAsync()
+		public async UniTask TransferGoldAsync(string toAddress)
 		{
-			await _theGameService.TransferGoldAsync();
+			await _theGameService.TransferGoldAsync(toAddress);
 			
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();
 		}
 
 		
-		public async UniTask TransferPrizeAsync(Prize prize)
+		public async UniTask TransferPrizeAsync(string toAddress, Prize prize)
 		{
 			if (prize == null)
 			{
 				throw new ArgumentException("TransferPrizeAsync() failed. prize = {prize}");
 			}
-			await _theGameService.TransferPrizeAsync(prize);
+			await _theGameService.TransferPrizeAsync(toAddress, prize);
 			
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();
 		}
+		
 		
 		public async UniTask SafeReregisterDeleteAllPrizesAsync()
 		{
@@ -210,10 +284,161 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();
 		}
+		
+		
+		///////////////////////////////////////////
+		// Related To: Networking
+		///////////////////////////////////////////
 
+		public void MultiplayerSetupServiceConnect()
+		{
+			_detailsView.gameObject.SetActive(false);
+			_multiplayerSetupService.Connect();
+		}
+		
+		public bool MultiplayerSetupServiceIsConnected()
+		{
+			return _multiplayerSetupService.IsConnected;
+		}
+		
+		public async void MultiplayerSetupServiceDisconnectAsync()
+		{
+			_detailsView.gameObject.SetActive(false);
+			await _multiplayerSetupService.DisconnectAsync();
+		}
+		
+		public void RegisterPlayerView(PlayerView playerView)
+		{
+			playerView.OnIsWalkingChanged.AddListener(PlayerView_OnIsWalkingChanged);
+			playerView.OnPlayerAction.AddListener(PlayerView_OnPlayerAction);
+		}
+
+		
+		public void UnregisterPlayerView(PlayerView playerView)
+		{
+			playerView.OnIsWalkingChanged.RemoveListener(PlayerView_OnIsWalkingChanged);
+		}
+
+		
+		private void PlayerView_OnIsWalkingChanged(PlayerView playerView)
+		{
+			if (!playerView.IsLocalPlayer) return;
+			DetailsView.Instance.LocalStatus = playerView.IsWalking.Value ? "Walking" : "Idle";
+		}
+		
+		
+		private void PlayerView_OnPlayerAction()
+		{
+			DetailsView.Instance.SharedStatusUpdateRequest();
+		}
+		
+		
+		public void RegisterTransferDialogView(TransferDialogView transferDialogView)
+		{
+			transferDialogView.OnTransferGoldRequested.AddListener(TransferDialogView_OnTransferGoldRequested);
+			transferDialogView.OnTransferPrizeRequested.AddListener(TransferDialogView_OnTransferPrizeRequested);
+		}
+
+
+		public void UnregisterTransferDialogView(TransferDialogView transferDialogView)
+		{
+			transferDialogView.OnTransferGoldRequested.RemoveListener(TransferDialogView_OnTransferGoldRequested);
+			transferDialogView.OnTransferPrizeRequested.RemoveListener(TransferDialogView_OnTransferPrizeRequested);
+			SelectionManager.Instance.Selection = null;
+		}
+		
+		
+		public bool CanTransferGoldToSelected()
+		{
+			if (_theGameModel.HasSelectedPlayerView)
+			{
+				if (_theGameModel.Gold.Value >= TheGameConstants.GoldOnTransfer)
+				{
+					return true;
+				}
+				else
+				{
+					Debug.LogWarning("Nothing to transfer");
+				}
+			}
+			else
+			{
+				Debug.LogWarning("No one is selected");
+			}
+
+			return false;
+		}
+		
+
+		public bool CanTransferPrizeToSelected()
+		{
+			if (_theGameModel.HasSelectedPlayerView)
+			{
+				if (_theGameModel.Prizes.Value.Count >= TheGameConstants.PrizesOnTransfer)
+				{
+					return true;
+				}
+				else
+				{
+					Debug.LogWarning("Nothing to transfer");
+				}
+			}
+			else
+			{
+				Debug.LogWarning("No one is selected");
+			}
+
+			return false;
+		}
+		
+		
+		private async void TransferDialogView_OnTransferPrizeRequested()
+		{
+			if (CanTransferPrizeToSelected())
+			{
+				await TheGameSingleton.Instance.TheGameController.ShowMessageActiveAsync(
+					TheGameConstants.TransferingPrize,
+					async delegate ()
+					{
+						//string address = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e"; 
+						CustomPlayerInfo customPlayerInfo = new CustomPlayerInfo(); // based on _theGameModel.SelectedPlayerView.Value.OwnerClientId
+						TransferPrizeAsync(customPlayerInfo.Web3Address.Value, _theGameModel.Prizes.Value[0]);
+					});
+			}
+		}
+		
+		private async void TransferDialogView_OnTransferGoldRequested ()
+		{
+			if (CanTransferGoldToSelected())
+			{
+				await TheGameSingleton.Instance.TheGameController.ShowMessageActiveAsync(
+					TheGameConstants.TransferingGold,
+					async delegate ()
+					{
+						//string address = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e"; 
+						CustomPlayerInfo customPlayerInfo = new CustomPlayerInfo(); // based on _theGameModel.SelectedPlayerView.Value.OwnerClientId
+						TransferGoldAsync(customPlayerInfo.Web3Address.Value);
+					});
+			}
+		}
+		
 		///////////////////////////////////////////
 		// Related To: View
 		///////////////////////////////////////////
+		
+		private void SelectionManager_OnSelectionChanged(ISelectionManagerSelectable selection)
+		{
+			Debug.Log($"OnSelectionChanged() selection = {selection}");
+			_theGameModel.SelectedPlayerView.Value = (PlayerView)selection;
+
+			if (_theGameModel.HasSelectedPlayerView)
+			{
+				TransferDialogView transferDialogView = TheGameHelper.InstantiatePrefab<TransferDialogView>(TheGameConfiguration.Instance.TransferDialogViewPrefab,
+					TheGameSingleton.Instance.transform, new Vector3(0, 0, 0));
+			}
+		}
+
+		
 		public void PlayAudioClip(int audioClipIndex)
 		{
 			_theGameView.PlayAudioClip(audioClipIndex );
@@ -307,13 +532,44 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			}
 		}
 		
-		public async UniTask ShowMessageCustomAsync(string message, int delayMilliseconds)
+		public async UniTask ShowMessageWithDelayAsync(string message, int delayMilliseconds)
 		{
 			await _theGameView.ShowMessageWithDelayAsync(message, delayMilliseconds);
 		}
 
+		public void UpdateMessageDuringMethod(string message)
+		{
+			_theGameView.UpdateMessageDuringMethod(message, false);
+		}
+		
+		public void HideMessageDuringMethod(bool isAnimated)
+		{
+			_theGameView.HideMessageDuringMethod(isAnimated);
+		}
 
 		// Event Handlers ---------------------------------
+				
+		private void MultiplayerSetupService_OnConnectionStarted()
+		{
+			Debug.Log($"OnConnectionStarted() ");
+			ShowMessageWithDelayAsync(TheGameConstants.MultiplayerConnecting, 10000);
+		}
+		
+		private void MultiplayerSetupService_OnStateNameChanged(string stateName)
+		{
+			Debug.Log($"OnStateNameChanged() {stateName}");
+			DetailsView.Instance.LocalStatus = stateName;
+			UpdateMessageDuringMethod(TheGameConstants.Multiplayer + " " + stateName);
+		}
+		
+		private async void MultiplayerSetupService_OnConnectionCompleted(string debugMessage)
+		{
+			await UniTask.Delay(1000);
+			UpdateMessageDuringMethod(TheGameConstants.MultiplayerConnected);
+			await UniTask.Delay(1000);
+			HideMessageDuringMethod(true);
+		}
+		
 		private void SceneManagerComponent_OnSceneLoadingEvent(SceneManagerComponent sceneManagerComponent)
 		{
 			if (_theGameView.BaseScreenCoverUI.IsVisible)
@@ -335,6 +591,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			}
 		}
 
+		
 		private void SceneManagerComponent_OnSceneLoadedEvent(SceneManagerComponent sceneManagerComponent)
 		{
 			// Do anything?
@@ -354,8 +611,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 				Application.Quit();
 			}
 		}
-
-
 
 	}
 }

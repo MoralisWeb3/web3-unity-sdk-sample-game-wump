@@ -1,11 +1,13 @@
 using System;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using RMC.Shared;
 using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 {
@@ -21,29 +23,31 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 	/// </summary>
 	public class LanMultiplayerSetupService : IMultiplayerSetupService
 	{
+		
+		
+		
 		//  Events ----------------------------------------
+		private UnityEvent _onConnectionStarted = new UnityEvent();
 		private  StringUnityEvent _onConnectionCompleted = new StringUnityEvent();
 		private  StringUnityEvent _onStateNameChanged = new StringUnityEvent();
 		
 		//  Properties ------------------------------------
 		public bool IsConnected { get; private set; }
+		public UnityEvent OnConnectionStarted { get { return _onConnectionStarted; } }
 		public StringUnityEvent OnConnectionCompleted { get { return _onConnectionCompleted; } }
 		public StringUnityEvent OnStateNameChanged { get { return _onStateNameChanged; } }
 		
 		//  Fields ----------------------------------------
 		private UnityTransport _unityTransport;
 		private ulong _localClientId;
-		private bool _isAutoStart = false;
 
 		
 		//  Initializer Methods ---------------------------------
 		public LanMultiplayerSetupService(UnityTransport unityTransport, 
-			bool isAutoStart, 
 			UnityTransport.SimulatorParameters simulatorParameters)
 		{
 			_unityTransport = unityTransport;
 			_unityTransport.DebugSimulator = simulatorParameters;
-			_isAutoStart = isAutoStart;
 			IsConnected = false;
 			NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnected;
 		}
@@ -52,26 +56,31 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		//  Methods ---------------------------------------
 		public void Connect()
 		{
+			if (IsConnected)
+			{
+				return;
+			}
+			
 			// The instance playing in the Primary UNITY EDITOR will host
 			// All others will NOT host
-			if (_isAutoStart)
+			if (ClonesManagerWrapper.HasClonesManager)
 			{
-				if (ClonesManagerWrapper.HasClonesManager)
+				if (ClonesManagerWrapper.IsClone)
 				{
-					if (ClonesManagerWrapper.IsClone)
-					{
-						StartClient();
-					}
-					else
-					{
-						// Primary UNITY EDITOR
-						StartHost();
-					}
+					_onConnectionStarted.Invoke();
+					StartClient();
 				}
 				else
 				{
-					StartClient();
+					// Primary UNITY EDITOR
+					_onConnectionStarted.Invoke();
+					StartHost();
 				}
+			}
+			else
+			{
+				_onConnectionStarted.Invoke();
+				StartClient();
 			}
 		}
 
@@ -151,7 +160,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		}
 
 
-		public Task DisconnectAsync()
+		public UniTask DisconnectAsync()
 		{
 			//When the scene is closing its 'too late' to do these things. That is ok.
 			try
@@ -178,7 +187,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			IsConnected = false;
 
 			//Return dummy value
-			return Task.CompletedTask;
+			return UniTask.CompletedTask;
 		}
 		
 

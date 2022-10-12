@@ -42,6 +42,15 @@ namespace MoralisUnity.Samples.TheGame
         public const string TransferingPrize = "Transfering Prize";
         public const string MustBeRegistered = "Must Be Registered";
         public const string MustNotBeRegistered = "Must Not Be Registered";
+        public const string MultiplayerConnecting = Multiplayer + " Connecting";
+        public const string MultiplayerConnected = Multiplayer + " Connected";
+        public const string Multiplayer = "Multiplayer";
+        
+        //
+        public const string NetworkTransformParentMustBeNull =
+            "NetworkObjects *manually placed* in scene must be on the root.";
+
+        
         //
         public const uint GoldOnTransfer = 25;
         public const uint PrizesOnTransfer = 1;

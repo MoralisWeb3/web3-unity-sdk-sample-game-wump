@@ -3,9 +3,11 @@ using MoralisUnity.Samples.TheGame.MVCS.Controller;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
-using MoralisUnity.Samples.TheGame.MVCS.Service;
+using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 
 #pragma warning disable 1998
@@ -38,7 +40,8 @@ namespace MoralisUnity.Samples.TheGame
 		private TheGameView _theGameView;
 		private TheGameController _theGameController;
 		private ITheGameService _theGameService;
-		
+		private IMultiplayerSetupService _multiplayerSetupService = null;
+
 		// Initialization Methods -------------------------
 		public override void InstantiateCompleted()
 		{
@@ -51,28 +54,70 @@ namespace MoralisUnity.Samples.TheGame
 			// Name it
 			gameObject.name = GetType().Name;
 			
-			// Model
+			///////////////////////////////////
+			// The Game Model
 			_theGameModel = new TheGameModel();
-
-			// View
-			TheGameView prefab = TheGameConfiguration.Instance.TheGameViewPrefab;
-			_theGameView = TheGameHelper.InstantiatePrefab(prefab, transform, new Vector3(0, 0, 0));
 			
-			// Service
+			///////////////////////////////////
+			// The Game View
+			_theGameView = TheGameHelper.InstantiatePrefab<TheGameView>(TheGameConfiguration.Instance.TheGameViewPrefab,
+				null, new Vector3(0, 0, 0));
+			
+			// The Details View
+			DetailsView detailsView = TheGameHelper.InstantiatePrefab<DetailsView>(TheGameConfiguration.Instance.DetailsViewPrefab,
+				null, new Vector3(0, 0, 0));
+			
+			
+			// The Details View
+			NetworkManagerView networkManagerView = TheGameHelper.InstantiatePrefab<NetworkManagerView>(TheGameConfiguration.Instance.NetworkManagerViewPrefab,
+				null, new Vector3(0, 0, 0));	
+			UnityTransport unityTransport = (UnityTransport)networkManagerView.NetworkManager.NetworkConfig.NetworkTransport;
+
+			
+			///////////////////////////////////
+			// The Game Service
 			TheGameServiceType theGameServiceType = 
 				TheGameConfiguration.Instance.TheGameServiceType;
 			
 			_theGameService = new TheGameServiceFactory().
 				Create(theGameServiceType);
-
+	
+			// The Multiplayer Setup Service 
+			MultiplayerSetupServiceType multiplayerSetupServiceType = 
+				TheGameConfiguration.Instance.MultiplayerSetupServiceType;
+			_multiplayerSetupService = new MultiplayerSetupServiceFactory().CreateMultiplayerSetupService(
+				multiplayerSetupServiceType,
+				unityTransport,
+				TheGameConfiguration.Instance.LanSimulatorParameters);
+			
+			///////////////////////////////////
 			// Controller
 			_theGameController = new TheGameController(
 				_theGameModel, 
 				_theGameView,
-				_theGameService);
+				detailsView,
+				networkManagerView,
+				_theGameService,
+				_multiplayerSetupService);
+			
+			_theGameController.Initialize();
 			
 		}
 
+		// Unity Methods --------------------------------
+		
+		public void OnGUI()
+		{
+			_theGameController.OnGUI();
+		}
+		
+		
+		public void OnDestroy()
+		{
+			if (_theGameController == null) return;
+			_theGameController.OnDestroy();
+		}
+		
 		
 		// General Methods --------------------------------
 		public bool WasActiveSceneLoadedDirectly()

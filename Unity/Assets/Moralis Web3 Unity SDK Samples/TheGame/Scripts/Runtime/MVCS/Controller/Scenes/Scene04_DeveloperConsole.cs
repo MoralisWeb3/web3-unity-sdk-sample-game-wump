@@ -130,7 +130,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         {
             if (_isRegistered)
             {
-                await TheGameSingleton.Instance.TheGameController.ShowMessageCustomAsync(
+                await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
                     TheGameConstants.MustNotBeRegistered, 1000);
             }
             else
@@ -155,7 +155,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         {
             if (!_isRegistered)
             {
-                await TheGameSingleton.Instance.TheGameController.ShowMessageCustomAsync(
+                await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
                     TheGameConstants.MustBeRegistered, 1000);
             }
             else
@@ -179,7 +179,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         {
             if (!_isRegistered)
             {
-                await TheGameSingleton.Instance.TheGameController.ShowMessageCustomAsync(
+                await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
                     TheGameConstants.MustBeRegistered, 1000);
             }
             else
@@ -206,7 +206,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         {
             if (!_isRegistered)
             {
-                await TheGameSingleton.Instance.TheGameController.ShowMessageCustomAsync(
+                await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
                     TheGameConstants.MustBeRegistered, 1000);
             }
             else
@@ -243,7 +243,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         {
             if (!_isRegistered)
             {
-                await TheGameSingleton.Instance.TheGameController.ShowMessageCustomAsync(
+                await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
                     TheGameConstants.MustBeRegistered, 1000);
             }
             else
@@ -257,8 +257,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                         {
                             Debug.LogWarning($"TransferPrizeAsync() failed. gold = {gold}.");
                         }
-        
-                        await TheGameSingleton.Instance.TheGameController.TransferGoldAsync();
+
+                        string fakeAddress = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e";
+                        await TheGameSingleton.Instance.TheGameController.TransferGoldAsync(fakeAddress);
 
                         // Again Update The Model
                         await TheGameSingleton.Instance.TheGameController.GetGoldAndUpdateModelAsync();
@@ -278,7 +279,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         {
             if (!_isRegistered)
             {
-                await TheGameSingleton.Instance.TheGameController.ShowMessageCustomAsync(
+                await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
                     TheGameConstants.MustBeRegistered, 1000);
             }
             else
@@ -293,7 +294,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                             Debug.LogWarning($"TransferPrizeAsync() failed. prizes.Count = {prizes.Count}.");
                         }
                         
-                        await TheGameSingleton.Instance.TheGameController.TransferPrizeAsync(prizes[0]);
+                        string fakeAddress = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e";
+                        await TheGameSingleton.Instance.TheGameController.TransferPrizeAsync(fakeAddress, prizes[0]);
 
                         // Again Update The Model
                         await TheGameSingleton.Instance.TheGameController.GetPrizesAndUpdateModelAsync();
