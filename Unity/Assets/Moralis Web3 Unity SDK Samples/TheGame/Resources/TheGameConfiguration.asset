@@ -20,7 +20,7 @@ MonoBehaviour:
   _networkManagerViewPrefab: {fileID: 6344686579861905540, guid: 155ccbac1773f93468bac20fa9220de5, type: 3}
   _detailsViewPrefab: {fileID: 6739099107650887310, guid: e48d8c2f7c45d18429057d9de837b6b8, type: 3}
   _theGameServiceType: 1
-  _multiplayerSetupServiceType: 2
+  _multiplayerSetupServiceType: 1
   _multiplayerIsAutoStart: 1
   _multiplayerIsGuiVisible: 1
   _lanSimulatorParameters:
