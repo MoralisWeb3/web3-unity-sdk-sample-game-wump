@@ -51,7 +51,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             public Camera Camera { get { return _camera; } }
 
             public TMP_Text NameText { get { return _nameText; } }
-
+            
+            public string PlayerName { get { return _playerView_NetworkBehaviour.PlayerName; } }
+            public ulong PlayerIndex { get { return _playerView_NetworkBehaviour.PlayerIndex; } }
+            
             public CharacterController CharacterController  { get { return _characterController; } }
 
             public bool IsSelected { set { _reticlesView.IsSelected = value; } get { return _reticlesView.IsSelected; } }
@@ -77,9 +80,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 
             [SerializeField] 
             private CharacterController _characterController;
-
-            [SerializeField] 
-            private Collider _collider;
 
             [SerializeField] 
             private ReticlesView _reticlesView;
@@ -153,7 +153,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             }
 
 
-
             public void SetColorsByIndex(ulong playerIndex)
             {
                 int nextPlayerIndex = Math.Min((int)playerIndex, _networkPlayerColors.Count - 1);
@@ -165,15 +164,19 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 _reticlesView.IsSelected = false;
             }
 
+            
             public static string GetPlayerNameByClientId(ulong clientId)
             {
                 return $"P{GetPlayerIndexByClientId(clientId)}"; 
             }
 
+            
             public static ulong GetPlayerIndexByClientId(ulong clientId)
             {
                 return clientId + 1; //Display as; 1, 2, 3, etc...
             }
+            
+            
             //  Event Handlers --------------------------------
             private void PlayerInputNetworkBehaviour_OnPlayerAction()
             {
@@ -181,14 +184,16 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 
                 //Event Forwarding To External Scope
                 OnPlayerAction.Invoke(this);
-                
             }
 
+            
             private void SharedStatus_NetworkBehaviour_OnSharedStatusChanged(string status)
             {
+                Debug.Log("Event: " + status);
                 //Event Forwarding To External Scope
                 OnSharedStatusChanged.Invoke(this);
             }
+            
             
             private void ReticlesView_OnPointerClicked()
             {

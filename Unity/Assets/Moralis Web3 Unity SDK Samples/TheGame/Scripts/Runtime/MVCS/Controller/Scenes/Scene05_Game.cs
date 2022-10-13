@@ -38,6 +38,7 @@ namespace MoralisUnity.Samples.TheGame
 		{
 			_ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);
 			TheGameSingleton.Instance.TheGameController.OnPlayerAction.AddListener(OnPlayerAction);
+			TheGameSingleton.Instance.TheGameController.OnSharedStatusChanged.AddListener(OnSharedStatusChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(OnTheGameModelChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
 	
@@ -68,6 +69,7 @@ namespace MoralisUnity.Samples.TheGame
 			}
 	
 		}
+
 
 
 
@@ -112,6 +114,10 @@ namespace MoralisUnity.Samples.TheGame
 		}
 		
 		private void OnPlayerAction(PlayerView playerView)
+		{
+		}
+		
+		private void OnSharedStatusChanged(PlayerView playerView)
 		{
 			if (!string.IsNullOrEmpty(playerView.SharedStatus))
 			{

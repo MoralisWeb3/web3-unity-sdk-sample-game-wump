@@ -10,24 +10,27 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
     public class Scene01_IntroUI : Scene_UIWithTop
     {
         //  Properties ------------------------------------
+        public AuthenticationButtonUI AuthenticationButtonUI { get { return _authenticationButtonUI; } }
+        public BaseButtonUI Registerbutton { get { return _registerButton; } }
         public BaseButtonUI PlayGameButton { get { return _playGameButton; } }
         public BaseButtonUI SettingsButton { get { return _settingsButton; } }
-        public AuthenticationButtonUI AuthenticationButtonUI { get { return _authenticationButtonUI; } }
-
+  
 
         //  Fields ----------------------------------------
         [Header ("References (Scene)")]
+
+        [SerializeField]
+        private AuthenticationButtonUI _authenticationButtonUI = null;
+
+        [SerializeField]
+        private BaseButtonUI _registerButton = null;
 
         [SerializeField]
         private BaseButtonUI _playGameButton = null;
 
         [SerializeField]
         private BaseButtonUI _settingsButton = null;
-
-        
-        [SerializeField]
-        private AuthenticationButtonUI _authenticationButtonUI = null;
-
+   
         //  Unity Methods----------------------------------
 
 

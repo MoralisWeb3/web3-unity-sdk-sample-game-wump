@@ -322,6 +322,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		public void RegisterPlayerView(PlayerView playerView)
 		{
+			Debug.Log("register: " + playerView.PlayerName);
 			playerView.OnIsWalkingChanged.AddListener(PlayerView_OnIsWalkingChanged);
 			playerView.OnPlayerAction.AddListener(PlayerView_OnPlayerAction);
 			playerView.OnSharedStatusChanged.AddListener(PlayerView_OnSharedStatusChanged);
@@ -350,6 +351,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		private void PlayerView_OnSharedStatusChanged(PlayerView playerView)
 		{
+			Debug.Log("cont ev: " + playerView.PlayerName );
 			//Event Forwarding To External Scope
 			OnSharedStatusChanged.Invoke(playerView);
 		}

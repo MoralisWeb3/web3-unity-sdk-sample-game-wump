@@ -26,7 +26,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             public UnityEvent OnPlayerAction = new UnityEvent();
 
             //  Properties ------------------------------------
-    
+            public string PlayerName { get { return _playerName; } }
+            public ulong PlayerIndex { get { return _playerIndex; } }
+            
             //  Fields ----------------------------------------
             [Header("References (Local)")] 
             [SerializeField]
