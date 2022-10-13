@@ -1,7 +1,7 @@
-using System;
 using Cysharp.Threading.Tasks;
+using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
-using RMC.Shared.Managers;
+using MoralisUnity.Samples.TheGame.MVCS.View;
 using MoralisUnity.Samples.TheGame.MVCS.View.Scenes;
 using UnityEngine;
 
@@ -37,6 +37,9 @@ namespace MoralisUnity.Samples.TheGame
 		protected async void Start()
 		{
 			_ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);
+			TheGameSingleton.Instance.TheGameController.OnPlayerAction.AddListener(OnPlayerAction);
+			TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(OnTheGameModelChanged);
+			TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
 	
 			Initialize();
 			
@@ -65,6 +68,8 @@ namespace MoralisUnity.Samples.TheGame
 			}
 	
 		}
+
+
 
 		protected async void OnDestroy()
 		{
@@ -99,7 +104,20 @@ namespace MoralisUnity.Samples.TheGame
 		{
 			_ui.BackButton.IsInteractable = true;
 		}
-
+		
+		private void OnTheGameModelChanged(TheGameModel theGameModel)
+		{
+		
+			
+		}
+		
+		private void OnPlayerAction(PlayerView playerView)
+		{
+			if (!string.IsNullOrEmpty(playerView.SharedStatus))
+			{
+				_ui.TopUI.QueueSharedStatusText(playerView.SharedStatus, 3000);
+			}
+		}
 		
 		//  Event Handlers --------------------------------
 		private void BackButton_OnClicked()

@@ -26,14 +26,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		public Observable<List<Prize>> Prizes { get { return _prizes; } }
 		public Observable<PlayerView> SelectedPlayerView { get { return _selectedPlayerView; } }
 		public bool HasSelectedPlayerView { get { return _selectedPlayerView.Value != null; } }
-		
+
 		// Fields -----------------------------------------
 		private Observable<int> _gold = new Observable<int>();
 		private ObservablePrizes _prizes = new ObservablePrizes();
 		private Observable<CustomPlayerInfo> _customPlayerInfo = new Observable<CustomPlayerInfo>();
 		private Observable<bool> _isRegistered = new Observable<bool>();
 		private Observable<PlayerView> _selectedPlayerView = new Observable<PlayerView>();
-
+		
 		// Initialization Methods -------------------------
 		public TheGameModel()
 		{

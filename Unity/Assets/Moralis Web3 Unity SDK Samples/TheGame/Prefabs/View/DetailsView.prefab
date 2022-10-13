@@ -283,7 +283,6 @@ GameObject:
   - component: {fileID: 3804996965489073394}
   - component: {fileID: 3804996965489073389}
   - component: {fileID: 2022434067}
-  - component: {fileID: 3752880416992224884}
   - component: {fileID: 2022434068}
   - component: {fileID: 6739099107650887310}
   m_Layer: 5
@@ -391,18 +390,6 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &3752880416992224884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3804996965489073388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e84d354f42e4ceab6dcb4070f7a8e31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2022434068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -416,7 +403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detailsView: {fileID: 6739099107650887310}
-  _sharedStatusNetworkBehaviour: {fileID: 3752880416992224884}
+  _sharedStatusNetworkBehaviour: {fileID: 0}
 --- !u!114 &6739099107650887310
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using MoralisUnity.Samples.TheGame;
 using RMC.Shared.Data.Types;
 using RMC.Shared.Managers;
 using MoralisUnity.Samples.TheGame.MVCS.Networking;
@@ -30,29 +29,30 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
         {
             //  Events ----------------------------------------
             [HideInInspector]
-            public PlayerViewUnityEvent OnIsWalkingChanged = new PlayerViewUnityEvent();
+            public readonly PlayerViewUnityEvent OnIsWalkingChanged = new PlayerViewUnityEvent();
             
             [HideInInspector]
-            public UnityEvent OnPlayerAction = new UnityEvent();
+            public readonly PlayerViewUnityEvent OnPlayerAction = new PlayerViewUnityEvent();
 
+            [HideInInspector]
+            public readonly PlayerViewUnityEvent OnSharedStatusChanged = new PlayerViewUnityEvent();
+            
             //  Properties ------------------------------------
             public bool IsLocalPlayer { get { return _playerView_NetworkBehaviour.IsLocalPlayer; } }
             
             public ulong OwnerClientId { get { return _playerView_NetworkBehaviour.OwnerClientId; } }
+            
+            public string SharedStatus { get { return _sharedStatus_NetworkBehaviour.SharedStatus; } }
    
             public float SpeedMove { get { return _speedMove;} }
             
             public float SpeedSpin { get { return _speedSpin;} }
             
-            public PlayerView_NetworkBehaviour PlayerViewNetworkBehaviour { get { return _playerView_NetworkBehaviour; } }
-
             public Camera Camera { get { return _camera; } }
 
             public TMP_Text NameText { get { return _nameText; } }
 
             public CharacterController CharacterController  { get { return _characterController; } }
-
-            public Collider Collider {  get { return _collider; } }
 
             public bool IsSelected { set { _reticlesView.IsSelected = value; } get { return _reticlesView.IsSelected; } }
 
@@ -65,7 +65,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             [SerializeField]
             private PlayerView_NetworkBehaviour _playerView_NetworkBehaviour;
 
-            
+            [SerializeField]
+            private SharedStatus_NetworkBehaviour _sharedStatus_NetworkBehaviour;
+
             [Header("References (Local)")] 
             [SerializeField] 
             private TMP_Text _nameText;
@@ -116,6 +118,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 TheGameSingleton.Instance.TheGameController.RegisterPlayerView(this);
                 
                 _playerView_NetworkBehaviour.OnPlayerAction.AddListener(PlayerInputNetworkBehaviour_OnPlayerAction);
+                _sharedStatus_NetworkBehaviour.OnSharedStatusChanged.AddListener(SharedStatus_NetworkBehaviour_OnSharedStatusChanged);
                 
                 // Get camera for use in billboarding the PlayerName above his head
                 Camera[] cameras = GameObject.FindObjectsOfType<Camera>();
@@ -174,9 +177,19 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             //  Event Handlers --------------------------------
             private void PlayerInputNetworkBehaviour_OnPlayerAction()
             {
-                //Forward the event out
-                OnPlayerAction.Invoke();
+                _sharedStatus_NetworkBehaviour.SharedStatusUpdateRequest();
+                
+                //Event Forwarding To External Scope
+                OnPlayerAction.Invoke(this);
+                
             }
+
+            private void SharedStatus_NetworkBehaviour_OnSharedStatusChanged(string status)
+            {
+                //Event Forwarding To External Scope
+                OnSharedStatusChanged.Invoke(this);
+            }
+            
             private void ReticlesView_OnPointerClicked()
             {
                 // Click avatar in 3d to select it. 

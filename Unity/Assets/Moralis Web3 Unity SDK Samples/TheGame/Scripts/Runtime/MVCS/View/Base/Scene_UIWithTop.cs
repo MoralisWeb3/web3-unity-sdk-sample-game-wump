@@ -54,7 +54,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 
 		
 		// Event Handlers ---------------------------------
-		public void OnTheGameModelChanged(TheGameModel theGameModel)
+		protected virtual void OnTheGameModelChanged(TheGameModel theGameModel)
 		{
 			if (!_isObservingOnTheGameModelChanged)
 			{

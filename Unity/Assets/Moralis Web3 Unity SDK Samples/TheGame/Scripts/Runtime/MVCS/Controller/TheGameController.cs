@@ -16,6 +16,7 @@ using MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using RMC.Shared.Managers;
 using UnityEngine;
+using UnityEngine.Events;
 
 #pragma warning disable CS4014
 namespace MoralisUnity.Samples.TheGame.MVCS.Controller
@@ -27,8 +28,16 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 	public class TheGameController : IInitializable
 	{
 		// Events -----------------------------------------
-		public TheGameModelUnityEvent OnTheGameModelChanged = new TheGameModelUnityEvent();
 		public void OnTheGameModelChangedRefresh() { OnTheGameModelChanged.Invoke(_theGameModel); }
+		
+		[HideInInspector]
+		public readonly TheGameModelUnityEvent OnTheGameModelChanged = new TheGameModelUnityEvent();
+		
+		[HideInInspector]
+		public readonly PlayerViewUnityEvent OnPlayerAction = new PlayerViewUnityEvent();
+		
+		[HideInInspector]
+		public readonly PlayerViewUnityEvent OnSharedStatusChanged = new PlayerViewUnityEvent();
 
 		// Properties -------------------------------------
 		public PendingMessage PendingMessageForDeletion { get { return _theGameService.PendingMessageActive; } }
@@ -315,9 +324,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		{
 			playerView.OnIsWalkingChanged.AddListener(PlayerView_OnIsWalkingChanged);
 			playerView.OnPlayerAction.AddListener(PlayerView_OnPlayerAction);
+			playerView.OnSharedStatusChanged.AddListener(PlayerView_OnSharedStatusChanged);
 		}
 
-		
+
+
+
 		public void UnregisterPlayerView(PlayerView playerView)
 		{
 			playerView.OnIsWalkingChanged.RemoveListener(PlayerView_OnIsWalkingChanged);
@@ -330,12 +342,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			DetailsView.Instance.LocalStatus = playerView.IsWalking.Value ? "Walking" : "Idle";
 		}
 		
-		
-		private void PlayerView_OnPlayerAction()
+		private void PlayerView_OnPlayerAction(PlayerView playerView)
 		{
-			DetailsView.Instance.SharedStatusUpdateRequest();
+			//Event Forwarding To External Scope
+			OnPlayerAction.Invoke(playerView);
 		}
 		
+		private void PlayerView_OnSharedStatusChanged(PlayerView playerView)
+		{
+			//Event Forwarding To External Scope
+			OnSharedStatusChanged.Invoke(playerView);
+		}
 		
 		public void RegisterTransferDialogView(TransferDialogView transferDialogView)
 		{

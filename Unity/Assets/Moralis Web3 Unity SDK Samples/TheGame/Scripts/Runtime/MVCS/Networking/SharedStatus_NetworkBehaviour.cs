@@ -1,3 +1,4 @@
+using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using Unity.Netcode;
 using UnityEngine;
@@ -9,7 +10,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
 
 
         //  Class Attributes ----------------------------------
-        public class StatusUnityEvent : UnityEvent<string> {}
 
         /// <summary>
         /// This is a contrived demo of using RPCs.
@@ -22,8 +22,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
         {
             //  Events ----------------------------------------
             [HideInInspector]
-            public StatusUnityEvent OnSharedStatusChanged = new StatusUnityEvent();
-
+            public readonly StringUnityEvent OnSharedStatusChanged = new StringUnityEvent();
+            public string SharedStatus {  get { return _sharedStatus; } private set { _sharedStatus = value; OnSharedStatusChanged.Invoke(_sharedStatus); }  }
+            private string _sharedStatus = "";
+            
             //  Properties ------------------------------------
             
             //  Fields ----------------------------------------
@@ -45,17 +47,20 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             {
                 string playerName = PlayerView.GetPlayerNameByClientId(serverRpcParams.Receive.SenderClientId);
                 string statusText = $"Hi, from {playerName}";
+                Debug.Log("RPC: " + statusText);
                 SharedStatusUpdateRequestClientRpc(statusText);
             }
  
+            
             /// <summary>
             /// ... And the **ONE** server then calls **EVERY** client
             /// </summary>
             [ClientRpc (Delivery = RpcDelivery.Reliable)]
-            private void SharedStatusUpdateRequestClientRpc(string statusText)
+            private void SharedStatusUpdateRequestClientRpc(string sharedStatus)
             {
-                OnSharedStatusChanged.Invoke(statusText);
+                SharedStatus = sharedStatus;
             }
+            
             
             //  Event Handlers --------------------------------
         }

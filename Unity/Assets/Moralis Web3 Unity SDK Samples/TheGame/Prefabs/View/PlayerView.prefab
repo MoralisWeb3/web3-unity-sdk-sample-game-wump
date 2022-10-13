@@ -6656,8 +6656,9 @@ GameObject:
   - component: {fileID: 3797840836751216180}
   - component: {fileID: 8625185072217023439}
   - component: {fileID: 5442754300878180717}
-  - component: {fileID: 6819996786583128815}
+  - component: {fileID: -7799507188485453904}
   - component: {fileID: 6257285466335720921}
+  - component: {fileID: 6819996786583128815}
   m_Layer: 6
   m_Name: PlayerView
   m_TagString: Untagged
@@ -6679,7 +6680,7 @@ Transform:
   m_Children:
   - {fileID: 8557003963289696403}
   - {fileID: 8625185071262841661}
-  - {fileID: 73952261195010252}
+  - {fileID: 8331530912113690063}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6759,7 +6760,7 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
---- !u!114 &6819996786583128815
+--- !u!114 &-7799507188485453904
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6768,20 +6769,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8625185072217023427}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97b4bdda5f1d49519ce8b9cb7f404978, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e84d354f42e4ceab6dcb4070f7a8e31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnPlayerAction:
-    m_PersistentCalls:
-      m_Calls: []
-  _playerView_NetworkBehaviour: {fileID: 6257285466335720921}
-  _nameText: {fileID: 2051614982749750920}
-  _networkAnimator: {fileID: 1208049652516994516}
-  _characterController: {fileID: 3797840836751216180}
-  _collider: {fileID: 3797840836751216180}
-  _reticlesView: {fileID: 1994921799155363910}
-  _speedMove: 10
-  _speedSpin: 10
 --- !u!114 &6257285466335720921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6798,6 +6788,27 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _playerView: {fileID: 6819996786583128815}
+--- !u!114 &6819996786583128815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8625185072217023427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97b4bdda5f1d49519ce8b9cb7f404978, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerView_NetworkBehaviour: {fileID: 6257285466335720921}
+  _sharedStatus_NetworkBehaviour: {fileID: -7799507188485453904}
+  _nameText: {fileID: 2051614982749750920}
+  _networkAnimator: {fileID: 1208049652516994516}
+  _characterController: {fileID: 3797840836751216180}
+  _collider: {fileID: 3797840836751216180}
+  _reticlesView: {fileID: 1994921799155363910}
+  _speedMove: 10
+  _speedSpin: 10
 --- !u!1001 &4175483700908798840
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6853,6 +6864,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5363162037761554103, guid: 0522c14fdeb1cb045b3bfccba281376b, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7132117232140902226, guid: 0522c14fdeb1cb045b3bfccba281376b, type: 3}
       propertyPath: m_Size.y
       value: 3
@@ -6871,11 +6886,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0522c14fdeb1cb045b3bfccba281376b, type: 3}
---- !u!4 &73952261195010252 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4104177277569835956, guid: 0522c14fdeb1cb045b3bfccba281376b, type: 3}
-  m_PrefabInstance: {fileID: 4175483700908798840}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1994921799155363910 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2476186511092777790, guid: 0522c14fdeb1cb045b3bfccba281376b, type: 3}
@@ -6887,3 +6897,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78c40b28163b3274e8c8da0b337a5a73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &8331530912113690063 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5363162037761554103, guid: 0522c14fdeb1cb045b3bfccba281376b, type: 3}
+  m_PrefabInstance: {fileID: 4175483700908798840}
+  m_PrefabAsset: {fileID: 0}
