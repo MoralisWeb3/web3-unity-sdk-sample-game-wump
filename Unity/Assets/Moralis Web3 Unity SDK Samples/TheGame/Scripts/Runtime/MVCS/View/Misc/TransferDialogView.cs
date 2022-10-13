@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.View.UI;
 using UnityEngine;
 using UnityEngine.Events;

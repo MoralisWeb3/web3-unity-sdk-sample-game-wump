@@ -76,7 +76,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 				SmallScale, FullScale, 0.25f, 0);
 			await TweenHelper.AlphaDoFade(BaseScreenCoverUI, 0, 1, 0.25f);
 			
-			UpdateMessageDuringMethod("Ok: " + message, false);
+			UpdateMessageDuringMethod(message, false);
 			await UniTask.Delay(delayMilliseconds);
 			
 			TweenHelper.TransformDoScale(BaseScreenCoverUI.Panel, 

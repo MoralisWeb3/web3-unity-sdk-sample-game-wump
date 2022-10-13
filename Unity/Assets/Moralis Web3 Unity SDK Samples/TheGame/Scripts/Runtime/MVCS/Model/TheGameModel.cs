@@ -3,47 +3,12 @@ using System.Collections.Generic;
 using MoralisUnity.Samples.Shared.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
-using MoralisUnity.Samples.TheGame.MVCS.Networking;
 using MoralisUnity.Samples.TheGame.MVCS.View;
-using Unity.Collections;
-using Unity.Netcode;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.Model
 {
 	//TODO: move this CustomPlayerInfo class. rename it?
-	/// <summary>
-	/// Observable<t> does not like 'string'. So I created a wrapper class.
-	/// </summary>
-	public struct CustomPlayerInfo : INetworkSerializable
-	{
-		public FixedString128Bytes Nickname;
-		public FixedString128Bytes Web3Address;
-		
-		/// <summary>
-		/// Required for use in the <see cref="NetworkVariable{T}"/> by <see cref="PlayerView_NetworkBehaviour"/>
-		/// </summary>
-		public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-		{
-			serializer.SerializeValue(ref Nickname);
-			serializer.SerializeValue(ref Web3Address);
-		}
 
-		public bool IsNullNickname()
-		{
-			return Nickname == "";
-		}
-		public bool IsNullWeb3Address()
-		{
-			return Web3Address == "";
-		}
-		public bool IsNull()
-		{
-			return IsNullNickname() && IsNullWeb3Address();
-		}
-		
-		
-	}
-	
 	/// <summary>
 	/// Stores data for the game
 	///		* See <see cref="TheGameSingleton"/>

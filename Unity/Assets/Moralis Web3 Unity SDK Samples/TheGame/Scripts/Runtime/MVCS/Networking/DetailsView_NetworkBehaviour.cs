@@ -1,5 +1,6 @@
 using System.Text;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using Unity.Netcode;
@@ -37,13 +38,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                 NetworkVariableReadPermission.Everyone);
             private readonly NetworkVariable<int> _connectedClientsNetworkVariable = new NetworkVariable<int>(0,
                 NetworkVariableReadPermission.Everyone);
-            private readonly NetworkVariable<CustomPlayerInfo> _customPlayerInfo = new NetworkVariable<CustomPlayerInfo>(
-                default(CustomPlayerInfo), 
-                NetworkVariableReadPermission.Everyone, 
-                NetworkVariableWritePermission.Owner);
 
             private string _web3Address = "";
-            
+            private CustomPlayerInfo _customPlayerInfo;
+
             //  Unity Methods ---------------------------------
 
             public override void OnNetworkSpawn()
@@ -53,7 +51,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                 TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(
                     TheGameSingleton_OnTheGameModelChanged);
                 TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
-                _customPlayerInfo.OnValueChanged += CustomPlayerInfo_OnValueChanged;
                 
                 // Trigger Early to "Blank out" the text temporarily
                 PlayerCountNetworkVariable_OnValueChanged(0, 0);
@@ -121,28 +118,23 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             {
                 // Only the owner may SET the value
                 if (!IsOwner) return;
-                _customPlayerInfo.Value = theGameModel.CustomPlayerInfo.Value;
-            }
-            
-            private void CustomPlayerInfo_OnValueChanged(CustomPlayerInfo old, CustomPlayerInfo customPlayerInfo)
-            {
-                if (!customPlayerInfo.IsNull())
-                {
-                    _web3Address = customPlayerInfo.Web3Address.Value;
-                }
+
+                _customPlayerInfo = theGameModel.CustomPlayerInfo.Value;
                 UpdatePlayerDetails();
             }
+            
             
             private void StatusNetworkBehaviour_OnStatusChanged(string status = "")
             {
                 _detailsView.SharedStatus = status;
-
             }
+            
             
             private void NetworkManager_OnServerStarted()
             {
                 Debug.Log("NetworkManager_OnServerStarted");
             }
+            
             
             private void NetworkManager_OnClientConnected(ulong obj)
             {

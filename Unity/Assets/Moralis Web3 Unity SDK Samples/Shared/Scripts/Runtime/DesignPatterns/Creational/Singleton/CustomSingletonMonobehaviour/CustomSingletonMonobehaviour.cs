@@ -98,7 +98,6 @@ namespace MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.Custom
 
         public static T Instantiate()
         {
-            Debug.Log("EditorApplication.isPlayingOrWillChangePlaymode: " + EditorApplication.isPlayingOrWillChangePlaymode);
             if (IsShuttingDown || !Application.isPlaying)
             {
                 Debug.LogError("Must check IsShuttingDown before calling Instantiate/Instance.");
@@ -141,7 +140,7 @@ namespace MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.Custom
         /// <summary>
         /// Detect and solve corner case
         /// </summary>
-        protected void OnDestroy()
+        protected virtual void OnDestroy()
         {
             Destroy();
         }

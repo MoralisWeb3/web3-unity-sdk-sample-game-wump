@@ -169,13 +169,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 				await GetGoldAndUpdateModelAsync();
 				await GetPrizesAndUpdateModelAsync();
 				
-				if (_theGameModel.CustomPlayerInfo.Value.IsNullWeb3Address())
+				if (!_theGameModel.CustomPlayerInfo.Value.HasWeb3Address)
 				{
 					string web3Address = await GetWeb3UserAddressAsync(true);
 					SetPlayerWeb3AddressAndUpdateModel(web3Address);
 				}
 				
-				if (_theGameModel.CustomPlayerInfo.Value.IsNullNickname())
+				if (!_theGameModel.CustomPlayerInfo.Value.HasNickname)
 				{
 					RandomizeNicknameAndUpdateModel();
 				}
@@ -210,8 +210,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		public void SetPlayerNicknameAndUpdateModel(string nickname)
 		{
-			string n = _theGameModel.CustomPlayerInfo.Value.Nickname.Value;
-			string w = _theGameModel.CustomPlayerInfo.Value.Web3Address.Value;
+			string n = _theGameModel.CustomPlayerInfo.Value.Nickname;
+			string w = _theGameModel.CustomPlayerInfo.Value.Web3Address;
 			_theGameModel.CustomPlayerInfo.Value = new CustomPlayerInfo { Nickname = nickname, Web3Address = w };
 			OnTheGameModelChangedRefresh();
 		}
@@ -219,7 +219,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		public void SetPlayerWeb3AddressAndUpdateModel(string web3address)
 		{
-			string n = _theGameModel.CustomPlayerInfo.Value.Nickname.Value;
+			string n = _theGameModel.CustomPlayerInfo.Value.Nickname;
 			_theGameModel.CustomPlayerInfo.Value = new CustomPlayerInfo { Nickname = n, Web3Address = web3address };
 			OnTheGameModelChangedRefresh();
 		}
@@ -406,7 +406,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 					{
 						//string address = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e"; 
 						CustomPlayerInfo customPlayerInfo = new CustomPlayerInfo(); // based on _theGameModel.SelectedPlayerView.Value.OwnerClientId
-						TransferPrizeAsync(customPlayerInfo.Web3Address.Value, _theGameModel.Prizes.Value[0]);
+						await TransferPrizeAsync(customPlayerInfo.Web3Address, _theGameModel.Prizes.Value[0]);
 					});
 			}
 		}
@@ -421,7 +421,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 					{
 						//string address = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e"; 
 						CustomPlayerInfo customPlayerInfo = new CustomPlayerInfo(); // based on _theGameModel.SelectedPlayerView.Value.OwnerClientId
-						TransferGoldAsync(customPlayerInfo.Web3Address.Value);
+						await TransferGoldAsync(customPlayerInfo.Web3Address);
 					});
 			}
 		}

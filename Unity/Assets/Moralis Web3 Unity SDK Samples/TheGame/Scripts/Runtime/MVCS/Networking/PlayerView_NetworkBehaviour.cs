@@ -1,7 +1,7 @@
 using System;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
-using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
 using MoralisUnity.Samples.TheGame.MVCS.View;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -10,7 +10,6 @@ using UnityEngine.Events;
 namespace MoralisUnity.Samples.TheGame.MVCS.Networking
     {
         //  Namespace Properties ------------------------------
-
 
         //  Class Attributes ----------------------------------
 
@@ -27,18 +26,27 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             public UnityEvent OnPlayerAction = new UnityEvent();
 
             //  Properties ------------------------------------
-            private readonly NetworkVariable<CustomPlayerInfo> _customPlayerInfo = new NetworkVariable<CustomPlayerInfo>(
-                default(CustomPlayerInfo), 
-                NetworkVariableReadPermission.Everyone, 
-                NetworkVariableWritePermission.Owner);
-
+    
             //  Fields ----------------------------------------
             [Header("References (Local)")] 
             [SerializeField]
             private PlayerView _playerView;
 
+            private readonly NetworkVariable<FixedString128Bytes> _nicknameStringNetworkVariable = 
+                new NetworkVariable<FixedString128Bytes> (
+                    default(FixedString128Bytes), 
+                    NetworkVariableReadPermission.Everyone, 
+                    NetworkVariableWritePermission.Owner);
+            private readonly NetworkVariable<FixedString128Bytes> _web3AddressStringNetworkVariable = 
+                new NetworkVariable<FixedString128Bytes> (
+                    default(FixedString128Bytes), 
+                    NetworkVariableReadPermission.Everyone, 
+                    NetworkVariableWritePermission.Owner);
+            
             private Vector3 _movement;
             private ulong _playerIndex;
+            private string _playerName = "";
+ 
 
             //  Unity Methods ---------------------------------
             
@@ -46,13 +54,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             {
                 Assert.IsNull(transform.parent, TheGameConstants.NetworkTransformParentMustBeNull); 
                 
+                _nicknameStringNetworkVariable.OnValueChanged += NicknameStringNetworkVariable_OnValueChanged;
+                _web3AddressStringNetworkVariable.OnValueChanged += Web3AddressStringNetworkVariable_OnValueChanged;
+
                 TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(
                     TheGameSingleton_OnTheGameModelChanged);
                 TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
-                _customPlayerInfo.OnValueChanged += CustomPlayerInfo_OnValueChanged;
-                
+                SetPlayerViewNameText();
+        
                 //Show : 1, 2, 3, etc...
                 _playerIndex = PlayerView.GetPlayerIndexByClientId(OwnerClientId);
+                _playerName = PlayerView.GetPlayerNameByClientId(OwnerClientId);
+                
                 _playerView.SetColorsByIndex(_playerIndex);
                 
                  if (_playerIndex == 0)
@@ -91,7 +104,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                  }
                  
                  // Don't await 
-                 SetPlayerViewNameText("");
+                 SetPlayerViewNameText();
                 
                 //Set each player facing camera
                 _playerView.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
@@ -111,6 +124,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
 
                 _movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
+                //TODO: Remove this feature?
                 // Did player 1 click 1
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -160,9 +174,19 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                     Vector3.up);
             }
             
-            private void SetPlayerViewNameText(string message)
+            private void SetPlayerViewNameText()
             {
-                _playerView.NameText.text = message;
+                // NetworkVariable: EVERY client may GET the value
+                string line1 = $"<size=5>{_playerName} {_nicknameStringNetworkVariable.Value}</size>";
+                
+                string line2 = "";
+                if (!string.IsNullOrEmpty(_web3AddressStringNetworkVariable.Value.ToString()))
+                {
+                    line2 = $"<size=4>({_web3AddressStringNetworkVariable.Value})</size>";
+                }
+                
+                _playerView.NameText.text = $"{line1}\n" +
+                                            $"{line2}";
             }
             
             //  Methods ---------------------------------------
@@ -183,22 +207,25 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             
             private void TheGameSingleton_OnTheGameModelChanged(TheGameModel theGameModel)
             {
-                // Only the owner may SET the value
+                // NetworkVariable: Only the owner may SET the value
                 if (!IsOwner) return;
-                _customPlayerInfo.Value = theGameModel.CustomPlayerInfo.Value;
+                _nicknameStringNetworkVariable.Value = theGameModel.CustomPlayerInfo.Value.Nickname;
+                _web3AddressStringNetworkVariable.Value = theGameModel.CustomPlayerInfo.Value.Web3Address;
             }
             
-            private void CustomPlayerInfo_OnValueChanged(CustomPlayerInfo old, CustomPlayerInfo customPlayerInfo)
+            
+            private void NicknameStringNetworkVariable_OnValueChanged(FixedString128Bytes oldValue,
+                FixedString128Bytes newValue)
             {
-                string result = "";
-                if (!customPlayerInfo.IsNull())
-                {
-                    // Everyone may GET the value
-                    string playerName = PlayerView.GetPlayerNameByClientId(OwnerClientId);
-                    result = $"{playerName} {customPlayerInfo.Nickname}\n<size=5>({customPlayerInfo.Web3Address})</size>";
-                }
+                SetPlayerViewNameText();
+            }
+            
 
-                SetPlayerViewNameText(result);
+            private void Web3AddressStringNetworkVariable_OnValueChanged(FixedString128Bytes oldValue, 
+                FixedString128Bytes newValue)
+            {
+                SetPlayerViewNameText();
             }
         }
+
     }

@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.View.Scenes;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         [SerializeField]
         private Scene03_SettingsUI _ui;
 
-        private string _nickName = "";
+        private CustomPlayerInfo _customPlayerInfo = new CustomPlayerInfo();
         private bool _isAuthenticated = false;
         private bool _isRegistered = false;
 
@@ -43,7 +44,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         //  General Methods -------------------------------
         private async UniTask RefreshUIAsync()
         {
-            _ui.RandomizeNicknameButton.Text.text = $"Randomize Nickname <size=30>({_nickName})</size>";
+            string nickname = "";
+            if (_customPlayerInfo.HasNickname)
+            {
+                nickname = $"<size=40>({_customPlayerInfo.Nickname})</size>";
+            }
+            _ui.RandomizeNicknameButton.Text.text = $"Randomize Nickname {nickname}";
             _ui.RandomizeNicknameButton.IsInteractable = _isAuthenticated && _isRegistered;
             _ui.ResetButton.IsInteractable = _isAuthenticated && _isRegistered;
             _ui.BackButton.IsInteractable = true;
@@ -53,7 +59,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         //  Event Handlers --------------------------------
         private void TheGameSingleton_OnTheGameModelChanged(TheGameModel theGameModel)
         {
-            _nickName = theGameModel.CustomPlayerInfo.Value.Nickname.Value;
+            _customPlayerInfo = theGameModel.CustomPlayerInfo.Value;
             RefreshUIAsync();
         }
         

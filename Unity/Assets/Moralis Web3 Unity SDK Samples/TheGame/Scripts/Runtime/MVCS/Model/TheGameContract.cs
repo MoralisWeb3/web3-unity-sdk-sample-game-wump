@@ -20,7 +20,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 }
 
 		// Fields -----------------------------------------
-		private const bool IsLogging = true;
+		private const bool IsLogging = false;
 		private string _prizeContractAddress = "";
 
 

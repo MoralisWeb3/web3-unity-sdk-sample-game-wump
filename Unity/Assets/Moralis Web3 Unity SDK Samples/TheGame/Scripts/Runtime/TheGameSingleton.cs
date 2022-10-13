@@ -1,3 +1,4 @@
+using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Architectures.MVCS;
 using MoralisUnity.Samples.TheGame.MVCS.Controller;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
@@ -65,18 +66,18 @@ namespace MoralisUnity.Samples.TheGame
 			// The Game View 
 			_theGameView = TheGameHelper.InstantiatePrefab<TheGameView>(TheGameConfiguration.Instance.TheGameViewPrefab,
 				transform, new Vector3(0, 0, 0));
-			DontDestroyOnLoad(_theGameView);
+			SharedHelper.SafeDontDestroyOnLoad(_theGameView.gameObject);
 			
 			////////////// VIEW - (PARENT UNDER NUL, REQUIRED OF NETWORKOBJECTS) /////////////////////
 			// The Details View 
 			_detailsView = TheGameHelper.InstantiatePrefab<DetailsView>(TheGameConfiguration.Instance.DetailsViewPrefab,
 				null, new Vector3(0, 0, 0));
-			DontDestroyOnLoad(_detailsView);
+			SharedHelper.SafeDontDestroyOnLoad(_detailsView.gameObject);
 			
 			// The Network Manager View
 			_networkManagerView = TheGameHelper.InstantiatePrefab<NetworkManagerView>(TheGameConfiguration.Instance.NetworkManagerViewPrefab,
 				null, new Vector3(0, 0, 0));	
-			DontDestroyOnLoad(_networkManagerView);
+			SharedHelper.SafeDontDestroyOnLoad(_networkManagerView.gameObject);
 			
 			UnityTransport unityTransport = (UnityTransport)_networkManagerView.NetworkManager.NetworkConfig.NetworkTransport;
 
@@ -118,7 +119,7 @@ namespace MoralisUnity.Samples.TheGame
 			bool hasController = _theGameController != null;
 			if (hasController != _hadController)
 			{
-				UnityEngine.Debug.Log($"HadCCONT goes from {_hadController} to {hasController}");
+				UnityEngine.Debug.Log($"1 [[[[[[[[[HadCCONT goes from {_hadController} to {hasController}");
 			}
 			
 			_hadController = _theGameController != null;
@@ -129,7 +130,7 @@ namespace MoralisUnity.Samples.TheGame
 			bool hasController = _theGameController != null;
 			if (hasController != _hadController)
 			{
-				UnityEngine.Debug.Log($"HadCCONT goes from {_hadController} to {hasController}");
+				UnityEngine.Debug.Log($"2 [[[[[[[[[ HadCCONT goes from {_hadController} to {hasController}");
 			}
 			
 			_hadController = _theGameController != null;
@@ -141,9 +142,10 @@ namespace MoralisUnity.Samples.TheGame
 			
 		}
 		
-		
-		public void OnDestroy()
+		protected override void OnDestroy()
 		{
+			Debug.Log("NEVER BE IN HEre - unless unity is stopping");
+			base.OnDestroy();
 			if (_theGameController == null) return;
 			_theGameController.OnDestroy();
 		}
