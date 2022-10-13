@@ -42,18 +42,28 @@ namespace MoralisUnity.Samples.TheGame
 			
 			RefreshUIAsync();
 			bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
+			bool isRegistered = false;
 			if (isAuthenticated)
 			{ 
 				// Populate the top UI
-				bool isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
+				isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
 				RefreshUIAsync();
 			}
 
-			if (TheGameConfiguration.Instance.MultiplayerIsAutoStart && 
-			    !TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
+			if (isAuthenticated && isRegistered)
 			{
-				TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnect();
+				if (TheGameConfiguration.Instance.MultiplayerIsAutoStart && 
+				    !TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
+				{
+					TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnect();
+				}
 			}
+			else
+			{
+				await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
+					TheGameConstants.MustBeRegistered, 5000);
+			}
+	
 		}
 
 		protected async void OnDestroy()

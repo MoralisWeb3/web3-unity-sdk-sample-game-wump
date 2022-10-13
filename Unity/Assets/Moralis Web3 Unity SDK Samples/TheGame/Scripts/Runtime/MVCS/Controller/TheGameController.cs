@@ -303,7 +303,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		public async void MultiplayerSetupServiceDisconnectAsync()
 		{
-			_detailsView.gameObject.SetActive(false);
+			if (_detailsView != null)
+			{
+				_detailsView.gameObject.SetActive(false);
+			}
+			
 			await _multiplayerSetupService.DisconnectAsync();
 		}
 		

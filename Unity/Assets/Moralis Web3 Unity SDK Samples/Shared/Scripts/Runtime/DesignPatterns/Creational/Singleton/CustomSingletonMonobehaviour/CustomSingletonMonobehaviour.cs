@@ -1,18 +1,67 @@
 ﻿using System;
+
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.CustomSingletonMonobehaviour
 {
-    public abstract class CustomSingletonMonobehaviour<T> : MonoBehaviour where T : MonoBehaviour
+
+    public abstract class CustomSingletonMonobehaviour : MonoBehaviour
     {
-        //  Properties ------------------------------------------
+        private static bool _IsShuttingDown = false;
+        
         public static bool IsShuttingDown
         {
             get
             {
                 return _IsShuttingDown;
             }
+            internal set
+            {
+                _IsShuttingDown = value;
+                Debug.Log("777777 _IsShuttingDown: " + _IsShuttingDown);
+            }
         }
+        
+#if UNITY_EDITOR
+
+        [InitializeOnLoadMethod]
+        static void InitializeOnLoadMethod()
+        {
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
+
+        /// <summary>
+        /// This InitializeOnLoadMethod scheme is designed to
+        /// Properly reset the IsShuttingDown each time play mode ends
+        ///
+        /// The IsShuttingDown helps prevent non-singletons in their OnDestroy()
+        /// from accidentally calling singleton.Instantiate which causes issues
+        /// 
+        /// </summary>
+        private static void OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.EnteredEditMode)
+            {
+                //Debug.Log(1);
+                IsShuttingDown = false;
+            }
+            else if (state == PlayModeStateChange.EnteredPlayMode)
+            {
+               // Debug.Log(2);
+            }
+            //Debug.Log(state);
+        }
+#endif
+    }
+
+    public abstract class CustomSingletonMonobehaviour<T> : CustomSingletonMonobehaviour  where T : MonoBehaviour
+    {
+        
+        //  Properties ------------------------------------------
         
         public static bool IsInstantiated
         {
@@ -41,7 +90,7 @@ namespace MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.Custom
 
         //  Fields -------------------------------------------------
         private static T _Instance;
-        private static bool _IsShuttingDown = false;
+       
         public delegate void OnInstantiateCompletedDelegate(T instance);
         public static OnInstantiateCompletedDelegate OnInstantiateCompleted;
 
@@ -49,9 +98,10 @@ namespace MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.Custom
 
         public static T Instantiate()
         {
-            if (IsShuttingDown)
+            Debug.Log("EditorApplication.isPlayingOrWillChangePlaymode: " + EditorApplication.isPlayingOrWillChangePlaymode);
+            if (IsShuttingDown || !Application.isPlaying)
             {
-                throw new Exception("Must check IsShuttingDown before calling Instantiate/Instance.");
+                Debug.LogError("Must check IsShuttingDown before calling Instantiate/Instance.");
             }
             if (!IsInstantiated)
             {
@@ -101,7 +151,9 @@ namespace MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.Custom
         /// </summary>
         public static void Destroy()
         {
-            _IsShuttingDown = true;
+            
+            IsShuttingDown = true;
+            Debug.Log("77777777 Destroy: ");
             if (IsInstantiated)
             {
                 if (Application.isPlaying)

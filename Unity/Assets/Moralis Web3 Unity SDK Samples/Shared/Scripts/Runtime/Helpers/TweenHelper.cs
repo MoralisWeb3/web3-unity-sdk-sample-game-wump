@@ -174,6 +174,7 @@ namespace MoralisUnity.Samples.Shared.Helpers
       public static async UniTask AlphaDoFade(
          IAlpha iAlpha, float fromAlpha, float toAlpha, float duration)
       {
+         Debug.Log("iAlpha: " + iAlpha);
          bool isComplete = false;
          iAlpha.Alpha = fromAlpha;
          DOTween.To(() => iAlpha.Alpha, x => iAlpha.Alpha = x, toAlpha, duration).onComplete = () =>

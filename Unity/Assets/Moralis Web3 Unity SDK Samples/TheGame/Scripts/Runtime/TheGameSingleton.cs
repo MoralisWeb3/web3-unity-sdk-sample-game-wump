@@ -41,6 +41,9 @@ namespace MoralisUnity.Samples.TheGame
 		private TheGameController _theGameController;
 		private ITheGameService _theGameService;
 		private IMultiplayerSetupService _multiplayerSetupService = null;
+		private DetailsView _detailsView;
+		private NetworkManagerView _networkManagerView;
+		private bool _hadController;
 
 		// Initialization Methods -------------------------
 		public override void InstantiateCompleted()
@@ -58,20 +61,24 @@ namespace MoralisUnity.Samples.TheGame
 			// The Game Model
 			_theGameModel = new TheGameModel();
 			
-			///////////////////////////////////
-			// The Game View
+			////////////// VIEW - (PARENT UNDER SINGLETON) /////////////////////
+			// The Game View 
 			_theGameView = TheGameHelper.InstantiatePrefab<TheGameView>(TheGameConfiguration.Instance.TheGameViewPrefab,
+				transform, new Vector3(0, 0, 0));
+			DontDestroyOnLoad(_theGameView);
+			
+			////////////// VIEW - (PARENT UNDER NUL, REQUIRED OF NETWORKOBJECTS) /////////////////////
+			// The Details View 
+			_detailsView = TheGameHelper.InstantiatePrefab<DetailsView>(TheGameConfiguration.Instance.DetailsViewPrefab,
 				null, new Vector3(0, 0, 0));
+			DontDestroyOnLoad(_detailsView);
 			
-			// The Details View
-			DetailsView detailsView = TheGameHelper.InstantiatePrefab<DetailsView>(TheGameConfiguration.Instance.DetailsViewPrefab,
-				null, new Vector3(0, 0, 0));
-			
-			
-			// The Details View
-			NetworkManagerView networkManagerView = TheGameHelper.InstantiatePrefab<NetworkManagerView>(TheGameConfiguration.Instance.NetworkManagerViewPrefab,
+			// The Network Manager View
+			_networkManagerView = TheGameHelper.InstantiatePrefab<NetworkManagerView>(TheGameConfiguration.Instance.NetworkManagerViewPrefab,
 				null, new Vector3(0, 0, 0));	
-			UnityTransport unityTransport = (UnityTransport)networkManagerView.NetworkManager.NetworkConfig.NetworkTransport;
+			DontDestroyOnLoad(_networkManagerView);
+			
+			UnityTransport unityTransport = (UnityTransport)_networkManagerView.NetworkManager.NetworkConfig.NetworkTransport;
 
 			
 			///////////////////////////////////
@@ -95,8 +102,8 @@ namespace MoralisUnity.Samples.TheGame
 			_theGameController = new TheGameController(
 				_theGameModel, 
 				_theGameView,
-				detailsView,
-				networkManagerView,
+				_detailsView,
+				_networkManagerView,
 				_theGameService,
 				_multiplayerSetupService);
 			
@@ -106,9 +113,32 @@ namespace MoralisUnity.Samples.TheGame
 
 		// Unity Methods --------------------------------
 		
+		public void Update()
+		{
+			bool hasController = _theGameController != null;
+			if (hasController != _hadController)
+			{
+				UnityEngine.Debug.Log($"HadCCONT goes from {_hadController} to {hasController}");
+			}
+			
+			_hadController = _theGameController != null;
+		}
+		
 		public void OnGUI()
 		{
-			_theGameController.OnGUI();
+			bool hasController = _theGameController != null;
+			if (hasController != _hadController)
+			{
+				UnityEngine.Debug.Log($"HadCCONT goes from {_hadController} to {hasController}");
+			}
+			
+			_hadController = _theGameController != null;
+
+			if (hasController)
+			{
+				_theGameController.OnGUI();
+			}
+			
 		}
 		
 		
