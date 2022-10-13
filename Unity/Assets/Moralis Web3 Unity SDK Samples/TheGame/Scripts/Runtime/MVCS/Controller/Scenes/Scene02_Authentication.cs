@@ -28,7 +28,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             
             RefreshUIAsync();
 
-            _isAuthenticatedOnStart = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
+            _isAuthenticatedOnStart = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
             if (_isAuthenticatedOnStart)
             {
                 //BUG: Mysteriously the AuthenticationKit will DISCONNECT in this situation
@@ -54,7 +54,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         //  Event Handlers --------------------------------
         private async void CancelButton_OnClicked()
         {
-            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
+            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
             //Debug.Log($"CancelButton_OnClicked() wasA = {_isAuthenticatedOnStart}, isA = {isAuthenticated}");
             
             // Stop any processes

@@ -35,16 +35,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration
         
         public NetworkManagerView NetworkManagerViewPrefab { get { return _networkManagerViewPrefab; } }
         
-        public bool CanPlayerClickSelf { get { return _canPlayerSelectSelf;} }
-
-
         // Fields -----------------------------------------
         public const string Title = "TheGameConfiguration";
         
-        [Tooltip("Allow player to click and select self. Set to false for production")]
-        [SerializeField] 
-        private bool _canPlayerSelectSelf = false;
-
         [Header("References (Project, General)")]
         [Tooltip("Holds a reference to all the scene assets. ")]
         [SerializeField]

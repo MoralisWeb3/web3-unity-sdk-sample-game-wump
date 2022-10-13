@@ -23,7 +23,6 @@ namespace MoralisUnity.Samples.Shared
 		[SerializeField] 
 		private AuthenticationKit _authenticationKit;
 
-
 		// Initialization Methods -------------------------
 		protected void Start()
 		{

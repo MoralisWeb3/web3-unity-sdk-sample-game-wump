@@ -1,3 +1,4 @@
+using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.UI;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes;
 using TMPro;
@@ -11,6 +12,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
     public class Scene04_DeveloperConsoleUI : Scene_UIWithTop
     {
         //  Properties ------------------------------------
+        public WalletConnectWrapper WalletConnectWrapper { get { return _walletConnectWrapper; } }
+        
+        //  Fields ----------------------------------------
+ 
+
         public TMP_Text OutputText { get { return _outputText; } }
         public BaseButtonUI IsAuthenticatedButton { get { return _isAuthenticatedButton; } }
         public BaseButtonUI IsRegisteredButton { get { return _isRegisteredButton; } }
@@ -26,6 +32,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
 
         //  Fields ----------------------------------------
         [Header ("References (Scene)")]
+
+        [SerializeField]
+        private WalletConnectWrapper _walletConnectWrapper = null;
 
         [SerializeField]
         private TMP_Text _outputText = null;

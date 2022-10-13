@@ -29,6 +29,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             public string PlayerName { get { return _playerName; } }
             public ulong PlayerIndex { get { return _playerIndex; } }
             
+            public string Nickname { get { return _nicknameStringNetworkVariable.Value.ToString(); } }
+            public string Web3Address { get { return _web3AddressStringNetworkVariable.Value.ToString(); } }
+            
             //  Fields ----------------------------------------
             [Header("References (Local)")] 
             [SerializeField]

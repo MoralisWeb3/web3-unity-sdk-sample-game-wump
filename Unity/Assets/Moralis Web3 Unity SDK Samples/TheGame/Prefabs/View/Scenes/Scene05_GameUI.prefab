@@ -326,6 +326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _topUI: {fileID: 1895731522179559903}
   _backButton: {fileID: 97963375204132362}
+  _walletConnectWrapper: {fileID: 0}
 --- !u!224 &7328711981939541876 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 859660656082848290, guid: 36c510603862fbe4d90eb5807306e69d, type: 3}

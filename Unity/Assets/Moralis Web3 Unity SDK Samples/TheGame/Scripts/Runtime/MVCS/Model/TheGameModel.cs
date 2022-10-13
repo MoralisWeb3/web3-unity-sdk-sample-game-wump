@@ -22,16 +22,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		public TheGameConfiguration TheGameConfiguration { get { return TheGameConfiguration.Instance; }  }
 		public Observable<int> Gold { get { return _gold; } }
 		public Observable<bool> IsRegistered { get { return _isRegistered; } }
+		public Observable<bool> IsAuthenticated { get { return _isAuthenticated; } }
 		public Observable<CustomPlayerInfo> CustomPlayerInfo { get { return _customPlayerInfo; } }
 		public Observable<List<Prize>> Prizes { get { return _prizes; } }
 		public Observable<PlayerView> SelectedPlayerView { get { return _selectedPlayerView; } }
 		public bool HasSelectedPlayerView { get { return _selectedPlayerView.Value != null; } }
 
 		// Fields -----------------------------------------
+		private Observable<bool> _isRegistered = new Observable<bool>();
+		private Observable<bool> _isAuthenticated = new Observable<bool>();
 		private Observable<int> _gold = new Observable<int>();
 		private ObservablePrizes _prizes = new ObservablePrizes();
 		private Observable<CustomPlayerInfo> _customPlayerInfo = new Observable<CustomPlayerInfo>();
-		private Observable<bool> _isRegistered = new Observable<bool>();
 		private Observable<PlayerView> _selectedPlayerView = new Observable<PlayerView>();
 		
 		// Initialization Methods -------------------------
@@ -52,10 +54,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		public void ResetAllData()
 		{
 			_gold.Value = 0;
-			_customPlayerInfo.Value = new CustomPlayerInfo();
 			_prizes.Value = new List<Prize>();
+			_customPlayerInfo.Value = new CustomPlayerInfo();
 			_isRegistered.Value = false;
+			_isAuthenticated.Value = false;
 			_selectedPlayerView.Value = null;
+
 		}
 		
 		// Event Handlers ---------------------------------

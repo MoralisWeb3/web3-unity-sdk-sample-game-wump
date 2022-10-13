@@ -1,3 +1,4 @@
+using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.UI;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes;
 using UnityEngine;
@@ -12,13 +13,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
         //  Properties ------------------------------------
         public BaseButtonUI BackButton { get { return _backButton; } }
 
-
+        public WalletConnectWrapper WalletConnectWrapper { get { return _walletConnectWrapper; } }
+        
         //  Fields ----------------------------------------
         [Header ("References (Scene)")]
 
         [SerializeField]
         private BaseButtonUI _backButton = null;
 
+        [SerializeField]
+        private WalletConnectWrapper _walletConnectWrapper = null;
+
+        
         //  Unity Methods----------------------------------
 
 

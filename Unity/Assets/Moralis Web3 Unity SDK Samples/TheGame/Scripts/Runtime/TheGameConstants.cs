@@ -1,5 +1,7 @@
-﻿
+﻿using System;
 using MoralisUnity.Samples.Shared;
+using RMC.Shared;
+using UnityEngine;
 
 namespace MoralisUnity.Samples.TheGame
 {
@@ -9,9 +11,16 @@ namespace MoralisUnity.Samples.TheGame
     public static class TheGameConstants
     {
         // Fields -----------------------------------------
-        public const string ProjectName = "Web3 Magic Treasure Chest";
+        public const string ProjectName = "Web3 Unity Multiplayer Playerground";
+        public const string ProjectNameShort = "WUMP";
         public const string PathCreateAssetMenu = CustomWeb3SystemConstants.PathMoralisSamplesCreateAssetMenu + "/" + ProjectName;
         
+        ///////////////////////////////////////////
+        // Build Configuration
+        ///////////////////////////////////////////
+        public static Vector2 ScreenResolution = new Vector2(1600, 1000);
+            
+            
         ///////////////////////////////////////////
         // MenuItem Path
         ///////////////////////////////////////////
@@ -41,6 +50,7 @@ namespace MoralisUnity.Samples.TheGame
         public const string TransferingGold = "Transfering Gold";
         public const string TransferingPrize = "Transfering Prize";
         public const string MustBeRegistered = "Must Be Registered";
+        public const string MustBeAuthenticated = "Must Be Authenticated";
         public const string MustNotBeRegistered = "Must Not Be Registered";
         public const string MultiplayerConnecting = Multiplayer + " Connecting";
         public const string MultiplayerConnected = Multiplayer + " Connected";
@@ -57,5 +67,38 @@ namespace MoralisUnity.Samples.TheGame
         //
         public const uint GoldMax = 100; //May be a ui-only limit
         public const uint PrizesMax = 6; //May be a ui-only limit
+
+        /// <summary>
+        /// For FULL multiplayer mode. A unique value is treated as a unique player 
+        /// </summary>
+        /// <returns></returns>
+        public static string GetNewUniqueTestingProfile()
+        {
+            return $"{Application.productName}_{Guid.NewGuid()}";
+        }
+        
+        /// <summary>
+        /// Per Moralis, if you change this value, you have to auth again. ("Cookie" is lost)
+        /// </summary>
+        /// <returns></returns>
+        public static string GetNewProductName()
+        {
+            // Running in a parelsync clone vs the original
+            string clone = "";
+            if (ClonesManagerWrapper.IsClone)
+            {
+                clone = "_Clone";
+            }
+            
+            // Running inside the unity editor vs a build?
+            string unityEditor = "";
+            if (Application.isEditor)
+            {
+                unityEditor = "_UnityEditor";
+            }
+
+            return $"{ProjectNameShort}{unityEditor}{clone}";
+
+        }
     }
 }

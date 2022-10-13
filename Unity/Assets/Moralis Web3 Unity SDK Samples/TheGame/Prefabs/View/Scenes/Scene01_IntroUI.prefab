@@ -468,6 +468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _topUI: {fileID: 1895731522179559903}
+  _walletConnectWrapper: {fileID: 0}
   _authenticationButtonUI: {fileID: 5462901260632010620}
   _registerButton: {fileID: 3653805386264306727}
   _playGameButton: {fileID: 1636368967257486021}

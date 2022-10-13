@@ -137,9 +137,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		///////////////////////////////////////////
 		// Related To: MyMoralisWrapper
 		///////////////////////////////////////////
-		public async UniTask<bool> GetIsAuthenticatedAsync()
+		public async UniTask<bool> GetIsAuthenticatedAndUpdateModelAsync()
 		{
-			return await CustomWeb3System.Instance.IsAuthenticatedAsync();
+			bool isAuthenticated =  await CustomWeb3System.Instance.IsAuthenticatedAsync();
+			_theGameModel.IsAuthenticated.Value = isAuthenticated;
+			return _theGameModel.IsAuthenticated.Value;
 		}
 		
 		
@@ -219,17 +221,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		public void SetPlayerNicknameAndUpdateModel(string nickname)
 		{
-			string n = _theGameModel.CustomPlayerInfo.Value.Nickname;
-			string w = _theGameModel.CustomPlayerInfo.Value.Web3Address;
-			_theGameModel.CustomPlayerInfo.Value = new CustomPlayerInfo { Nickname = nickname, Web3Address = w };
+			_theGameModel.CustomPlayerInfo.Value.Nickname = nickname;
 			OnTheGameModelChangedRefresh();
 		}
 		
 		
 		public void SetPlayerWeb3AddressAndUpdateModel(string web3address)
 		{
-			string n = _theGameModel.CustomPlayerInfo.Value.Nickname;
-			_theGameModel.CustomPlayerInfo.Value = new CustomPlayerInfo { Nickname = n, Web3Address = web3address };
+			_theGameModel.CustomPlayerInfo.Value.Web3Address = web3address;
 			OnTheGameModelChangedRefresh();
 		}
 		
@@ -242,7 +241,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 
 		
 		// SETTER Methods -------------------------
-		public async UniTask RegisterAsync()
+		public async UniTask RegisterAndUpdateModelAsync()
 		{
 			await _theGameService.RegisterAsync();
 			_theGameModel.IsRegistered.Value = await GetIsRegisteredAndUpdateModelAsync();
@@ -254,6 +253,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		public async UniTask UnregisterAsync()
 		{
+			_theGameModel.ResetAllData();
 			await _theGameService.UnregisterAsync();
 			_theGameModel.IsRegistered.Value = await GetIsRegisteredAndUpdateModelAsync();
 
@@ -423,9 +423,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 					TheGameConstants.TransferingPrize,
 					async delegate ()
 					{
-						//string address = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e"; 
-						CustomPlayerInfo customPlayerInfo = new CustomPlayerInfo(); // based on _theGameModel.SelectedPlayerView.Value.OwnerClientId
-						await TransferPrizeAsync(customPlayerInfo.Web3Address, _theGameModel.Prizes.Value[0]);
+						await TransferPrizeAsync(_theGameModel.SelectedPlayerView.Value.Web3Address, 
+							_theGameModel.Prizes.Value[0]);
 					});
 			}
 		}
@@ -438,9 +437,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 					TheGameConstants.TransferingGold,
 					async delegate ()
 					{
-						//string address = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e"; 
-						CustomPlayerInfo customPlayerInfo = new CustomPlayerInfo(); // based on _theGameModel.SelectedPlayerView.Value.OwnerClientId
-						await TransferGoldAsync(customPlayerInfo.Web3Address);
+						await TransferGoldAsync(_theGameModel.SelectedPlayerView.Value.Web3Address);
 					});
 			}
 		}
@@ -605,6 +602,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			// So I manually delete the current one BEFORE the next scene loads. Works 100%
 			if (CustomWeb3System.Instance.HasWalletConnectInstance)
 			{
+				Debug.Log("8888888 This is destroying every time");
 				CustomWeb3System.Instance.DestroyWalletConnectInstance();
 			}
 

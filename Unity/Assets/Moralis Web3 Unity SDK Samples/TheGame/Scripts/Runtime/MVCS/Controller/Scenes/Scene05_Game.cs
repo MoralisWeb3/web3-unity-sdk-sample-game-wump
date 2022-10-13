@@ -41,33 +41,38 @@ namespace MoralisUnity.Samples.TheGame
 			TheGameSingleton.Instance.TheGameController.OnSharedStatusChanged.AddListener(OnSharedStatusChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(OnTheGameModelChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
+			
+			_ui.WalletConnectWrapper.EnsureWalletConnectExists();
 	
 			Initialize();
 			
 			RefreshUIAsync();
-			bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
-			bool isRegistered = false;
-			if (isAuthenticated)
-			{ 
-				// Populate the top UI
-				isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
-				RefreshUIAsync();
-			}
-
-			if (isAuthenticated && isRegistered)
+			bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
+			RefreshUIAsync();
+			
+			if (!isAuthenticated)
 			{
-				if (TheGameConfiguration.Instance.MultiplayerIsAutoStart && 
+				await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync( TheGameConstants.MustBeAuthenticated, 5000);
+				BackButton_OnClicked();
+			}
+			else
+			{
+				bool isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
+				RefreshUIAsync();
+				
+				if (!isRegistered)
+				{
+					await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync( TheGameConstants.MustBeRegistered, 5000);
+					BackButton_OnClicked();
+				}
+
+				if (TheGameConfiguration.Instance.MultiplayerIsAutoStart &&
 				    !TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
 				{
 					TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnect();
 				}
 			}
-			else
-			{
-				await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
-					TheGameConstants.MustBeRegistered, 5000);
-			}
-	
+
 		}
 
 
@@ -75,6 +80,8 @@ namespace MoralisUnity.Samples.TheGame
 
 		protected async void OnDestroy()
 		{
+			_ui.WalletConnectWrapper.EnsureWallectConnectIsDestroyed();
+				
 			if (!TheGameSingleton.IsShuttingDown)
 			{
 				if (TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())

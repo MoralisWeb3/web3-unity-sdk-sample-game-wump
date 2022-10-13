@@ -30,7 +30,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
         
         // Based on trial and error (and current network traffic)
         //  This is how long it takes for the state to change on the blockchain
-        private const int DelayExtraAfterStateChangeMilliseconds = 5000;
+        private const int DelayExtraAfterStateChangeMilliseconds = 7000; // I tested with 5000 and it die not always capture changes. Use more - srivello
 
 		// Initialization Methods -------------------------
 		public TheGameContractService()
@@ -87,7 +87,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
             List<Prize> prizes = new List<Prize>();
 
             // Check System Status
-            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
+            bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
             if (!isAuthenticated)
             {
                 // Sometimes, ONLY warn

@@ -7,9 +7,12 @@ using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
 using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
-using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 #pragma warning disable 1998
 namespace MoralisUnity.Samples.TheGame
@@ -49,13 +52,25 @@ namespace MoralisUnity.Samples.TheGame
 		// Initialization Methods -------------------------
 		public override void InstantiateCompleted()
 		{
-			//Set screen size for Standalone
+			
 #if UNITY_STANDALONE
-			Screen.SetResolution(1600, 800, false);
+			//Set screen size for Standalone
+			Screen.SetResolution((int)TheGameConstants.ScreenResolution.x, (int)TheGameConstants.ScreenResolution.y, false);
 			Screen.fullScreen = false;
 #endif
-
-			// Name it
+			
+#if UNITY_EDITOR
+			//Set the product name inside the editor. 
+			//This value is use by both moralis and the unity FULL Multiplayer for 'am I unique'
+			
+			//Do this "!=" check to prevent issues
+			if (PlayerSettings.productName != TheGameConstants.GetNewProductName())
+			{
+				PlayerSettings.productName = TheGameConstants.GetNewProductName();
+			}
+			UnityEngine.Debug.Log($"PlayerSettings.productName={PlayerSettings.productName}");
+#endif
+			// Name the runtime game object
 			gameObject.name = GetType().Name;
 			
 			///////////////////////////////////

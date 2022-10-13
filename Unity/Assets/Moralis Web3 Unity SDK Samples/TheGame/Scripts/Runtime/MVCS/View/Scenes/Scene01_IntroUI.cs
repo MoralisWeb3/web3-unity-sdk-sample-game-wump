@@ -1,3 +1,4 @@
+using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.UI;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
     public class Scene01_IntroUI : Scene_UIWithTop
     {
         //  Properties ------------------------------------
+        public WalletConnectWrapper WalletConnectWrapper { get { return _walletConnectWrapper; } }
         public AuthenticationButtonUI AuthenticationButtonUI { get { return _authenticationButtonUI; } }
         public BaseButtonUI Registerbutton { get { return _registerButton; } }
         public BaseButtonUI PlayGameButton { get { return _playGameButton; } }
@@ -19,6 +21,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
         //  Fields ----------------------------------------
         [Header ("References (Scene)")]
 
+        [SerializeField]
+        private WalletConnectWrapper _walletConnectWrapper = null;
+        
         [SerializeField]
         private AuthenticationButtonUI _authenticationButtonUI = null;
 

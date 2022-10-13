@@ -32,7 +32,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(TheGameSingleton_OnTheGameModelChanged);
             
             RefreshUIAsync();
-            _isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
+            _isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
             if (_isAuthenticated)
             {
                 // Populate the top UI

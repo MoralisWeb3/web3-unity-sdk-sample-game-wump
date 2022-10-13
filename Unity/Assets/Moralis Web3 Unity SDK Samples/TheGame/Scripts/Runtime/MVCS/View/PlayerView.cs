@@ -44,6 +44,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             
             public string SharedStatus { get { return _sharedStatus_NetworkBehaviour.SharedStatus; } }
    
+            public string Nickname { get { return _playerView_NetworkBehaviour.Nickname;} }
+            public string Web3Address { get { return _playerView_NetworkBehaviour.Web3Address;} }
+            
             public float SpeedMove { get { return _speedMove;} }
             
             public float SpeedSpin { get { return _speedSpin;} }
@@ -199,8 +202,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             {
                 // Click avatar in 3d to select it. 
                 // Player may not select their own avatar
-                if (TheGameConfiguration.Instance.CanPlayerClickSelf ||
-                    !_playerView_NetworkBehaviour.IsOwner)
+                if (!_playerView_NetworkBehaviour.IsOwner)
                 {
                     if (!SelectionManager.Instance.HasSelection())
                     {

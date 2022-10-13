@@ -15,12 +15,8 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
-
 using UnityEngine;
 using UnityEngine.Events;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 #pragma warning disable CS1998, CS4014
 namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
@@ -298,28 +294,27 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		{
 			
 			OnStateNameChanged.Invoke(newValue.ToString());
-			
+
 			switch (newValue)
 			{
 				case FullMultiplayerState.Null:
 					// Do nothing
 					break;
 				case FullMultiplayerState.Authenticating:
-					
+
 					InitializationOptions initializationOptions = new InitializationOptions();
 
 					////////////
 					//Make each client unique for testing, so
 					//The backend doesn't treat each instance as 'the same'
-					string uniqueTestingProfile = "Client_" + Guid.NewGuid();
-					
-					// Solution #1: Set unique profile name
+					string uniqueTestingProfile = TheGameConstants.GetNewUniqueTestingProfile();
+
+					// Solution: Set unique profile name
 					initializationOptions.SetProfile(uniqueTestingProfile);
 					
-#if UNITY_EDITOR
-					// Solution #2: Set unique product name
-					PlayerSettings.productName = uniqueTestingProfile;
-#endif 
+					Debug.Log($"Authenticating with Profile={uniqueTestingProfile}.");
+					
+	
 					////////////
 
 					try

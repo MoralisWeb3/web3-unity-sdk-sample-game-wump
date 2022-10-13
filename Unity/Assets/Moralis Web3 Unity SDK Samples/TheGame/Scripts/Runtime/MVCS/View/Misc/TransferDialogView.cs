@@ -44,7 +44,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
             
             RefreshUIAsync();
-            _isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAsync();
+            _isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
             if (_isAuthenticated)
             {
                 // Populate the top UI
@@ -56,6 +56,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
         //  General Methods -------------------------------
         private async UniTask RefreshUIAsync()
         {
+            _ui.TransferGoldButton.Text.text = $"Transfer {TheGameConstants.GoldOnTransfer} Gold (ERC20 Token)";
+            _ui.TransferPrizeButton.Text.text = $"Transfer {TheGameConstants.PrizesOnTransfer} Prize (ERC721 Nft)";
+            
             _ui.TransferGoldButton.IsInteractable = _isAuthenticated
                                                     && _isRegistered
                                                     && TheGameSingleton.Instance.TheGameController
@@ -69,31 +72,28 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             if (TheGameSingleton.Instance.TheGameController.CanTransferGoldToSelected() ||
                 TheGameSingleton.Instance.TheGameController.CanTransferPrizeToSelected())
             {
-                _ui.OutputText.text = $"Transfer?\n from : {_toAddress}\n to : {_toAddress}";
+                _ui.OutputText.text = $"Would you like to transfer Web3 assets?\n\nFrom: {_fromAddress}\nTo: {_toAddress}";
             }
             else
             {
-                _ui.OutputText.text = $"You many NOT transfer to {_toAddress}.";
+                _ui.OutputText.text = $"You may NOT transfer Web3 assets.\n\nFrom: {_fromAddress}\nTo: {_toAddress}";
             }
             
             _ui.CancelButton.Button.onClick.AddListener(CancelButton_OnClicked);
         }
 		
-        //  Event Handlers --------------------------------
+        //  Event Handlers --------------------------------d
         private void TheGameSingleton_OnTheGameModelChanged(TheGameModel theGameModel)
         {
             if (theGameModel.HasSelectedPlayerView)
             {
-                //string address = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e"; 
-                CustomPlayerInfo customPlayerInfo = new CustomPlayerInfo(); // based on _theGameModel.SelectedPlayerView.Value.OwnerClientId
-                _fromAddress = "0xTempBlah";
-                _toAddress = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e";
-                
+                _toAddress = theGameModel.SelectedPlayerView.Value.Web3Address;
             }
             else
             {
                 _toAddress = "";
             }
+            _fromAddress = theGameModel.CustomPlayerInfo.Value.Web3Address;
         }
 
         
