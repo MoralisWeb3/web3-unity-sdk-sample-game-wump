@@ -7,7 +7,7 @@ namespace MoralisUnity.Samples.Shared.UI
 	/// <summary>
 	/// UI element for a "Loading..." type message
 	/// </summary>
-	public class BaseScreenMessageUI : MonoBehaviour, IIsVisible, IAlpha
+	public class BaseScreenMessageUI : MonoBehaviour, IIsVisible, IAlpha, IBlocksRaycasts
 	{
 		// Properties -------------------------------------
 		public bool IsVisible

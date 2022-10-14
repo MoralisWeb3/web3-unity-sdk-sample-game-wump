@@ -76,6 +76,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		{
 			if (IsInitialized) return;
 			//
+			_theGameView.SceneManagerComponent.Initialize(TheGameConfiguration.Instance.SceneTransition, _theGameView.SceneTransitionImage);
 			_theGameView.SceneManagerComponent.OnSceneLoadingEvent.AddListener(SceneManagerComponent_OnSceneLoadingEvent);
 			_theGameView.SceneManagerComponent.OnSceneLoadedEvent.AddListener(SceneManagerComponent_OnSceneLoadedEvent);
 			SelectionManager.Instance.OnSelectionChanged.AddListener(SelectionManager_OnSelectionChanged);

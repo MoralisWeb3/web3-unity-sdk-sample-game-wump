@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using MoralisUnity.Samples.Shared.Audio;
 using MoralisUnity.Samples.Shared.Components;
+using MoralisUnity.Samples.Shared.Data.Types.Storage;
 using MoralisUnity.Samples.Shared.Helpers;
 using MoralisUnity.Samples.Shared.UI;
 using UnityEngine;
@@ -20,8 +21,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 		// Properties -------------------------------------
 		public SceneManagerComponent SceneManagerComponent { get { return _sceneManagerComponent;}}
 		public BaseScreenMessageUI BaseScreenCoverUI { get { return _baseScreenMessageUI; }}
-		
-		
+		public SceneTransitionImage SceneTransitionImage { get { return _sceneTransitionImage; }}
+
 		// Fields -----------------------------------------
 		[Header("References (Scene)")] 
 		[SerializeField] 
@@ -30,6 +31,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 		[SerializeField] 
 		private BaseScreenMessageUI _baseScreenMessageUI = null;
 
+		[SerializeField] 
+		private SceneTransitionImage _sceneTransitionImage = null;
+
+		
 		private static readonly Vector3 SmallScale = new Vector3(.75f, .75f, .75f);
 		private static readonly Vector3 FullScale = new Vector3(1, 1, 1);
 		private static readonly Vector3 NoScale = new Vector3(1, 1, 1);

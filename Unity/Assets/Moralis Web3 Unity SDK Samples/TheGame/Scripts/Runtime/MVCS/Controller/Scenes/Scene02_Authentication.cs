@@ -1,6 +1,4 @@
 using Cysharp.Threading.Tasks;
-using MoralisUnity.Samples.TheGame.MVCS;
-using MoralisUnity.Samples.TheGame.MVCS.View;
 using MoralisUnity.Samples.TheGame.MVCS.View.Scenes;
 using UnityEngine;
 

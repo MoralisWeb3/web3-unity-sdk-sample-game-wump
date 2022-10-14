@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: TheGameConfiguration
   m_EditorClassIdentifier: 
   _isLogEnabled: 1
+  _sceneTransition: {fileID: 11400000, guid: 6e55bad36842ed14690b63268c818bff, type: 2}
   _sceneDataStorage: {fileID: 11400000, guid: b26de83d10480624f82cf855ce76b933, type: 2}
   _theGameViewPrefab: {fileID: 7658312415067987870, guid: 58ebf062fbd0bf54a90ceb725ac64508, type: 3}
   _transferDialogViewPrefab: {fileID: 3935997937226204647, guid: b647510e864d9794a9a3d86f07225353, type: 3}

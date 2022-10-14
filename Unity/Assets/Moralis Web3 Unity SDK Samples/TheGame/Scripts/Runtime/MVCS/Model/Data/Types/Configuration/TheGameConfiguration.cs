@@ -15,7 +15,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration
     [CreateAssetMenu( menuName = TheGameConstants.PathCreateAssetMenu + "/" + Title,  fileName = Title)]
     public class TheGameConfiguration : BaseConfiguration<TheGameConfiguration>
     {
+        
         // Properties -------------------------------------
+        public SceneTransition SceneTransition { get { return _sceneTransition; } }
+        
         public TheGameView TheGameViewPrefab { get { return _theGameViewPrefab; } }
         public SceneData IntroSceneData { get { return _sceneDataStorage.SceneDatas[0];}}
         public SceneData AuthenticationSceneData { get { return _sceneDataStorage.SceneDatas[1];}}
@@ -36,6 +39,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration
         
         // Fields -----------------------------------------
         public const string Title = "TheGameConfiguration";
+        
+        [Header("Cosmetics")]
+        [SerializeField]
+        private SceneTransition _sceneTransition = null;
+
         
         [Header("References (Project, General)")]
         [Tooltip("Holds a reference to all the scene assets. ")]
