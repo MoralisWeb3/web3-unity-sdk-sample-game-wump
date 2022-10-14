@@ -1,0 +1,37 @@
+.header {
+    background-color: aliceblue;
+    justify-content: center;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    width: 100%;
+}
+
+.container {
+    height: 100vh;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.footer {
+    background-color: aliceblue;
+    display: flex;
+    justify-content: space-evenly;
+    font-weight: 500;
+}
+
+.menuItem:hover {
+    color:slategray;
+    cursor: pointer;
+}
+
+.table {
+    width: 70vw;
+    max-width: 1000px;
+}
