@@ -572,7 +572,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		private void MultiplayerSetupService_OnConnectionStarted()
 		{
 			Debug.Log($"OnConnectionStarted() ");
-			ShowMessageWithDelayAsync(TheGameConstants.MultiplayerConnecting, 10000);
+			ShowMessageWithDelayAsync(TheGameConstants.MultiplayerConnecting, 5000);
 		}
 		
 		private void MultiplayerSetupService_OnStateNameChanged(string stateName)
