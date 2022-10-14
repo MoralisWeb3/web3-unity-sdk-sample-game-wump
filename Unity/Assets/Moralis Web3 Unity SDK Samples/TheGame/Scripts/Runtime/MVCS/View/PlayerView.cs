@@ -4,12 +4,11 @@ using RMC.Shared.Data.Types;
 using RMC.Shared.Managers;
 using MoralisUnity.Samples.TheGame.MVCS.Networking;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
-using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
 using TMPro;
+using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Events;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.View
 {
@@ -25,7 +24,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
         /// Relates to <see cref="PlayerView_NetworkBehaviour"/>
         /// 
         /// </summary>
-        public class PlayerView : MonoBehaviour, ISelectionManagerSelectable
+        public class PlayerView : MonoBehaviour, ISelectionManagerSelectable 
         {
             //  Events ----------------------------------------
             [HideInInspector]
@@ -53,7 +52,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             
             public Camera Camera { get { return _camera; } }
 
-            public TMP_Text NameText { get { return _nameText; } }
+            public TMP_Text PlayerNameText { get { return _playerNameText; } }
             
             public string PlayerName { get { return _playerView_NetworkBehaviour.PlayerName; } }
             public ulong PlayerIndex { get { return _playerView_NetworkBehaviour.PlayerIndex; } }
@@ -67,6 +66,27 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             private const string WalkTrigger = "WalkTrigger";
             
             //  Fields ----------------------------------------
+            [Header("Configuration")]
+            
+            [SerializeField]
+            private float _speedMove = 10;
+
+            [SerializeField]
+            private float _speedSpin = 10;
+            
+            /// <summary>
+            /// Set to false in main menu where this avatar is used just for cosmetics
+            ///
+            /// TRUE
+            /// * All systems within are working
+            ///
+            /// FALSE
+            /// * Only idle animation and SetPlayerText are working
+            /// 
+            /// </summary>
+            [SerializeField]
+            private bool _isInGameScene = true;
+
             [Header("References (Networking)")] 
             [SerializeField]
             private PlayerView_NetworkBehaviour _playerView_NetworkBehaviour;
@@ -76,7 +96,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 
             [Header("References (Local)")] 
             [SerializeField] 
-            private TMP_Text _nameText;
+            private TMP_Text _playerNameText;
 
             [SerializeField] 
             private NetworkAnimator _networkAnimator;
@@ -85,16 +105,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             private CharacterController _characterController;
 
             [SerializeField] 
+            private ClientNetworkTransform _clientNetworkTransform;
+            
+            [SerializeField] 
             private ReticlesView _reticlesView;
 
-            [Header("Configuration")]
-            
-            [SerializeField]
-            private float _speedMove = 10;
-
-            [SerializeField]
-            private float _speedSpin = 10;
-            
             private List<Color> _networkPlayerColors = new List<Color>
             {
                 // 
@@ -109,11 +124,26 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             };
 
             private Camera _camera;
+            private bool _isInitialized = false;
 
-            //  Unity Methods ---------------------------------
+            //  Initialization Methods ---------------------------------
 
             public void CalledByOnNetworkSpawn()
             {
+      
+                Initialize();
+            }
+            
+            public void Initialize()
+            {
+                if (!_isInGameScene)
+                {
+                    return;
+                }
+                if (_isInitialized)
+                {
+                    return;
+                }
                 IsWalking.OnValueChanged.AddListener(IsWalking_OnValueChanged);
                 IsWalking.SetDirty();
 
@@ -123,12 +153,36 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 _playerView_NetworkBehaviour.OnPlayerAction.AddListener(PlayerInputNetworkBehaviour_OnPlayerAction);
                 _sharedStatus_NetworkBehaviour.OnSharedStatusChanged.AddListener(SharedStatus_NetworkBehaviour_OnSharedStatusChanged);
                 
+  
+                _isInitialized = true;
+            }
+            
+            
+            //  Unity Methods ---------------------------------
+            protected void Awake()
+            {
+                if (!_isInGameScene)
+                {
+                    _playerView_NetworkBehaviour.enabled = false;
+                    _clientNetworkTransform.enabled = false;
+                    _characterController.enabled = false;
+                    _sharedStatus_NetworkBehaviour.enabled = false;
+                    _networkAnimator.enabled = false;
+                    _reticlesView.gameObject.SetActive(false);
+
+                }
+            }
+
+            
+            protected void Start()
+            {
                 // Get camera for use in billboarding the PlayerName above his head
                 Camera[] cameras = GameObject.FindObjectsOfType<Camera>();
                 Assert.IsTrue(cameras.Length == 1);
                 _camera = cameras[0];
             }
-
+            
+            
             protected void OnDestroy()
             {
                 if (!TheGameSingleton.IsShuttingDown)

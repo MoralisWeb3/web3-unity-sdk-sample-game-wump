@@ -335,7 +335,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
 
         private async void BackButton_OnClicked()
         {
-            TheGameSingleton.Instance.TheGameController.LoadIntroSceneAsync();
+            TheGameSingleton.Instance.TheGameController.LoadSettingsSceneAsync();
         }
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9210220724300814937}
   - component: {fileID: 2051614982749750920}
   m_Layer: 0
-  m_Name: PlayerText
+  m_Name: PlayerNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,9 +100,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[Player Text]
+  m_text: '...
 
-    <size=5>[Player Text]</size>'
+    ...'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6800,15 +6800,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97b4bdda5f1d49519ce8b9cb7f404978, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerView_NetworkBehaviour: {fileID: 6257285466335720921}
-  _sharedStatus_NetworkBehaviour: {fileID: -7799507188485453904}
-  _nameText: {fileID: 2051614982749750920}
-  _networkAnimator: {fileID: 1208049652516994516}
-  _characterController: {fileID: 3797840836751216180}
-  _collider: {fileID: 3797840836751216180}
-  _reticlesView: {fileID: 1994921799155363910}
   _speedMove: 10
   _speedSpin: 10
+  _isInGameScene: 1
+  _playerView_NetworkBehaviour: {fileID: 6257285466335720921}
+  _sharedStatus_NetworkBehaviour: {fileID: -7799507188485453904}
+  _playerNameText: {fileID: 2051614982749750920}
+  _networkAnimator: {fileID: 1208049652516994516}
+  _characterController: {fileID: 3797840836751216180}
+  _clientNetworkTransform: {fileID: 5442754300878180717}
+  _reticlesView: {fileID: 1994921799155363910}
 --- !u!1001 &4175483700908798840
 PrefabInstance:
   m_ObjectHideFlags: 0

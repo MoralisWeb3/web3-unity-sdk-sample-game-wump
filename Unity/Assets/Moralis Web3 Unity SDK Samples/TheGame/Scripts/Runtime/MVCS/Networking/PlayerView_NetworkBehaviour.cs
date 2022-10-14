@@ -174,8 +174,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             //Orient the camera after all movement is completed this frame to avoid jittering
             protected void LateUpdate()
             {
-                _playerView.NameText.transform.LookAt(
-                    _playerView.NameText.transform.position - _playerView.Camera.transform.position, 
+                _playerView.PlayerNameText.transform.LookAt(
+                    _playerView.PlayerNameText.transform.position - _playerView.Camera.transform.position, 
                     Vector3.up);
             }
             
@@ -190,7 +190,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                     line2 = $"<size=4>({_web3AddressStringNetworkVariable.Value})</size>";
                 }
                 
-                _playerView.NameText.text = $"{line1}\n" +
+                _playerView.PlayerNameText.text = $"{line1}\n" +
                                             $"{line2}";
             }
             

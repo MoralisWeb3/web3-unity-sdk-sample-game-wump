@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 9181998740860443146}
   - component: {fileID: 4703564568198525530}
   m_Layer: 0
-  m_Name: DungeonEnvironmentView
+  m_Name: DungeonInGameView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

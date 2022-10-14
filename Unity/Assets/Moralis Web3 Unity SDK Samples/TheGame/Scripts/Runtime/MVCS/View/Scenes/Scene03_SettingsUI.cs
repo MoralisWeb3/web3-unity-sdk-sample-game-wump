@@ -9,13 +9,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
     /// </summary>
     public class Scene03_SettingsUI : Scene_UIWithTop
     {
+        
         //  Properties ------------------------------------
+        public PlayerView PlayerView { get { return _playerView; } }
         public BaseButtonUI BackButton { get { return _backButton; } }
         public BaseButtonUI ResetButton { get { return _resetButton; } }
         public BaseButtonUI RandomizeNicknameButton { get { return _randomizeNicknameButton; } }
         //  Fields ----------------------------------------
         [Header ("References (Scene)")]
 
+        [SerializeField]
+        private PlayerView _playerView = null;
+        
         [SerializeField]
         private BaseButtonUI _resetButton = null;
         

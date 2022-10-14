@@ -25,7 +25,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
 
         //  Unity Methods----------------------------------
         protected async void Start()
-        { 
+        {
+            _ui.PlayerView.PlayerNameText.text = TheGameHelper.SetPlayerTextLikeMenuHeading("Settings"); 
             _ui.RandomizeNicknameButton.Button.onClick.AddListener(RandomizeNicknameButton_OnClicked);
             _ui.ResetButton.Button.onClick.AddListener(ResetButton_OnClicked);
             _ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);
@@ -47,7 +48,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             string nickname = "";
             if (_customPlayerInfo.HasNickname)
             {
-                nickname = $"<size=40>({_customPlayerInfo.Nickname})</size>";
+                nickname = $"({_customPlayerInfo.Nickname})";
             }
             _ui.RandomizeNicknameButton.Text.text = $"Randomize Nickname {nickname}";
             _ui.RandomizeNicknameButton.IsInteractable = _isAuthenticated && _isRegistered;
@@ -66,7 +67,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         
         private async void RandomizeNicknameButton_OnClicked()
         {
-            TheGameSingleton.Instance.TheGameController.RandomizeNicknameAndUpdateModel();
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
+                Debug.LogWarning("User held SHIFT key during button click. Opening secret menu.");
+                //Secret Menu
+                TheGameSingleton.Instance.TheGameController.LoadDeveloperConsoleSceneAsync();
+            }
+            else
+            {
+                //Normal
+                TheGameSingleton.Instance.TheGameController.RandomizeNicknameAndUpdateModel();
+            }
+            
         }
         
         

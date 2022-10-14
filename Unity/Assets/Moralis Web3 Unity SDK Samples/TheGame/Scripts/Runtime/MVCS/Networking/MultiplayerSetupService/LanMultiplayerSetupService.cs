@@ -92,7 +92,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			float guiWidth = Screen.width * 0.2f;
 			float guiHeight = Screen.height * 0.2f;
 			float guiMarginWidth = 10;
-			float guiMarginHeight = 15;
+			float guiMarginHeight = 320;
 			GUILayout.BeginArea(new Rect(
 				Screen.width - guiWidth - guiMarginWidth, 
 				Screen.height - guiHeight - guiMarginHeight, 
