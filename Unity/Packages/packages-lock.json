@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.cysharp.unitask": {
+      "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "ee54559532c5388fc666f71f07800fbf69cbded7"
+    },
     "com.unity.2d.animation": {
       "version": "7.0.8",
       "depth": 1,
@@ -352,7 +359,7 @@
       "hash": "f45424822189ebd875d864a17d7f03b72eafbff7"
     },
     "io.moralis.web3-unity-sdk": {
-      "version": "1.2.10",
+      "version": "1.2.11",
       "depth": 0,
       "source": "registry",
       "dependencies": {
