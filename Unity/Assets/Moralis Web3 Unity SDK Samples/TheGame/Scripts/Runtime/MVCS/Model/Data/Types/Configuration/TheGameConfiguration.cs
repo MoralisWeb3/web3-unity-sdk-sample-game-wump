@@ -30,7 +30,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration
         
         public UnityTransport.SimulatorParameters LanSimulatorParameters { get { return _lanSimulatorParameters;}}
             
-        public DetailsView DetailsViewPrefab { get { return _detailsViewPrefab; } }
         public TransferDialogView TransferDialogViewPrefab { get { return _transferDialogViewPrefab; } }
         
         public NetworkManagerView NetworkManagerViewPrefab { get { return _networkManagerViewPrefab; } }
@@ -56,10 +55,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration
         [Tooltip("Holds the core, unity-specific multiplayer functionality")]
         [SerializeField] 
         private NetworkManagerView _networkManagerViewPrefab;
-        
-        [Tooltip("The ui for the details of the player. This is a TEMP/Debugging asset")]
-        [SerializeField] 
-        private DetailsView _detailsViewPrefab;
         
         [Header("Settings (Edit-Time Only, General)")]
         [Tooltip("Use either Moralis Database (dev) or Moralis Web3 (prod)")]

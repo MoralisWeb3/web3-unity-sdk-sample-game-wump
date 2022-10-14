@@ -50,7 +50,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		private readonly NetworkManagerView _networkManagerView = null;
 		private readonly ITheGameService _theGameService = null;
 		private readonly IMultiplayerSetupService _multiplayerSetupService = null;
-		private readonly DetailsView _detailsView = null;
 		
 		// Wait, So click sound is audible before scene changes
 		private const int DelayLoadSceneMilliseconds = 100;
@@ -59,7 +58,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public TheGameController(
 			TheGameModel theGameModel,
 			TheGameView theGameView,
-			DetailsView detailsView,
 			NetworkManagerView networkManagerView,
 			ITheGameService theGameService,
 			IMultiplayerSetupService multiplayerSetupService)
@@ -67,12 +65,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			_theGameModel = theGameModel;
 			_theGameView = theGameView;
 			_networkManagerView = networkManagerView;
-			_detailsView = detailsView;
 			_theGameService = theGameService;
 			_multiplayerSetupService = multiplayerSetupService;
 			
-			_detailsView.gameObject.SetActive(false);
-
 		}
 
 		public void Initialize()
@@ -301,7 +296,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 
 		public void MultiplayerSetupServiceConnect()
 		{
-			_detailsView.gameObject.SetActive(false);
 			_multiplayerSetupService.Connect();
 		}
 		
@@ -312,11 +306,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		public async void MultiplayerSetupServiceDisconnectAsync()
 		{
-			if (_detailsView != null)
-			{
-				_detailsView.gameObject.SetActive(false);
-			}
-			
 			await _multiplayerSetupService.DisconnectAsync();
 		}
 		
@@ -340,7 +329,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		private void PlayerView_OnIsWalkingChanged(PlayerView playerView)
 		{
 			if (!playerView.IsLocalPlayer) return;
-			DetailsView.Instance.LocalStatus = playerView.IsWalking.Value ? "Walking" : "Idle";
+			string status = playerView.IsWalking.Value ? "Walking" : "Idle";
 		}
 		
 		private void PlayerView_OnPlayerAction(PlayerView playerView)
@@ -375,18 +364,27 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		{
 			if (_theGameModel.HasSelectedPlayerView)
 			{
-				if (_theGameModel.Gold.Value >= TheGameConstants.GoldOnTransfer)
+				if (_theGameModel.SelectedPlayerView.Value.Web3Address !=
+				    _theGameModel.CustomPlayerInfo.Value.Web3Address)
 				{
-					return true;
+					if (_theGameModel.Gold.Value >= TheGameConstants.GoldOnTransfer)
+					{
+						return true;
+					}
+					else
+					{
+						Debug.LogWarning("CanTransfer() failed. Nothing to transfer");
+					}
 				}
 				else
 				{
-					Debug.LogWarning("Nothing to transfer");
+					Debug.LogWarning("CanTransfer() failed. The from/to cannot be identical");
 				}
+		
 			}
 			else
 			{
-				Debug.LogWarning("No one is selected");
+				Debug.LogWarning("CanTransfer() failed. No one is selected");
 			}
 
 			return false;
@@ -397,18 +395,26 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		{
 			if (_theGameModel.HasSelectedPlayerView)
 			{
-				if (_theGameModel.Prizes.Value.Count >= TheGameConstants.PrizesOnTransfer)
+				if (_theGameModel.SelectedPlayerView.Value.Web3Address !=
+				    _theGameModel.CustomPlayerInfo.Value.Web3Address)
 				{
-					return true;
+					if (_theGameModel.Prizes.Value.Count >= TheGameConstants.PrizesOnTransfer)
+					{
+						return true;
+					}
+					else
+					{
+						Debug.LogWarning("CanTransfer() failed. Nothing to transfer");
+					}
 				}
 				else
 				{
-					Debug.LogWarning("Nothing to transfer");
+					Debug.LogWarning("CanTransfer() failed. The from/to cannot be identical");
 				}
 			}
 			else
 			{
-				Debug.LogWarning("No one is selected");
+				Debug.LogWarning("CanTransfer() failed. No one is selected");
 			}
 
 			return false;
@@ -578,7 +584,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		private void MultiplayerSetupService_OnStateNameChanged(string stateName)
 		{
 			Debug.Log($"OnStateNameChanged() {stateName}");
-			DetailsView.Instance.LocalStatus = stateName;
 			UpdateMessageDuringMethod(TheGameConstants.Multiplayer + " " + stateName);
 		}
 		

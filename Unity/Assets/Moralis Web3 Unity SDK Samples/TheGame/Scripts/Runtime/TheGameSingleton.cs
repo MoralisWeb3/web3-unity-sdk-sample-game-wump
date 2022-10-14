@@ -45,7 +45,6 @@ namespace MoralisUnity.Samples.TheGame
 		private TheGameController _theGameController;
 		private ITheGameService _theGameService;
 		private IMultiplayerSetupService _multiplayerSetupService = null;
-		private DetailsView _detailsView;
 		private NetworkManagerView _networkManagerView;
 		private bool _hadController;
 
@@ -85,10 +84,6 @@ namespace MoralisUnity.Samples.TheGame
 			SharedHelper.SafeDontDestroyOnLoad(_theGameView.gameObject);
 			
 			////////////// VIEW - (PARENT UNDER NUL, REQUIRED OF NETWORKOBJECTS) /////////////////////
-			// The Details View 
-			_detailsView = TheGameHelper.InstantiatePrefab<DetailsView>(TheGameConfiguration.Instance.DetailsViewPrefab,
-				null, new Vector3(0, 0, 0));
-			SharedHelper.SafeDontDestroyOnLoad(_detailsView.gameObject);
 			
 			// The Network Manager View
 			_networkManagerView = TheGameHelper.InstantiatePrefab<NetworkManagerView>(TheGameConfiguration.Instance.NetworkManagerViewPrefab,
@@ -119,7 +114,6 @@ namespace MoralisUnity.Samples.TheGame
 			_theGameController = new TheGameController(
 				_theGameModel, 
 				_theGameView,
-				_detailsView,
 				_networkManagerView,
 				_theGameService,
 				_multiplayerSetupService);

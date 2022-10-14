@@ -18,7 +18,7 @@ namespace MoralisUnity.Samples.TheGame
         ///////////////////////////////////////////
         // Build Configuration
         ///////////////////////////////////////////
-        public static Vector2 ScreenResolution = new Vector2(1600*.8f, 1000*.8f);
+        public static Vector2 ScreenResolution = new Vector2(1600*.6f, 1000*.6f);
             
             
         ///////////////////////////////////////////
