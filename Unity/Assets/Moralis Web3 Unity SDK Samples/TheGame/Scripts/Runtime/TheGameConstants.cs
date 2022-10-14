@@ -85,7 +85,7 @@ namespace MoralisUnity.Samples.TheGame
         {
             // Running in a parelsync clone vs the original
             string clone = "";
-            if (ClonesManagerWrapper.IsClone)
+            if (ClonesManagerWrapper.HasClonesManager && ClonesManagerWrapper.IsClone)
             {
                 clone = "_Clone";
             }
@@ -94,7 +94,7 @@ namespace MoralisUnity.Samples.TheGame
             string unityEditor = "";
             if (Application.isEditor)
             {
-                unityEditor = "_UnityEditor";
+                unityEditor = "_UnityEditor2";
             }
 
             return $"{ProjectNameShort}{unityEditor}{clone}";

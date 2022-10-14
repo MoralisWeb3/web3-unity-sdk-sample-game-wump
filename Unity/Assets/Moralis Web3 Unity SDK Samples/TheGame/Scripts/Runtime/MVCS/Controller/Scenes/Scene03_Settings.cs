@@ -16,6 +16,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
  
 		
         //  Fields ----------------------------------------
+        [Header ("References (Scene)")]
         [SerializeField]
         private Scene03_SettingsUI _ui;
 
@@ -26,6 +27,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         //  Unity Methods----------------------------------
         protected async void Start()
         {
+            _ui.WalletConnectWrapper.EnsureWalletConnectExists();
+            
             _ui.PlayerView.PlayerNameText.text = TheGameHelper.SetPlayerTextLikeMenuHeading("Settings"); 
             _ui.RandomizeNicknameButton.Button.onClick.AddListener(RandomizeNicknameButton_OnClicked);
             _ui.ResetButton.Button.onClick.AddListener(ResetButton_OnClicked);
@@ -41,6 +44,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                 RefreshUIAsync();
             }
         }
+        
+        protected void OnDestroy()
+        {
+            _ui.WalletConnectWrapper.EnsureWallectConnectIsDestroyed();
+        }
+
 
         //  General Methods -------------------------------
         private async UniTask RefreshUIAsync()

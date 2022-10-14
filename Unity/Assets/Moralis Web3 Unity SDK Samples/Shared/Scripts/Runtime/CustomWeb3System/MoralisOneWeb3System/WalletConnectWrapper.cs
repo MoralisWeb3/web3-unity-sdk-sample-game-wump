@@ -17,10 +17,6 @@ namespace MoralisUnity.Samples.Shared
 		// Fields -----------------------------------------
 		[SerializeField] 
 		private WalletConnect _walletConnectPrefab;
-
-		private bool _hasWalletConnectOnStart = false;
-		private bool _hasWalletConnectOnUpdate = false;
-		private bool _hasReportedLoss = false;
 		private WalletConnect _walletConnectLocallyCreated;
 
 		// Unity Methods -------------------------
@@ -32,15 +28,13 @@ namespace MoralisUnity.Samples.Shared
 				Debug.Log("8888 Manually Creating WalletConnect");
 				_walletConnectLocallyCreated = Instantiate<WalletConnect>(_walletConnectPrefab);
 			}
-
+			Debug.Log($">>>>>>> EnsureWalletConnectExists() now = {WalletConnect.Instance}");
+				
 			WalletConnectQRImage walletConnectQRImage = FindObjectOfType<WalletConnectQRImage>();
-			Debug.Log("1");
 			if (walletConnectQRImage != null)
 			{
-				Debug.Log("2");
 				if (walletConnectQRImage.walletConnect == null)
 				{
-					Debug.Log("3");
 					walletConnectQRImage.walletConnect = WalletConnect.Instance;
 				}
 			}
@@ -53,6 +47,7 @@ namespace MoralisUnity.Samples.Shared
 				Debug.Log("8888 Manually Destroying WalletConnect");
 				Destroy(_walletConnectLocallyCreated.gameObject);
 			}
+			Debug.Log($">>>>>>> EnsureWallectConnectIsDestroyed() now = {WalletConnect.Instance}");
 		}
 		
 		protected void OnDestroy()

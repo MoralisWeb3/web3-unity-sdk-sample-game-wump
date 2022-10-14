@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using MoralisUnity.Samples.Shared.Attributes;
+﻿using MoralisUnity.Samples.Shared.Attributes;
 using UnityEngine;
 using UnityEngine.Events;
 

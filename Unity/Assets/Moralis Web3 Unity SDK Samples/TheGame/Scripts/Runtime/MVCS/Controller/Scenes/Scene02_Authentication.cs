@@ -16,6 +16,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
 
 
         //  Fields ----------------------------------------
+        [Header ("References (Scene)")]
         [SerializeField]
         private Scene02_AuthenticationUI _ui;
 

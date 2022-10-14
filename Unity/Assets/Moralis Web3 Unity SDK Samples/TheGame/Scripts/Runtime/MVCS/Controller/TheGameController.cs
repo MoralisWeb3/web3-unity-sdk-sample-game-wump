@@ -242,7 +242,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			_theGameModel.IsRegistered.Value = await GetIsRegisteredAndUpdateModelAsync();
 			
 			// Wait for contract values to sync so the client will see the changes
-			await DelayExtraAfterStateChangeAsync();
+			await DelayExtraAfterStateChangeAsync(); // Delay 1 of 2
+			await DelayExtraAfterStateChangeAsync(); // Delay 2 of 2 -- yes this is a long delay. Apparently needed for this state change
 		}
 
 		
@@ -459,8 +460,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 
 			if (_theGameModel.HasSelectedPlayerView)
 			{
-				TransferDialogView transferDialogView = TheGameHelper.InstantiatePrefab<TransferDialogView>(TheGameConfiguration.Instance.TransferDialogViewPrefab,
-					TheGameSingleton.Instance.transform, new Vector3(0, 0, 0));
+				//TransferDialogView transferDialogView = TheGameHelper.InstantiatePrefab<TransferDialogView>(TheGameConfiguration.Instance.TransferDialogViewPrefab,
+				//	TheGameSingleton.Instance.transform, new Vector3(0, 0, 0));
 			}
 		}
 

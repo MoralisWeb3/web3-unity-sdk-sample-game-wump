@@ -1,5 +1,4 @@
 using System;
-using MoralisUnity.Samples.Shared.Utilities;
 using Newtonsoft.Json;
 using UnityEngine;
 

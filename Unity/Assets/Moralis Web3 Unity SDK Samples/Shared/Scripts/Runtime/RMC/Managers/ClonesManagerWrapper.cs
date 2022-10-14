@@ -1,6 +1,8 @@
-using System;
+
 #if UNITY_EDITOR
 using ParrelSync;
+#else
+using System;
 #endif //UNITY_EDITOR
 
 namespace RMC.Shared
@@ -49,7 +51,6 @@ namespace RMC.Shared
 			get
 			{
 #if UNITY_EDITOR
-				string customArgument = ClonesManager.GetArgument();
 				return ClonesManager.IsClone();
 #else
 				throw new Exception ("Cannot IsClone. Must first check HasClonesManage==true");

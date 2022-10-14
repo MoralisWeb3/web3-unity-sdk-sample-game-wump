@@ -1,14 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Cysharp.Threading.Tasks;
-using MoralisUnity.Platform.Objects;
-using MoralisUnity.Samples.Shared.Exceptions;
-using MoralisUnity.Sdk.Interfaces;
-using MoralisUnity.Web3Api.Models;
-using Nethereum.Hex.HexTypes;
-using UnityEngine;
-using WalletConnectSharp.Unity;
+using Nethereum.Hex.HexTypes; //Keep
 
 namespace MoralisUnity.Samples.Shared.Data.Types
 {

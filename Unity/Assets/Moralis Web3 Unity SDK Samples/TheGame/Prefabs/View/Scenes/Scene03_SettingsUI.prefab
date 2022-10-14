@@ -599,6 +599,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _topUI: {fileID: 1895731522179559903}
+  _walletConnectWrapper: {fileID: 0}
   _playerView: {fileID: 0}
   _resetButton: {fileID: 6603257980021133821}
   _backButton: {fileID: 8858308337429945018}
