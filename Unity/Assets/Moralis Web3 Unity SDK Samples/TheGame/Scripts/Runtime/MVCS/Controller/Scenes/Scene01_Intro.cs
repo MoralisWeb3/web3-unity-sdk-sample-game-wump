@@ -27,7 +27,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         protected async void Start()
         {
             _ui.WalletConnectWrapper.EnsureWalletConnectExists();
-            _ui.PlayerView.PlayerNameText.text = TheGameHelper.SetPlayerTextLikeMenuHeading("Intro"); 
+            _ui.PlayerView.PlayerNameText.text = TheGameHelper.GetPlayerNameAsSceneTitle("Intro"); 
             
             _ui.AuthenticationButtonUI.Button.onClick.AddListener(AuthenticationButtonUI_OnClicked);
             _ui.Registerbutton.Button.onClick.AddListener(Registerbutton_OnClicked);

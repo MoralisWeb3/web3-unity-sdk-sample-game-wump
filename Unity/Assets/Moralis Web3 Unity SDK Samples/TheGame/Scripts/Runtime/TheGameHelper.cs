@@ -213,9 +213,9 @@ namespace MoralisUnity.Samples.TheGame
             return $"{article[UnityEngine.Random.Range(0, article.Count)]} {adjective[UnityEngine.Random.Range(0, adjective.Count)]} {noun[UnityEngine.Random.Range(0, noun.Count)]}";
         }
 
-        public static string SetPlayerTextLikeMenuHeading(string title, int fontSize = 9)
+        public static string GetPlayerNameAsSceneTitle(string title, int fontSize = 9)
         {
-            return $"<size={fontSize}>\n</size>{title}";
+            return $"<size=9>\n</size><size={fontSize}>{title}</size>";
         }
     }
 }

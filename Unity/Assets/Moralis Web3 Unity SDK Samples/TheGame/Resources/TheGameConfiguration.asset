@@ -18,7 +18,7 @@ MonoBehaviour:
   _transferDialogViewPrefab: {fileID: 3935997937226204647, guid: b647510e864d9794a9a3d86f07225353, type: 3}
   _networkManagerViewPrefab: {fileID: 6344686579861905540, guid: 155ccbac1773f93468bac20fa9220de5, type: 3}
   _theGameServiceType: 1
-  _multiplayerSetupServiceType: 2
+  _multiplayerSetupServiceType: 1
   _multiplayerIsAutoStart: 1
   _multiplayerIsGuiVisible: 1
   _lanSimulatorParameters:

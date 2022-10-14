@@ -29,7 +29,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         {
             _ui.WalletConnectWrapper.EnsureWalletConnectExists();
             
-            _ui.PlayerView.PlayerNameText.text = TheGameHelper.SetPlayerTextLikeMenuHeading("Settings"); 
+            _ui.PlayerView.PlayerNameText.text = TheGameHelper.GetPlayerNameAsSceneTitle("Settings"); 
             _ui.RandomizeNicknameButton.Button.onClick.AddListener(RandomizeNicknameButton_OnClicked);
             _ui.ResetButton.Button.onClick.AddListener(ResetButton_OnClicked);
             _ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);

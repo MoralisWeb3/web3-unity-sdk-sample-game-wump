@@ -25,7 +25,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         //  Unity Methods----------------------------------
         protected async void Start()
         {
-            _ui.PlayerView.PlayerNameText.text = TheGameHelper.SetPlayerTextLikeMenuHeading("Web3 Auth", 6); 
+            _ui.PlayerView.PlayerNameText.text = TheGameHelper.GetPlayerNameAsSceneTitle("Web3 Auth", 5); 
             _ui.CancelButton.Button.onClick.AddListener(CancelButton_OnClicked);
             
             RefreshUIAsync();
