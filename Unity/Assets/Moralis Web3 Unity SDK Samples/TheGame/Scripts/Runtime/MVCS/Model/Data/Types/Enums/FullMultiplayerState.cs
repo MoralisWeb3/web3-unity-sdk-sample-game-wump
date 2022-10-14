@@ -11,6 +11,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
     public enum FullMultiplayerState
     {
         Null,
+        Initialized,
         Authenticating,
         Authenticated,
         LobbyConnecting,

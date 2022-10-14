@@ -98,34 +98,26 @@ namespace MoralisUnity.Samples.Shared
 			return moralisUser != null;
 		}
 
-		public async Task<string> GetWeb3UserAddressAsync(bool isShortFormat)
+		public async Task<string> GetWeb3UserAddressAsync()
 		{
 			MoralisUser moralisUser = await GetMoralisUserAsync();
-
-			if (isShortFormat)
-			{
-				return GetWeb3AddressShortFormat(moralisUser.ethAddress);
-			}
-			else
-			{
-				return moralisUser.ethAddress;
-			}
+			return moralisUser.ethAddress;
 		}
 		
-		public string GetWeb3AddressShortFormat(string str)
+		public string ConvertWeb3AddressToShortFormat(string web3Address)
 		{
 			const int n = 6;
-			if (string.IsNullOrEmpty(str))
+			if (string.IsNullOrEmpty(web3Address))
 			{
 				return string.Empty;
 			}
         
-			if (str.Length < n)
+			if (web3Address.Length < n)
 			{
-				return str;
+				return web3Address;
 			}
 
-			return $"{str.Substring(0, n)}...{str.Substring(str.Length - n)}";
+			return $"{web3Address.Substring(0, n)}...{web3Address.Substring(web3Address.Length - n)}";
 		}
 		
 		

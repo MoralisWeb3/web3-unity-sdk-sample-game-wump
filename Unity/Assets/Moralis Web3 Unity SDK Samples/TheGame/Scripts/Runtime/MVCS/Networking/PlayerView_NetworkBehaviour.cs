@@ -1,4 +1,5 @@
 using System;
+using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using Unity.Collections;
@@ -185,9 +186,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                 string line1 = $"<size=5>{_playerName} {_nicknameStringNetworkVariable.Value}</size>";
                 
                 string line2 = "";
-                if (!string.IsNullOrEmpty(_web3AddressStringNetworkVariable.Value.ToString()))
+                string web3address = CustomWeb3System.Instance.ConvertWeb3AddressToShortFormat(
+                    _web3AddressStringNetworkVariable.Value.ToString());
+                if (!string.IsNullOrEmpty(web3address))
                 {
-                    line2 = $"<size=4>({_web3AddressStringNetworkVariable.Value})</size>";
+                    line2 = $"<size=4>({web3address})</size>";
                 }
                 
                 _playerView.PlayerNameText.text = $"{line1}\n" +

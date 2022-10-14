@@ -10,8 +10,8 @@ namespace MoralisUnity.Samples.Shared
         bool HasWalletConnectInstance { get; }
         void DestroyWalletConnectInstance();
         UniTask<bool> IsAuthenticatedAsync();
-        Task<string> GetWeb3UserAddressAsync(bool isShortFormat);
-        string GetWeb3AddressShortFormat(string address);
+        Task<string> GetWeb3UserAddressAsync();
+        string ConvertWeb3AddressToShortFormat(string address);
         UniTask<String> ExecuteContractFunction(string _address, string _abi,
             string functionName, object[] args, bool isLogging);
 

@@ -54,6 +54,9 @@ namespace MoralisUnity.Samples.TheGame
         public const string MustNotBeRegistered = "Must Not Be Registered";
         public const string MultiplayerConnecting = Multiplayer + " Connecting";
         public const string MultiplayerConnected = Multiplayer + " Connected";
+        public const string MultiplayerDisconnecting = Multiplayer + " Disconnecting";
+        public const string MultiplayerDisconnected = Multiplayer + " Disconnected";
+        
         public const string Multiplayer = "Multiplayer";
         
         //

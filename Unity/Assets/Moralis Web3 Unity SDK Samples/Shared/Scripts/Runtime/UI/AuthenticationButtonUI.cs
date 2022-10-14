@@ -33,8 +33,9 @@ namespace MoralisUnity.Samples.Shared.UI
             if (_isAuthenticated)
             {
                 Text.text = SharedConstants.Logout;
-                string moralisUserEthAddressAsync = await CustomWeb3System.Instance.GetWeb3UserAddressAsync(true);
-                Text.text = string.Format(SharedConstants.LogoutEthAddress, moralisUserEthAddressAsync);
+                string web3Address = await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
+                web3Address = CustomWeb3System.Instance.ConvertWeb3AddressToShortFormat(web3Address);
+                Text.text = string.Format(SharedConstants.LogoutEthAddress, web3Address);
             }
             else
             {

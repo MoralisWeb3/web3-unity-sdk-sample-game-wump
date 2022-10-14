@@ -175,8 +175,8 @@ namespace MoralisUnity.Samples.TheGame
 
         public static object GetTransferLogDisplayText(TransferLog transferLog)
         {
-            string fromAddress = CustomWeb3System.Instance.GetWeb3AddressShortFormat(transferLog.FromAddress);
-            string toAddress = CustomWeb3System.Instance.GetWeb3AddressShortFormat(transferLog.ToAddress);
+            string fromAddress = CustomWeb3System.Instance.ConvertWeb3AddressToShortFormat(transferLog.FromAddress);
+            string toAddress = CustomWeb3System.Instance.ConvertWeb3AddressToShortFormat(transferLog.ToAddress);
             string type = TheGameHelper.GetGiftTypeNameByType(transferLog.Type);
             string amount = transferLog.Amount.ToString();
             return $"Player ({fromAddress}) sent {amount} {type} to Player ({toAddress})";

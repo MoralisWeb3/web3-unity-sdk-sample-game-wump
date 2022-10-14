@@ -66,16 +66,15 @@ namespace MoralisUnity.Samples.TheGame
 					BackButton_OnClicked();
 				}
 
+				TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceInitialize();
+				
 				if (TheGameConfiguration.Instance.MultiplayerIsAutoStart &&
 				    !TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
 				{
 					TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnect();
 				}
 			}
-
 		}
-
-
 
 
 		protected async void OnDestroy()

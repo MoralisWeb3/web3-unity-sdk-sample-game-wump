@@ -27,6 +27,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		public Observable<List<Prize>> Prizes { get { return _prizes; } }
 		public Observable<PlayerView> SelectedPlayerView { get { return _selectedPlayerView; } }
 		public bool HasSelectedPlayerView { get { return _selectedPlayerView.Value != null; } }
+		public Observable<bool> IsTransferPending { get { return _isTransferPending; } }
 
 		// Fields -----------------------------------------
 		private Observable<bool> _isRegistered = new Observable<bool>();
@@ -35,6 +36,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		private ObservablePrizes _prizes = new ObservablePrizes();
 		private Observable<CustomPlayerInfo> _customPlayerInfo = new Observable<CustomPlayerInfo>();
 		private Observable<PlayerView> _selectedPlayerView = new Observable<PlayerView>();
+		private Observable<bool> _isTransferPending = new Observable<bool>();
 		
 		// Initialization Methods -------------------------
 		public TheGameModel()

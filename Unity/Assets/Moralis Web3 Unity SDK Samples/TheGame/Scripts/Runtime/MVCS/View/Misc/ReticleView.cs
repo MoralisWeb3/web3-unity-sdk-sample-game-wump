@@ -22,17 +22,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                     if (value)
                     {
                         //HACK: Toggling renderer.enabled makes it lose a reference, so do this...
-                        _renderer.transform.localScale = _rendererLocalScaleOnAwake;
+                        transform.localScale = _rendererLocalScaleOnAwake;
                     }
                     else
                     {
-                        _renderer.transform.localScale = _RendererLocalWhenInvisible;
+                        transform.localScale = _RendererLocalWhenInvisible;
                     }
                     
                 }
                 get
                 {
-                    return _renderer.transform.localScale != _RendererLocalWhenInvisible;
+                    return transform.localScale != _RendererLocalWhenInvisible;
                 }
             }
 
@@ -41,7 +41,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             private Renderer _renderer;
 
             private static readonly Vector3 _RendererLocalWhenInvisible = Vector3.zero;
-            private Vector3 _rendererLocalScaleOnAwake = Vector3.zero;
+            private Vector3 _rendererLocalScaleOnAwake = new Vector3(0.001f, 0.001f, 0.001f); // small but NON zero
 
             //  Unity Methods ---------------------------------
             protected void Awake()

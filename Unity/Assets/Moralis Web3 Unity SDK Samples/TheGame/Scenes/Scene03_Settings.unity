@@ -311,6 +311,10 @@ PrefabInstance:
       propertyPath: _playerView
       value: 
       objectReference: {fileID: 54324259}
+    - target: {fileID: -259316554550874451, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
+      propertyPath: _walletConnectWrapper
+      value: 
+      objectReference: {fileID: 1927964351}
     - target: {fileID: 1004461658153304133, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -695,3 +699,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 167693010958533731, guid: 2d40072683e431043a8de9948960587f, type: 3}
   m_PrefabInstance: {fileID: 1927964349}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1927964351 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2664689358101742742, guid: 2d40072683e431043a8de9948960587f, type: 3}
+  m_PrefabInstance: {fileID: 1927964349}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f826388f853a09144b40c02e4615cd30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
+using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
-using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.View.UI;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,15 +11,19 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
     /// <summary>
     /// The UI for Core Scene Behavior for transferring between players
     /// </summary>
-    public class TransferDialogView : MonoBehaviour
+    public class TransferDialogView : MonoBehaviour, IRegisterableView
     {
         //  Properties ------------------------------------
         [HideInInspector]
-        public UnityEvent OnTransferGoldRequested = new UnityEvent();
+        public TransferDialogViewUnityEvent OnTransferGoldRequested = new TransferDialogViewUnityEvent();
         
         [HideInInspector]
-        public UnityEvent OnTransferPrizeRequested = new UnityEvent();
+        public TransferDialogViewUnityEvent OnTransferPrizeRequested = new TransferDialogViewUnityEvent();
 
+        [HideInInspector]
+        public TransferDialogViewUnityEvent OnTransferCancelRequested = new TransferDialogViewUnityEvent();
+
+        
         
         //  Fields ----------------------------------------
         [Header ("References (Scene)")]
@@ -29,8 +33,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 
         private bool _isAuthenticated = false;
         private bool _isRegistered = false;
+        private bool _isTransferPending = false;
         private string _fromAddress = "";
         private string _toAddress = "";
+        
         
         //  Unity Methods----------------------------------
         protected async void Start()
@@ -39,7 +45,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             _ui.TransferPrizeButton.Button.onClick.AddListener(TransferPrizeButton_OnClicked);
             _ui.CancelButton.Button.onClick.AddListener(CancelButton_OnClicked);
             //
-            TheGameSingleton.Instance.TheGameController.RegisterTransferDialogView(this);
+            
             TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(TheGameSingleton_OnTheGameModelChanged);
             TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
             
@@ -61,11 +67,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             
             _ui.TransferGoldButton.IsInteractable = _isAuthenticated
                                                     && _isRegistered
+                                                    && !_isTransferPending
                                                     && TheGameSingleton.Instance.TheGameController
                                                         .CanTransferGoldToSelected();
 
             _ui.TransferPrizeButton.IsInteractable = _isAuthenticated
                                                      && _isRegistered
+                                                     && !_isTransferPending
                                                      && TheGameSingleton.Instance.TheGameController
                                                          .CanTransferPrizeToSelected();
 
@@ -94,25 +102,26 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 _toAddress = "";
             }
             _fromAddress = theGameModel.CustomPlayerInfo.Value.Web3Address;
+            _isTransferPending = theGameModel.IsTransferPending.Value;
         }
 
         
         private void TransferGoldButton_OnClicked()
         {
-            OnTransferGoldRequested.Invoke();
+            OnTransferGoldRequested.Invoke(this);
         }
         
         
         private void TransferPrizeButton_OnClicked()
         {
-            OnTransferPrizeRequested.Invoke();
+            OnTransferPrizeRequested.Invoke(this);
         }
         
         
         private void CancelButton_OnClicked()
         {
-            TheGameSingleton.Instance.TheGameController.UnregisterTransferDialogView(this);
-            Destroy(this.gameObject);
+            OnTransferCancelRequested.Invoke(this);
+  
         }
     }
 }

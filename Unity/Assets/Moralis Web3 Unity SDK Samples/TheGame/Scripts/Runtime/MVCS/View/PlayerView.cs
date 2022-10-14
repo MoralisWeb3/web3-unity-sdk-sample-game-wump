@@ -24,7 +24,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
         /// Relates to <see cref="PlayerView_NetworkBehaviour"/>
         /// 
         /// </summary>
-        public class PlayerView : MonoBehaviour, ISelectionManagerSelectable 
+        public class PlayerView : MonoBehaviour, ISelectionManagerSelectable, IRegisterableView 
         {
             //  Events ----------------------------------------
             [HideInInspector]
@@ -148,7 +148,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 IsWalking.SetDirty();
 
                 _reticlesView.OnPointerClicked.AddListener(ReticlesView_OnPointerClicked);
-                TheGameSingleton.Instance.TheGameController.RegisterPlayerView(this);
+                TheGameSingleton.Instance.TheGameController.RegisterView(this);
                 
                 _playerView_NetworkBehaviour.OnPlayerAction.AddListener(PlayerInputNetworkBehaviour_OnPlayerAction);
                 _sharedStatus_NetworkBehaviour.OnSharedStatusChanged.AddListener(SharedStatus_NetworkBehaviour_OnSharedStatusChanged);
@@ -188,7 +188,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 if (!TheGameSingleton.IsShuttingDown)
                 {
                     Debug.Log("NEVER BE IN HERE - unless play mode has STOPPED");
-                    TheGameSingleton.Instance.TheGameController.UnregisterPlayerView(this);
+                    TheGameSingleton.Instance.TheGameController.UnregisterView(this);
                 }
             }
 

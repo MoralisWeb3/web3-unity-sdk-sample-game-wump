@@ -94,7 +94,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 				return false;
 			}
 			
-			string moralisUserEthAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync(false);
+			string moralisUserEthAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
 			Dictionary<string, object> args = new Dictionary<string, object>();
 			args.Add("address", moralisUserEthAddress);
 
@@ -106,7 +106,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		
 		public async UniTask<int> getGoldAsync()
 		{
-			string moralisUserEthAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync(false);
+			string moralisUserEthAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
 			Dictionary<string, object> args = new Dictionary<string, object>();
 			args.Add("address", moralisUserEthAddress);
 
@@ -118,7 +118,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 
 		public async UniTask<TransferLog> GetTransferLogHistoryAsync()
 		{
-			string moralisUserEthAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync(false);
+			string moralisUserEthAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
 			Dictionary<string, object> args = new Dictionary<string, object>();
 			args.Add("address", moralisUserEthAddress);
 

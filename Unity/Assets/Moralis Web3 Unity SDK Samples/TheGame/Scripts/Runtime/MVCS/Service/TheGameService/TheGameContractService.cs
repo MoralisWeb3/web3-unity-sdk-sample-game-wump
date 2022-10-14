@@ -95,7 +95,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
             }
 
             // Get NFT Info
-            string ethAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync(false);
+            string ethAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
             CustomNftOwnerCollection customNftOwnerCollection = await CustomWeb3System.Instance.GetNFTsForContract(
                 ethAddress,
                 _theGameContract.PrizeContractAddress);

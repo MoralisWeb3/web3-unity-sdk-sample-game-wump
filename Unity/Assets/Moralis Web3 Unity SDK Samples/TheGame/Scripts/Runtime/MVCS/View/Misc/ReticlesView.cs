@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -24,7 +25,16 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 set
                 {
                     _isSelected = value;
-                    _selectionReticleView.IsVisible = _isSelected;
+                    try
+                    {
+                        _selectionReticleView.IsVisible = _isSelected;
+                    }
+                    catch (Exception e)
+                    {
+                        //FIx this
+                       Debug.LogWarning(e.Message);
+                    }
+                    
                 }
                 get
                 {

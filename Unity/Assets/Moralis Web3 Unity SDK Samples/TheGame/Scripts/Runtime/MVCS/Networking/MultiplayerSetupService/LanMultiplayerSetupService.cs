@@ -1,6 +1,6 @@
 using System;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using MoralisUnity.Samples.Shared.Exceptions;
 using RMC.Shared;
 using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
@@ -24,19 +24,22 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 	public class LanMultiplayerSetupService : IMultiplayerSetupService
 	{
 		
-		
-		
 		//  Events ----------------------------------------
-		private UnityEvent _onConnectionStarted = new UnityEvent();
-		private  StringUnityEvent _onConnectionCompleted = new StringUnityEvent();
-		private  StringUnityEvent _onStateNameChanged = new StringUnityEvent();
+		private UnityEvent _onConnectStarted = new UnityEvent();
+		private  StringUnityEvent _onConnectCompleted = new StringUnityEvent();
+		private UnityEvent _onDisconnectStarted = new UnityEvent();
+		private  UnityEvent _onDisconnectCompleted = new UnityEvent();
+		private  StringUnityEvent _onStateNameForDebuggingChanged = new StringUnityEvent();
 		
 		//  Properties ------------------------------------
 		public bool IsConnected { get; private set; }
-		public UnityEvent OnConnectionStarted { get { return _onConnectionStarted; } }
-		public StringUnityEvent OnConnectionCompleted { get { return _onConnectionCompleted; } }
-		public StringUnityEvent OnStateNameChanged { get { return _onStateNameChanged; } }
-		
+		public UnityEvent OnConnectStarted { get { return _onConnectStarted; } }
+		public StringUnityEvent OnConnectCompleted { get { return _onConnectCompleted; } }
+		public UnityEvent OnDisconnectStarted { get { return _onDisconnectStarted; } }
+		public UnityEvent OnDisconnectCompleted { get { return _onDisconnectCompleted; } }
+		public StringUnityEvent OnStateNameForDebuggingChanged { get { return _onStateNameForDebuggingChanged; } }
+		public bool IsInitialized { get; private set; }
+
 		//  Fields ----------------------------------------
 		private UnityTransport _unityTransport;
 		private ulong _localClientId;
@@ -52,10 +55,25 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnected;
 		}
 
+		public void Initialize()
+		{
+			if (!IsInitialized)
+			{
+				IsInitialized = true;
+			}
+		}
 
+		public void RequireIsInitialized()
+		{
+			if (!IsInitialized)
+			{
+				throw new NotInitializedException(this);
+			}
+		}
 		//  Methods ---------------------------------------
 		public void Connect()
 		{
+			RequireIsInitialized();
 			if (IsConnected)
 			{
 				return;
@@ -67,19 +85,19 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			{
 				if (ClonesManagerWrapper.IsClone)
 				{
-					_onConnectionStarted.Invoke();
+					_onConnectStarted.Invoke();
 					StartClient();
 				}
 				else
 				{
 					// Primary UNITY EDITOR
-					_onConnectionStarted.Invoke();
+					_onConnectStarted.Invoke();
 					StartHost();
 				}
 			}
 			else
 			{
-				_onConnectionStarted.Invoke();
+				_onConnectStarted.Invoke();
 				StartClient();
 			}
 		}
@@ -87,6 +105,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		
 		public void OnGUI() 
 		{
+			if (!IsInitialized) return;
 			//Regardless of _isAutoStart, this will appear properly as needed
 
 			float guiWidth = Screen.width * 0.2f;
@@ -103,7 +122,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 				if (GUILayout.Button("Host"))
 				{
 					StartHost();
-					OnStateNameChanged.Invoke("StartHost");
+					OnStateNameForDebuggingChanged.Invoke("StartHost");
 				}
 
 				// if (GUILayout.Button("Server"))
@@ -115,7 +134,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 				if (GUILayout.Button("Client"))
 				{
 					StartClient();
-					OnStateNameChanged.Invoke("StartClient");
+					OnStateNameForDebuggingChanged.Invoke("StartClient");
 				}
 			}
 			else
@@ -141,21 +160,21 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		
 		private void StartHost()
 		{
-			OnStateNameChanged.Invoke("StartHost");
+			OnStateNameForDebuggingChanged.Invoke("StartHost");
 			NetworkManager.Singleton.StartHost();
 		}
 		
 		
 		private void StartClient()
 		{
-			OnStateNameChanged.Invoke("StartClient");
+			OnStateNameForDebuggingChanged.Invoke("StartClient");
 			NetworkManager.Singleton.StartClient();
 		}
 		
 		
 		private void Shutdown(string label)
 		{
-			OnStateNameChanged.Invoke("Shutdown");
+			OnStateNameForDebuggingChanged.Invoke("Shutdown");
 			NetworkManager.Singleton.Shutdown();
 		}
 
@@ -194,7 +213,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		//  Event Handlers --------------------------------
 		private void NetworkManager_OnClientConnected(ulong connectedClientId)
 		{
-			OnStateNameChanged.Invoke("Connected");
+			OnStateNameForDebuggingChanged.Invoke("Connected");
 			
 			// For each client, store the 'i am now connected'
 			if (!NetworkManager.Singleton.IsClient) return;
@@ -207,10 +226,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 				_localClientId = connectedClientId;
 
 				string debugMessage = $"Connected as LocalClientId = {_localClientId}";
-				OnConnectionCompleted.Invoke(debugMessage);
+				OnConnectCompleted.Invoke(debugMessage);
 				//Debug.Log($"{this.GetType().Name} NetworkManager_OnClientConnected() from l={_localClientId} nsl={NetworkManager.Singleton.LocalClientId} leaveID{connectedClientId}"); 
 			}
 		}
-		
+
+
 	}
 }

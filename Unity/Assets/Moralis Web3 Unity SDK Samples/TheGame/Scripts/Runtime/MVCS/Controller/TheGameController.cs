@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using MoralisUnity.Samples.Shared;
@@ -17,6 +18,7 @@ using MoralisUnity.Samples.TheGame.MVCS.View;
 using RMC.Shared.Managers;
 using UnityEngine;
 using UnityEngine.Events;
+using Debug = UnityEngine.Debug;
 
 #pragma warning disable CS4014
 namespace MoralisUnity.Samples.TheGame.MVCS.Controller
@@ -73,13 +75,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public void Initialize()
 		{
 			if (IsInitialized) return;
-			
-			//
-			_multiplayerSetupService.OnConnectionStarted.AddListener(MultiplayerSetupService_OnConnectionStarted);
-			_multiplayerSetupService.OnConnectionCompleted.AddListener( MultiplayerSetupService_OnConnectionCompleted);
-			_multiplayerSetupService.OnStateNameChanged.AddListener( MultiplayerSetupService_OnStateNameChanged);
-			
-			
 			//
 			_theGameView.SceneManagerComponent.OnSceneLoadingEvent.AddListener(SceneManagerComponent_OnSceneLoadingEvent);
 			_theGameView.SceneManagerComponent.OnSceneLoadedEvent.AddListener(SceneManagerComponent_OnSceneLoadedEvent);
@@ -119,12 +114,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			if (!IsInitialized) return;
 			
 			SelectionManager.Instance.OnSelectionChanged.RemoveListener(SelectionManager_OnSelectionChanged);
-			
+
 			Debug.Log($"{this.GetType().Name} OnDestroy() {_multiplayerSetupService.IsConnected}"); 
 			if (_multiplayerSetupService.IsConnected)
 			{
 				await _multiplayerSetupService.DisconnectAsync();
 			}
+	
+
 		}
 
 		// General Methods --------------------------------
@@ -140,9 +137,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 		
 		
-		public async UniTask<string> GetWeb3UserAddressAsync(bool useShortFormat)
+		public async UniTask<string> GetWeb3UserAddressAsync()
 		{
-			return await CustomWeb3System.Instance.GetWeb3UserAddressAsync(useShortFormat);
+			return await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
 		}
 
 		///////////////////////////////////////////
@@ -177,7 +174,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 				
 				if (!_theGameModel.CustomPlayerInfo.Value.HasWeb3Address)
 				{
-					string web3Address = await GetWeb3UserAddressAsync(true);
+					string web3Address = await GetWeb3UserAddressAsync();
 					SetPlayerWeb3AddressAndUpdateModel(web3Address);
 				}
 				
@@ -295,9 +292,28 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		// Related To: Networking
 		///////////////////////////////////////////
 
+		/// <summary>
+		/// Prepare system and show OnGUI menu (Connect, ect...)
+		/// </summary>
+		public void MultiplayerSetupServiceInitialize()
+		{
+			_multiplayerSetupService.Initialize();
+		}
+		
+		/// <summary>
+		/// Connect to backend of Multiplayer system and show OnGUI menu (disconnect, ect...)
+		/// </summary>
 		public void MultiplayerSetupServiceConnect()
 		{
-			_multiplayerSetupService.Connect();
+			if (_multiplayerSetupService.IsInitialized && !_multiplayerSetupService.IsConnected)
+			{
+				_multiplayerSetupService.OnConnectStarted.AddListener(MultiplayerSetupService_OnConnectStarted);
+				_multiplayerSetupService.OnConnectCompleted.AddListener( MultiplayerSetupService_OnConnectCompleted);
+				_multiplayerSetupService.OnDisconnectStarted.AddListener(MultiplayerSetupService_OnDisconnectStarted);
+				_multiplayerSetupService.OnDisconnectCompleted.AddListener(MultiplayerSetupService_OnDisconnectCompleted);
+				_multiplayerSetupService.OnStateNameForDebuggingChanged.AddListener( MultiplayerSetupService_OnStateNameChanged);
+				_multiplayerSetupService.Connect();
+			}
 		}
 		
 		public bool MultiplayerSetupServiceIsConnected()
@@ -307,24 +323,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		public async void MultiplayerSetupServiceDisconnectAsync()
 		{
-			await _multiplayerSetupService.DisconnectAsync();
+			if (_multiplayerSetupService.IsConnected)
+			{
+		
+				await _multiplayerSetupService.DisconnectAsync();
+			}
+
+			
+			
 		}
 		
-		public void RegisterPlayerView(PlayerView playerView)
-		{
-			Debug.Log("register: " + playerView.PlayerName);
-			playerView.OnIsWalkingChanged.AddListener(PlayerView_OnIsWalkingChanged);
-			playerView.OnPlayerAction.AddListener(PlayerView_OnPlayerAction);
-			playerView.OnSharedStatusChanged.AddListener(PlayerView_OnSharedStatusChanged);
-		}
 
-
-
-
-		public void UnregisterPlayerView(PlayerView playerView)
-		{
-			playerView.OnIsWalkingChanged.RemoveListener(PlayerView_OnIsWalkingChanged);
-		}
 
 		
 		private void PlayerView_OnIsWalkingChanged(PlayerView playerView)
@@ -346,18 +355,45 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			OnSharedStatusChanged.Invoke(playerView);
 		}
 		
-		public void RegisterTransferDialogView(TransferDialogView transferDialogView)
+		public void RegisterView(IRegisterableView registerableView)
 		{
-			transferDialogView.OnTransferGoldRequested.AddListener(TransferDialogView_OnTransferGoldRequested);
-			transferDialogView.OnTransferPrizeRequested.AddListener(TransferDialogView_OnTransferPrizeRequested);
+			// Check TYPE of class
+			switch (registerableView)
+			{
+				case PlayerView playerView:
+					playerView.OnIsWalkingChanged.AddListener(PlayerView_OnIsWalkingChanged);
+					playerView.OnPlayerAction.AddListener(PlayerView_OnPlayerAction);
+					playerView.OnSharedStatusChanged.AddListener(PlayerView_OnSharedStatusChanged);
+					break;
+				case TransferDialogView transferDialogView:
+					transferDialogView.OnTransferGoldRequested.AddListener(TransferDialogView_OnTransferGoldRequested);
+					transferDialogView.OnTransferPrizeRequested.AddListener(TransferDialogView_OnTransferPrizeRequested);
+					transferDialogView.OnTransferCancelRequested.AddListener(TransferDialogView_OnTransferCancelRequested);
+					break;
+				default:
+					SwitchDefaultException.Throw(registerableView);
+					break;
+			}
 		}
 
 
-		public void UnregisterTransferDialogView(TransferDialogView transferDialogView)
+		public void UnregisterView(IRegisterableView registerableView)
 		{
-			transferDialogView.OnTransferGoldRequested.RemoveListener(TransferDialogView_OnTransferGoldRequested);
-			transferDialogView.OnTransferPrizeRequested.RemoveListener(TransferDialogView_OnTransferPrizeRequested);
-			SelectionManager.Instance.Selection = null;
+			// Check TYPE of class
+			switch (registerableView)
+			{
+				case PlayerView playerView:
+					playerView.OnIsWalkingChanged.RemoveListener(PlayerView_OnIsWalkingChanged);
+					break;
+				case TransferDialogView transferDialogView:
+					transferDialogView.OnTransferGoldRequested.RemoveListener(TransferDialogView_OnTransferGoldRequested);
+					transferDialogView.OnTransferPrizeRequested.RemoveListener(TransferDialogView_OnTransferPrizeRequested);
+					transferDialogView.OnTransferCancelRequested.RemoveListener(TransferDialogView_OnTransferCancelRequested);
+					break;
+				default:
+					SwitchDefaultException.Throw(registerableView);
+					break;
+			}
 		}
 		
 		
@@ -422,7 +458,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 		
 		
-		private async void TransferDialogView_OnTransferPrizeRequested()
+		private async void TransferDialogView_OnTransferPrizeRequested(TransferDialogView transferDialogView)
 		{
 			if (CanTransferPrizeToSelected())
 			{
@@ -430,13 +466,16 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 					TheGameConstants.TransferingPrize,
 					async delegate ()
 					{
+						_theGameModel.IsTransferPending.Value = true;
+						OnTheGameModelChangedRefresh();
 						await TransferPrizeAsync(_theGameModel.SelectedPlayerView.Value.Web3Address, 
 							_theGameModel.Prizes.Value[0]);
 					});
 			}
 		}
 		
-		private async void TransferDialogView_OnTransferGoldRequested ()
+
+		private async void TransferDialogView_OnTransferGoldRequested (TransferDialogView transferDialogView)
 		{
 			if (CanTransferGoldToSelected())
 			{
@@ -444,10 +483,25 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 					TheGameConstants.TransferingGold,
 					async delegate ()
 					{
+						_theGameModel.IsTransferPending.Value = true;
+						OnTheGameModelChangedRefresh();
 						await TransferGoldAsync(_theGameModel.SelectedPlayerView.Value.Web3Address);
 					});
 			}
 		}
+		
+		private void TransferDialogView_OnTransferCancelRequested(TransferDialogView transferDialogView)
+		{
+			TheGameSingleton.Instance.TheGameController.UnregisterView(transferDialogView); 
+			GameObject.Destroy(transferDialogView.gameObject);
+			SelectionManager.Instance.Selection = null;
+			
+			_theGameModel.IsTransferPending.Value = false;
+			OnTheGameModelChangedRefresh();
+			
+			
+		}
+		
 		
 		///////////////////////////////////////////
 		// Related To: View
@@ -460,8 +514,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 
 			if (_theGameModel.HasSelectedPlayerView)
 			{
-				//TransferDialogView transferDialogView = TheGameHelper.InstantiatePrefab<TransferDialogView>(TheGameConfiguration.Instance.TransferDialogViewPrefab,
-				//	TheGameSingleton.Instance.transform, new Vector3(0, 0, 0));
+				TransferDialogView transferDialogView = TheGameHelper.InstantiatePrefab<TransferDialogView>(TheGameConfiguration.Instance.TransferDialogViewPrefab,
+				TheGameSingleton.Instance.transform, new Vector3(0, 0, 0));
+				RegisterView(transferDialogView);
 			}
 		}
 
@@ -576,25 +631,42 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 
 		// Event Handlers ---------------------------------
 				
-		private void MultiplayerSetupService_OnConnectionStarted()
+		private void MultiplayerSetupService_OnConnectStarted()
 		{
 			Debug.Log($"OnConnectionStarted() ");
 			ShowMessageWithDelayAsync(TheGameConstants.MultiplayerConnecting, 5000);
 		}
+			
 		
-		private void MultiplayerSetupService_OnStateNameChanged(string stateName)
-		{
-			Debug.Log($"OnStateNameChanged() {stateName}");
-			UpdateMessageDuringMethod(TheGameConstants.Multiplayer + " " + stateName);
-		}
-		
-		private async void MultiplayerSetupService_OnConnectionCompleted(string debugMessage)
+		private async void MultiplayerSetupService_OnConnectCompleted(string debugMessage)
 		{
 			await UniTask.Delay(1000);
 			UpdateMessageDuringMethod(TheGameConstants.MultiplayerConnected);
 			await UniTask.Delay(1000);
 			HideMessageDuringMethod(true);
 		}
+
+		
+		private void MultiplayerSetupService_OnDisconnectStarted()
+		{
+			Debug.Log($"MultiplayerSetupService_OnDisconnectStarted() ");
+			ShowMessageWithDelayAsync(TheGameConstants.MultiplayerDisconnecting, 2000);
+		}
+		
+		
+		private void MultiplayerSetupService_OnDisconnectCompleted()
+		{
+			Debug.Log($"MultiplayerSetupService_OnDisconnectionCompleted() ");
+			ShowMessageWithDelayAsync(TheGameConstants.MultiplayerDisconnected, 2000);
+		}
+		
+		
+		private void MultiplayerSetupService_OnStateNameChanged(string stateName)
+		{
+			Debug.Log($"OnStateNameChanged() {stateName}");
+			UpdateMessageDuringMethod(TheGameConstants.Multiplayer + " " + stateName);
+		}
+
 		
 		private void SceneManagerComponent_OnSceneLoadingEvent(SceneManagerComponent sceneManagerComponent)
 		{

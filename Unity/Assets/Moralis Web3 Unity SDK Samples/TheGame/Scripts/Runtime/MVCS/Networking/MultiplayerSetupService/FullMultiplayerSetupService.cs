@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using RMC.Shared.Exceptions;
+using MoralisUnity.Samples.Shared.Exceptions;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
@@ -17,6 +17,7 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.Events;
+using SwitchDefaultException = RMC.Shared.Exceptions.SwitchDefaultException;
 
 #pragma warning disable CS1998, CS4014
 namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
@@ -34,15 +35,24 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 	public class FullMultiplayerSetupService : IMultiplayerSetupService
 	{
 		//  Events ----------------------------------------
-		private UnityEvent _onConnectionStarted = new UnityEvent();
-		private StringUnityEvent _onStateNameChanged = new StringUnityEvent();
-		private  StringUnityEvent _onConnectionCompleted = new StringUnityEvent();
+		private UnityEvent _onConnectStarted = new UnityEvent();
+		private  StringUnityEvent _onConnectCompleted = new StringUnityEvent();
+		private UnityEvent _onDisconnectStarted = new UnityEvent();
+		private  UnityEvent _onDisconnectCompleted = new UnityEvent();
+		private StringUnityEvent _onStateNameForDebuggingChanged = new StringUnityEvent();
+		
 
 		//  Properties ------------------------------------
+		public bool IsInitialized { get; private set; }
+
+		
 		public bool IsConnected { get; private set; }
-		public UnityEvent OnConnectionStarted { get { return _onConnectionStarted; } }
-		public StringUnityEvent OnConnectionCompleted { get { return _onConnectionCompleted; } }
-		public StringUnityEvent OnStateNameChanged { get { return _onStateNameChanged; } }
+		
+		public UnityEvent OnConnectStarted { get { return _onConnectStarted; } }
+		public StringUnityEvent OnConnectCompleted { get { return _onConnectCompleted; } }
+		public UnityEvent OnDisconnectStarted { get { return _onDisconnectStarted; } }
+		public UnityEvent OnDisconnectCompleted { get { return _onDisconnectCompleted; } }
+		public StringUnityEvent OnStateNameForDebuggingChanged { get { return _onStateNameForDebuggingChanged; } }
 		
 		//  Fields ----------------------------------------
 		private UnityTransport _unityTransport;
@@ -67,24 +77,44 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			IsConnected = false;
 			_observableFullMultiplayerState.Value = FullMultiplayerState.Null;
 		}
+		public void Initialize()
+		{
+			if (!IsInitialized)
+			{
+				_observableFullMultiplayerState.Value = FullMultiplayerState.Initialized;
+				IsInitialized = true;
+			}
+		}
 
+		public void RequireIsInitialized()
+		{
+			if (!IsInitialized)
+			{
+				throw new NotInitializedException(this);
+			}
+		}
 
 		//  Methods ---------------------------------------
 		public void Connect()
 		{
-			_onConnectionStarted.Invoke();
+			RequireIsInitialized();
+			_onConnectStarted.Invoke();
 			_observableFullMultiplayerState.Value = FullMultiplayerState.Authenticating;
 		}
 
 		public void OnGUI()
 		{
+			if (!IsInitialized) return;
 			//Do nothing
 		}
 
 		public async UniTask DisconnectAsync()
 		{
+			_onConnectStarted.Invoke(); 
 			await LeaveLobbySafeAsync();
 			await DisconnectAsync_Internal();
+			_onStateNameForDebuggingChanged.Invoke("Disconnected");
+			_onDisconnectCompleted.Invoke(); 
 		}
 		
 		private async Task<Lobby> QuickJoinLobbyAsync()
@@ -293,7 +323,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			FullMultiplayerState oldValue, FullMultiplayerState newValue)
 		{
 			
-			OnStateNameChanged.Invoke(newValue.ToString());
+			OnStateNameForDebuggingChanged.Invoke(newValue.ToString());
 
 			switch (newValue)
 			{
@@ -371,7 +401,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 				case FullMultiplayerState.LobbyConnected:
 					IsConnected = true;
 					string debugMessage = $"LastAllocatedRegion = {_lastAllocatedRegion}";
-					OnConnectionCompleted.Invoke(debugMessage);
+					OnConnectCompleted.Invoke(debugMessage);
 					
 					//////////////
 					// Keep the connection alive with a heartbeat
@@ -389,5 +419,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 					break;
 			}
 		}
+
+
 	}
 }
