@@ -1,0 +1,9 @@
+Source Url: 
+* From Package Manager via "io.moralis.web3-unity-sdk": "1.2.11"
+* Manually copied into project to add workaround for BUG
+
+Changelog: 
+* Workaround for Bug: See commits...
+* --https://github.com/MoralisWeb3/web3-unity-sdk-sample-game-wump/commit/1165893aec588d3e5295d684e2493ac0e8c30bc5
+* --https://github.com/MoralisWeb3/web3-unity-sdk-sample-game-wump/commit/25bc2d94ccae1ffdeddc5bcc1ed06b708e2fe4d3
+* Moved to \Assets\ because \Assets...3rd Party\ creates filenames 'too long' for git
