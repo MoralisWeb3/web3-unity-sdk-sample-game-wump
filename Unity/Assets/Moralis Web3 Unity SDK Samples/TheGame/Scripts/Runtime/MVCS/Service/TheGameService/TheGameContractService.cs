@@ -59,15 +59,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
         public async UniTask<TransferLog> GetTransferLogHistoryAsync()
         {
             TransferLog transferLog = await _theGameContract.GetTransferLogHistoryAsync();
-
-            if (transferLog != null)
-            {
-                //TODO: IDEA: The MULTIPLAYER CLIENT can poll every 5 seconds for "What is the log history for My web3 address?"
-                // And if there is a result it can send a SERVER RPC to tell EVERYONE to display this message top the screen for 5 seconds
-                Debug.Log(TheGameHelper.GetTransferLogDisplayText(transferLog));
-
-            }
-         
             return transferLog;
         }
 

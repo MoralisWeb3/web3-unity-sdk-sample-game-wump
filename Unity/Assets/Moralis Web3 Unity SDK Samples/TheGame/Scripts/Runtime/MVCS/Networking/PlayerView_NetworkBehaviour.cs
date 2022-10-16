@@ -130,8 +130,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
 
                 _movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-                //TODO: Remove this feature?
-                // Did player 1 click 1
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     OnPlayerAction.Invoke();

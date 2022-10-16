@@ -17,7 +17,7 @@ CHECKLIST - DEVELOPMENT
 CHECKLIST - DEVELOPMENT 
 - [ ] Finish all runtime features
 - [ ] Address all "TODO" comments in code
-- [ ] Move any logging to "Custom.Debug.Log." calls. Ideall all.
+- [ ] Move any logging to "Custom.Debug.Log." calls. Ideally all.
 - [ ] Revisit every class name, namespace, folder
 - [ ] Rename every "async" method as "MethodName{Async}"
 - [ ] Add class comments

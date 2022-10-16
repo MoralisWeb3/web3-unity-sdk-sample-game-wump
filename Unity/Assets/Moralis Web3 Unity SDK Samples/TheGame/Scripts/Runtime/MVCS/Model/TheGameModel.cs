@@ -1,16 +1,12 @@
-using System;
 using System.Collections.Generic;
 using MoralisUnity.Samples.Shared.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
-using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using UnityEngine;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.Model
 {
-	//TODO: move this CustomPlayerInfo class. rename it?
-
 	/// <summary>
 	/// Stores data for the game
 	///		* See <see cref="TheGameSingleton"/>
@@ -59,20 +55,24 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		// General Methods --------------------------------
 		public bool HasAnyData()
 		{
-			// TODO: Put real check here
-			return false;
+			// Check that SOME of the defaults are no longer present. That means change
+			return !(_isRegistered.Value != false &&
+			         _isAuthenticated.Value == false &&
+			         _gold.Value == 0 &&
+			         _prizes.Value.Count == 0);
+
 		}
 		
 		
 		public void ResetAllData()
 		{
+			_isRegistered.Value = false;
+			_isAuthenticated.Value = false;
 			_gold.Value = 0;
 			_prizes.Value = new List<Prize>();
 			_customPlayerInfo.Value = new CustomPlayerInfo();
-			_isRegistered.Value = false;
-			_isAuthenticated.Value = false;
 			_selectedPlayerView.Value = null;
-
+			_isTransferPending.Value = false;
 		}
 		
 		// Event Handlers ---------------------------------
