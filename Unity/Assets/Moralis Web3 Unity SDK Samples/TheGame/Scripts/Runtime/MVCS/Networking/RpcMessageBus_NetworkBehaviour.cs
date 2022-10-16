@@ -18,12 +18,16 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
         /// However, below is useful to see how RPCs work in this real-world example.
         /// 
         /// </summary>
-        public class SharedStatus_NetworkBehaviour : NetworkBehaviour
+        public class RpcMessageBus_NetworkBehaviour : NetworkBehaviour
         {
             //  Events ----------------------------------------
             [HideInInspector]
             public readonly StringUnityEvent OnSharedStatusChanged = new StringUnityEvent();
+            
+            [HideInInspector]
+            public readonly UnityEvent OnRPCTransferLogHistoryChanged = new UnityEvent();
 
+                
             public string SharedStatus
             {
                 get
@@ -42,9 +46,31 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             //  Fields ----------------------------------------
                 
             //  Unity Methods ---------------------------------
-
-            //  Methods ---------------------------------------
-            public void SendSharedStatus(string statusText)
+            public void SendMessageTransferLogHistoryChanged()
+            {
+                SendMessageTransferLogHistoryChangedServerRpc();
+            }
+            
+            /// <summary>
+            /// **ANY** Client may call the **ONE** server... 
+            /// </summary>
+            [ServerRpc (RequireOwnership = false)]
+            private void SendMessageTransferLogHistoryChangedServerRpc(ServerRpcParams serverRpcParams = default)
+            {
+                SendMessageTransferLogHistoryChangedClientRpc();
+            }
+            
+            /// <summary>
+            /// ... And the **ONE** server then calls **EVERY** client
+            /// </summary>
+            [ClientRpc (Delivery = RpcDelivery.Reliable)]
+            private void SendMessageTransferLogHistoryChangedClientRpc()
+            {
+                OnRPCTransferLogHistoryChanged.Invoke();
+            }
+            
+            //  SendSharedStatus ---------------------------------------
+            public void SendMessageSharedStatus(string statusText)
             {
                 SendSharedStatusServerRpc(statusText);
             }
@@ -57,7 +83,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             {
                 SendSharedStatusClientRpc(statusText);
             }
- 
             
             /// <summary>
             /// ... And the **ONE** server then calls **EVERY** client

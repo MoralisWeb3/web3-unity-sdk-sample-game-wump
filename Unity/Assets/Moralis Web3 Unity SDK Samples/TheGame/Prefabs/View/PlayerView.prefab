@@ -6804,7 +6804,7 @@ MonoBehaviour:
   _speedSpin: 10
   _isInGameScene: 1
   _playerView_NetworkBehaviour: {fileID: 6257285466335720921}
-  _sharedStatus_NetworkBehaviour: {fileID: -7799507188485453904}
+  _rpcMessageBusNetworkBehaviour: {fileID: -7799507188485453904}
   _playerNameText: {fileID: 2051614982749750920}
   _networkAnimator: {fileID: 1208049652516994516}
   _characterController: {fileID: 3797840836751216180}

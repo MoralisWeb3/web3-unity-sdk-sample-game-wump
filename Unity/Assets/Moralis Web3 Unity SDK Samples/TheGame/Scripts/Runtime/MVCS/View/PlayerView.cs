@@ -35,14 +35,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             public readonly PlayerViewUnityEvent OnPlayerAction = new PlayerViewUnityEvent();
 
             [HideInInspector]
-            public readonly PlayerViewUnityEvent OnSharedStatusChanged = new PlayerViewUnityEvent();
+            public readonly PlayerViewUnityEvent OnRPCSharedStatusChanged = new PlayerViewUnityEvent();
+            
+            [HideInInspector]
+            public readonly PlayerViewUnityEvent OnRPCTransferLogHistoryChanged = new PlayerViewUnityEvent();
+
             
             //  Properties ------------------------------------
             public bool IsLocalPlayer { get { return _playerView_NetworkBehaviour.IsLocalPlayer; } }
             
             public ulong OwnerClientId { get { return _playerView_NetworkBehaviour.OwnerClientId; } }
             
-            public string SharedStatus { get { return _sharedStatus_NetworkBehaviour.SharedStatus; } }
+            public string SharedStatus { get { return _rpcMessageBusNetworkBehaviour.SharedStatus; } }
    
             public string Nickname { get { return _playerView_NetworkBehaviour.Nickname;} }
             public string Web3Address { get { return _playerView_NetworkBehaviour.Web3Address;} }
@@ -93,7 +97,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             private PlayerView_NetworkBehaviour _playerView_NetworkBehaviour;
 
             [SerializeField]
-            private SharedStatus_NetworkBehaviour _sharedStatus_NetworkBehaviour;
+            private RpcMessageBus_NetworkBehaviour _rpcMessageBusNetworkBehaviour;
 
             [Header("References (Local)")] 
             [SerializeField] 
@@ -152,9 +156,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 TheGameSingleton.Instance.TheGameController.RegisterView(this);
                 
                 _playerView_NetworkBehaviour.OnPlayerAction.AddListener(PlayerInputNetworkBehaviour_OnPlayerAction);
-                _sharedStatus_NetworkBehaviour.OnSharedStatusChanged.AddListener(SharedStatus_NetworkBehaviour_OnSharedStatusChanged);
-                
-  
+                _rpcMessageBusNetworkBehaviour.OnSharedStatusChanged.AddListener(SharedStatus_NetworkBehaviour_OnRPCSharedStatusChanged);
+                _rpcMessageBusNetworkBehaviour.OnRPCTransferLogHistoryChanged.AddListener(SharedStatus_NetworkBehaviour_OnRPCTransferLogHistoryChanged);
+
                 _isInitialized = true;
             }
             
@@ -167,7 +171,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                     _playerView_NetworkBehaviour.enabled = false;
                     _clientNetworkTransform.enabled = false;
                     _characterController.enabled = false;
-                    _sharedStatus_NetworkBehaviour.enabled = false;
+                    _rpcMessageBusNetworkBehaviour.enabled = false;
                     _networkAnimator.enabled = false;
                     _reticlesView.gameObject.SetActive(false);
 
@@ -236,29 +240,46 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             }
             
             
-            public void SendSharedStatus(string statusMessage)
+            /// <summary>
+            /// Send RPC message to all clients
+            /// </summary>
+            public void SendMessageTransferLogHistoryChanged()
             {
-                _sharedStatus_NetworkBehaviour.SendSharedStatus(statusMessage);
+                _rpcMessageBusNetworkBehaviour.SendMessageTransferLogHistoryChanged();
+            }
+            
+            /// <summary>
+            /// Send RPC message to all clients
+            /// </summary>
+            public void SendMessageSharedStatus()
+            {
+                string statusText = $"Hi, from {PlayerName}";
+                _rpcMessageBusNetworkBehaviour.SendMessageSharedStatus(statusText);
+
             }
             
             
             //  Event Handlers --------------------------------
             private void PlayerInputNetworkBehaviour_OnPlayerAction()
             {
-                string statusText = $"Hi, from {PlayerName}";
-                _sharedStatus_NetworkBehaviour.SendSharedStatus(statusText);
+                SendMessageSharedStatus();
                 
                 //Event Forwarding To External Scope
                 OnPlayerAction.Invoke(this);
             }
 
             
-            private void SharedStatus_NetworkBehaviour_OnSharedStatusChanged(string status)
+            private void SharedStatus_NetworkBehaviour_OnRPCSharedStatusChanged(string status)
             {
                 //Event Forwarding To External Scope
-                OnSharedStatusChanged.Invoke(this);
+                OnRPCSharedStatusChanged.Invoke(this);
             }
             
+            private void SharedStatus_NetworkBehaviour_OnRPCTransferLogHistoryChanged()
+            {
+                //Event Forwarding To External Scope
+                OnRPCTransferLogHistoryChanged.Invoke(this);
+            }
             
             private void ReticlesView_OnPointerClicked()
             {

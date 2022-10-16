@@ -1,5 +1,7 @@
+using System;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using MoralisUnity.Samples.TheGame.MVCS.View.Scenes;
@@ -38,7 +40,8 @@ namespace MoralisUnity.Samples.TheGame
 		{
 			_ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);
 			TheGameSingleton.Instance.TheGameController.OnPlayerAction.AddListener(OnPlayerAction);
-			TheGameSingleton.Instance.TheGameController.OnSharedStatusChanged.AddListener(OnSharedStatusChanged);
+			TheGameSingleton.Instance.TheGameController.OnRPCSharedStatusChanged.AddListener(OnRPCSharedStatusChanged);
+			TheGameSingleton.Instance.TheGameController.OnRPCTransferLogHistoryChanged.AddListener(OnRPCTransferLogHistoryChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(OnTheGameModelChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
 			
@@ -119,12 +122,40 @@ namespace MoralisUnity.Samples.TheGame
 		{
 		}
 		
-		private void OnSharedStatusChanged(PlayerView playerView)
+		private async void OnRPCSharedStatusChanged(PlayerView playerView)
 		{
 			if (!string.IsNullOrEmpty(playerView.SharedStatus))
 			{
 				_ui.TopUI.QueueSharedStatusText(playerView.SharedStatus, 6000);
 			}
+		}
+		
+		private async void OnRPCTransferLogHistoryChanged(PlayerView playerView)
+		{
+			//OPTIONAL: Optimize and only refresh if the log contains a change to the LOCAL player
+			// if (transferLog.FromAddress == "my blah " ||
+			//     transferLog.FromAddress == "my blah ")
+			// {
+			// }
+
+			string message = "";
+			try
+			{
+				//TODO
+				//THE Unity client works
+				//The Unity build has a null ref here... not sure why
+				TransferLog transferLog = await TheGameSingleton.Instance.TheGameController.GetTransferLogHistoryAsync();
+				message = TheGameHelper.GetTransferLogDisplayText(transferLog);
+			}
+			catch (Exception e)
+			{
+				message = e.Message;
+			}
+	
+			_ui.TopUI.QueueSharedStatusText(message, 6000);
+			
+			//Update the gold/prize ui
+			await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
 		}
 		
 		//  Event Handlers --------------------------------

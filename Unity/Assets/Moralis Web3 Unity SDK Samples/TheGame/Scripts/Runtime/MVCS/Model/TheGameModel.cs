@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using MoralisUnity.Samples.Shared.Data.Types;
+using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
 using MoralisUnity.Samples.TheGame.MVCS.View;
+using UnityEngine;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.Model
 {
@@ -15,11 +17,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 	/// </summary>
 	public class TheGameModel 
 	{
-		//TODO: make any onchange automatically invoke the custom change, then never call 'refresh'? Optional, but better for design
-		
+		[HideInInspector]
+		public readonly TheGameModelUnityEvent OnTheGameModelChanged = new TheGameModelUnityEvent();
 		
 		// Properties -------------------------------------
-		public TheGameConfiguration TheGameConfiguration { get { return TheGameConfiguration.Instance; }  }
+		//
+		
 		public Observable<int> Gold { get { return _gold; } }
 		public Observable<bool> IsRegistered { get { return _isRegistered; } }
 		public Observable<bool> IsAuthenticated { get { return _isAuthenticated; } }
@@ -41,6 +44,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		// Initialization Methods -------------------------
 		public TheGameModel()
 		{
+			// Change in ANY subpart will dispatch 'everything changed'. Good.
+			_isRegistered.OnValueChanged.AddListener((i) => { OnValueChangedForAnything();});
+			_isAuthenticated.OnValueChanged.AddListener((i) => { OnValueChangedForAnything();});
+			_gold.OnValueChanged.AddListener((i) => { OnValueChangedForAnything();});
+			_prizes.OnValueChanged.AddListener((i) => { OnValueChangedForAnything();});
+			_customPlayerInfo.OnValueChanged.AddListener((i) => { OnValueChangedForAnything();});
+			_selectedPlayerView.OnValueChanged.AddListener((i) => { OnValueChangedForAnything();});
+			_isTransferPending.OnValueChanged.AddListener((i) => { OnValueChangedForAnything();});
 			ResetAllData();
 		}
 
@@ -65,5 +76,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		}
 		
 		// Event Handlers ---------------------------------
+		private void OnValueChangedForAnything()
+		{
+			OnTheGameModelChanged.Invoke(this);
+		}
 	}
 }

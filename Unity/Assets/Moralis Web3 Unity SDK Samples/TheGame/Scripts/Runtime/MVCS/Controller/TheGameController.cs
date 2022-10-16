@@ -29,7 +29,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 	public class TheGameController : IInitializable
 	{
 		// Events -----------------------------------------
-		public void OnTheGameModelChangedRefresh() { OnTheGameModelChanged.Invoke(_theGameModel); }
+		
+		/// <summary>
+		/// Used to force a refresh when a UI arrives 'too late' and wants a fresh copy of the model
+		/// </summary>
+		public void OnTheGameModelChangedRefresh() { TheGameModel_OnTheGameModelChanged(_theGameModel); }
 		
 		[HideInInspector]
 		public readonly TheGameModelUnityEvent OnTheGameModelChanged = new TheGameModelUnityEvent();
@@ -38,8 +42,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public readonly PlayerViewUnityEvent OnPlayerAction = new PlayerViewUnityEvent();
 		
 		[HideInInspector]
-		public readonly PlayerViewUnityEvent OnSharedStatusChanged = new PlayerViewUnityEvent();
+		public readonly PlayerViewUnityEvent OnRPCSharedStatusChanged = new PlayerViewUnityEvent();
 
+		[HideInInspector]
+		public readonly PlayerViewUnityEvent OnRPCTransferLogHistoryChanged = new PlayerViewUnityEvent();
+
+			
 		// Properties -------------------------------------
 		public PendingMessage PendingMessageForDeletion { get { return _theGameService.PendingMessageActive; } }
 		public PendingMessage PendingMessageForSave { get { return _theGameService.PendingMessagePassive; } }
@@ -77,17 +85,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public void Initialize()
 		{
 			if (IsInitialized) return;
-			//
+			
+			// MODEL
+			_theGameModel.OnTheGameModelChanged.AddListener(TheGameModel_OnTheGameModelChanged);
+			_theGameModel.ResetAllData();
+			
+			// VIEW
 			_theGameView.SceneManagerComponent.Initialize(TheGameConfiguration.Instance.SceneTransition, _theGameView.ImageAndCanvasView);
 			_theGameView.SceneManagerComponent.OnSceneLoadingEvent.AddListener(SceneManagerComponent_OnSceneLoadingEvent);
 			_theGameView.SceneManagerComponent.OnSceneLoadedEvent.AddListener(SceneManagerComponent_OnSceneLoadedEvent);
-			SelectionManager.Instance.OnSelectionChanged.AddListener(SelectionManager_OnSelectionChanged);
 			
-			//TODO: Change this to have ONE invoker inside the model that itself knows when to invoke?
-			_theGameModel.Gold.OnValueChanged.AddListener((a) => OnTheGameModelChangedRefresh());
-			_theGameModel.Prizes.OnValueChanged.AddListener((a) => OnTheGameModelChangedRefresh());
-			_theGameModel.IsRegistered.OnValueChanged.AddListener((a) => OnTheGameModelChangedRefresh());
-			_theGameModel.ResetAllData();
+			// SELECTION
+			SelectionManager.Instance.OnSelectionChanged.AddListener(SelectionManager_OnSelectionChanged);
 
 			//
 			IsInitialized = true;
@@ -217,14 +226,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public void SetPlayerNicknameAndUpdateModel(string nickname)
 		{
 			_theGameModel.CustomPlayerInfo.Value.Nickname = nickname;
-			OnTheGameModelChangedRefresh();
 		}
 		
 		
 		public void SetPlayerWeb3AddressAndUpdateModel(string web3address)
 		{
 			_theGameModel.CustomPlayerInfo.Value.Web3Address = web3address;
-			OnTheGameModelChangedRefresh();
 		}
 		
 		
@@ -291,6 +298,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();
+			
+			// Refresh the UI
+			await GetIsRegisteredAndUpdateModelAsync();
+			
+			// Wait for contract values to sync so the client will see the changes
+			await DelayExtraAfterStateChangeAsync();
 		}
 		
 		
@@ -354,11 +367,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			OnPlayerAction.Invoke(playerView);
 		}
 		
-		private void PlayerView_OnSharedStatusChanged(PlayerView playerView)
+		private void PlayerView_OnRPCSharedStatusChanged(PlayerView playerView)
 		{
 			//Event Forwarding To External Scope
-			OnSharedStatusChanged.Invoke(playerView);
+			OnRPCSharedStatusChanged.Invoke(playerView);
 		}
+		
+		private void PlayerView_OnRPCTransferLogHistoryChanged(PlayerView playerView)
+		{
+			//Event Forwarding To External Scope
+			OnRPCTransferLogHistoryChanged.Invoke(playerView);
+		}
+		
 		
 		public void RegisterView(IRegisterableView registerableView)
 		{
@@ -368,7 +388,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 				case PlayerView playerView:
 					playerView.OnIsWalkingChanged.AddListener(PlayerView_OnIsWalkingChanged);
 					playerView.OnPlayerAction.AddListener(PlayerView_OnPlayerAction);
-					playerView.OnSharedStatusChanged.AddListener(PlayerView_OnSharedStatusChanged);
+					playerView.OnRPCSharedStatusChanged.AddListener(PlayerView_OnRPCSharedStatusChanged);
+					playerView.OnRPCTransferLogHistoryChanged.AddListener(PlayerView_OnRPCTransferLogHistoryChanged);
 					break;
 				case TransferDialogView transferDialogView:
 					transferDialogView.OnTransferGoldRequested.AddListener(TransferDialogView_OnTransferGoldRequested);
@@ -472,7 +493,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 					async delegate ()
 					{
 						_theGameModel.IsTransferPending.Value = true;
-						OnTheGameModelChangedRefresh();
 						await TransferPrizeAsync(_theGameModel.SelectedPlayerView.Value.Web3Address, 
 							_theGameModel.Prizes.Value[0]);
 
@@ -495,7 +515,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 					async delegate ()
 					{
 						_theGameModel.IsTransferPending.Value = true;
-						OnTheGameModelChangedRefresh();
 						await TransferGoldAsync(_theGameModel.SelectedPlayerView.Value.Web3Address);
 
 						// Update client UI
@@ -507,7 +526,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			}
 		}
 		
-		private async void TransferDialogView_OnTransferCancelRequested(TransferDialogView transferDialogView)
+		private void TransferDialogView_OnTransferCancelRequested(TransferDialogView transferDialogView)
 		{
 			TheGameSingleton.Instance.TheGameController.UnregisterView(transferDialogView); 
 			GameObject.Destroy(transferDialogView.gameObject);
@@ -515,16 +534,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 
 			if (_theGameModel.IsTransferPending.Value)
 			{
-				//There was a transfer completed
-				TransferLog transferLog = await GetTransferLogHistoryAsync();
-
-				PlayerView me = TheGameHelper.GetPlayerViewByClientId(NetworkManager.Singleton.LocalClientId);
-				string statusMessage = TheGameHelper.GetTransferLogDisplayText(transferLog);
-				me.SendSharedStatus(statusMessage);
+				//There was a transfer completed. Notify all players via RPC
+				PlayerView localPlayerView = TheGameHelper.GetPlayerViewByClientId(NetworkManager.Singleton.LocalClientId);
+				localPlayerView.SendMessageTransferLogHistoryChanged();
 			}
 			
 			_theGameModel.IsTransferPending.Value = false;
-			OnTheGameModelChangedRefresh();
 			
 		}
 		
@@ -562,7 +577,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			// Wait, So click sound is audible before scene changes
 			await UniTask.Delay(DelayLoadSceneMilliseconds);
 
-			string sceneName = _theGameModel.TheGameConfiguration.IntroSceneData.SceneName;
+			string sceneName = TheGameConfiguration.Instance.IntroSceneData.SceneName;
 			_theGameView.SceneManagerComponent.LoadScene(sceneName);
 		}
 
@@ -572,7 +587,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			// Wait, So click sound is audible before scene changes
 			await UniTask.Delay(DelayLoadSceneMilliseconds);
 
-			string sceneName = _theGameModel.TheGameConfiguration.AuthenticationSceneData.SceneName;
+			string sceneName = TheGameConfiguration.Instance.AuthenticationSceneData.SceneName;
 			_theGameView.SceneManagerComponent.LoadScene(sceneName);
 		}
 
@@ -581,7 +596,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			// Wait, So click sound is audible before scene changes
 			await UniTask.Delay(DelayLoadSceneMilliseconds);
 
-			string sceneName = _theGameModel.TheGameConfiguration.SettingsSceneData.SceneName;
+			string sceneName = TheGameConfiguration.Instance.SettingsSceneData.SceneName;
 			_theGameView.SceneManagerComponent.LoadScene(sceneName);
 		}
 
@@ -590,7 +605,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			// Wait, So click sound is audible before scene changes
 			await UniTask.Delay(DelayLoadSceneMilliseconds);
 
-			string sceneName = _theGameModel.TheGameConfiguration.DeveloperConsoleSceneData.SceneName;
+			string sceneName = TheGameConfiguration.Instance.DeveloperConsoleSceneData.SceneName;
 			_theGameView.SceneManagerComponent.LoadScene(sceneName);
 		}
 
@@ -599,7 +614,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			// Wait, So click sound is audible before scene changes
 			await UniTask.Delay(DelayLoadSceneMilliseconds);
 
-			string sceneName = _theGameModel.TheGameConfiguration.GameSceneData.SceneName;
+			string sceneName = TheGameConfiguration.Instance.GameSceneData.SceneName;
 			_theGameView.SceneManagerComponent.LoadScene(sceneName);
 		}
 
@@ -656,7 +671,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 
 		// Event Handlers ---------------------------------
-				
+		private void TheGameModel_OnTheGameModelChanged(TheGameModel theGameModel)
+		{
+			OnTheGameModelChanged.Invoke(_theGameModel);
+		}
+		
+		
 		private async void MultiplayerSetupService_OnConnectStarted()
 		{
 			Debug.Log($"OnConnectionStarted() ");

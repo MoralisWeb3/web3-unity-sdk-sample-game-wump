@@ -185,7 +185,7 @@ namespace MoralisUnity.Samples.TheGame
             string toAddress = CustomWeb3System.Instance.ConvertWeb3AddressToShortFormat(transferLog.ToAddress);
             string type = GetGiftTypeNameByType(transferLog.Type);
             string amount = transferLog.Amount.ToString();
-            return $"Transfer complete for {amount} {type}.\n<size=30>From: {fromAddress}\nTo: {toAddress}</size>";
+            return $"Transfer complete for {amount} {type}\n<size=30>From: {fromAddress}\nTo: {toAddress}</size>";
         }
 
         public static string GetRandomizedNickname()
