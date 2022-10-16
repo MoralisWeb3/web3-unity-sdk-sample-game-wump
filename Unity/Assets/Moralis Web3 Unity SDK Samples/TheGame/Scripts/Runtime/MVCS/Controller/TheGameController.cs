@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using MoralisUnity.Samples.Shared;
@@ -18,8 +16,6 @@ using MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using RMC.Shared.Managers;
 using UnityEngine;
-using UnityEngine.Events;
-using WalletConnectSharp.Unity;
 using Debug = UnityEngine.Debug;
 
 #pragma warning disable CS4014
@@ -57,6 +53,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		// Wait, So click sound is audible before scene changes
 		private const int DelayLoadSceneMilliseconds = 100;
+		
+		// Wait, So click sound is audible before scene changes
+		private const int ExtraDelayAfterTransferMilliseconds = 5000;
 
 		// Initialization Methods -------------------------
 		public TheGameController(
@@ -266,6 +265,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();
+			await UniTask.Delay(ExtraDelayAfterTransferMilliseconds);
 		}
 
 		
@@ -279,6 +279,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();
+			await UniTask.Delay(ExtraDelayAfterTransferMilliseconds);
 		}
 		
 		

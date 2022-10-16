@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using MoralisUnity.Platform.Abstractions;
 using MoralisUnity.Platform.Objects;
 using MoralisUnity.Platform.Queries;
-
+#pragma warning disable CS0618
 namespace MoralisUnity.Platform.Services.ClientServices
 {
     public class MoralisLiveQueryManager : ILiveQueryService

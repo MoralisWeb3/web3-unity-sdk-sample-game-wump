@@ -32,7 +32,7 @@ using Cysharp.Threading.Tasks;
 using MoralisUnity.Platform.Services.ClientServices;
 using MoralisUnity.Platform.Objects;
 using MoralisUnity.Platform.Queries;
-
+#pragma warning disable CS0618
 namespace MoralisUnity
 {
     /// <summary>
@@ -112,6 +112,7 @@ namespace MoralisUnity
         {
             if (Subscribed)
             {
+
                 await UniTask.Run(() =>
                 {
                     // Try to close down the subscription properly

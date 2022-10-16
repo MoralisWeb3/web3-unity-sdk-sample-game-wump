@@ -20,8 +20,9 @@ namespace MoralisUnity.Samples.Shared
 		private WalletConnect _walletConnectLocallyCreated;
 
 		// Unity Methods -------------------------
-		protected void Awake()
+		protected void Start()
 		{
+			EnsureInstantiatedWalletConnectInstance();
 		}
 
 		// General Methods --------------------------------
@@ -33,23 +34,6 @@ namespace MoralisUnity.Samples.Shared
 			_walletConnectLocallyCreated = Instantiate(_walletConnectPrefab);
 			Debug.LogWarning("2 EnsureInstantiatedWalletConnectInstance() after = " + CustomWeb3System.Instance.HasWalletConnectStaticInstance);
 
-			WalletConnectQRImage walletConnectQrImage = FindObjectOfType<WalletConnectQRImage>();
-			Debug.LogWarning("1111: " + walletConnectQrImage);
-			if (walletConnectQrImage != null)
-			{
-				walletConnectQrImage.walletConnect = WalletConnect.Instance;
-				Debug.LogWarning(
-					"3 EnsureInstantiatedWalletConnectInstance() after = " + walletConnectQrImage.walletConnect);
-
-				
-			}
-
-			WalletConnectQRImage[] walletConnectQrImage2 = Resources.FindObjectsOfTypeAll<WalletConnectQRImage>();
-
-			if (walletConnectQrImage2.Length > 0)
-			{
-				Debug.LogWarning("2222: " + walletConnectQrImage2[0]);
-			}
 			
 
 		}

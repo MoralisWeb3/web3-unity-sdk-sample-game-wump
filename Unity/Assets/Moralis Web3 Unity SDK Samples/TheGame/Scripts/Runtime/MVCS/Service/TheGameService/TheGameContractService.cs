@@ -78,10 +78,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
             return result;
         }
 
-        private static int tempcallcount = 0;
+        //Debugging: Track how many times I call this. Maybe optimize by calling it less? Caching it local?
+        private static int CallsThisSession = 0;
+        
         public async UniTask<List<Prize>> GetPrizesAsync()
         {
-            Debug.Log($"GetPrizesAsync!!!!!!! (tempcallcount = {++tempcallcount})");
+            
                 
             // Create Method Return Value
             List<Prize> prizes = new List<Prize>();
@@ -110,7 +112,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
                 prizes.Add(prize);
             }
 
-            Debug.Log("GetPrizesAsync() count = " + prizes.Count);
+            Debug.Log($"GetPrizesAsync!!!!!!! (debug, CallsThisSession = {++CallsThisSession}) count = {prizes.Count}");
             // Finalize Method Return Value
             return prizes;
         }

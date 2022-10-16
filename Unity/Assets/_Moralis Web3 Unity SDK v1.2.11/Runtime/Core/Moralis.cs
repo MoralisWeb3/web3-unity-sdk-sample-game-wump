@@ -52,7 +52,7 @@ using MoralisUnity.SolanaApi.Interfaces;
 using MoralisUnity.Platform.Queries;
 using MoralisUnity.Platform.Utilities;
 using MoralisUnity.Platform.Exceptions;
-
+#pragma warning disable CS0618
 namespace MoralisUnity
 {
     #region Enums
