@@ -17,7 +17,7 @@ public class WalletConnectQRImage : BindableMonoBehavior
     /// <summary>
     /// The WalletConnect instance we'll work with to generate the QR code.
     /// </summary>
-    private WalletConnect walletConnect;
+    public WalletConnect walletConnect;
     
     /// <summary>
     /// The image component we'll place the QR code texture into.

@@ -62,6 +62,15 @@ namespace WalletConnectSharp.Unity
                 return _instance;
             }
         }
+
+        public static void DestroyInstance()
+        {
+            if (Instance != null)
+            {
+                GameObject.Destroy(Instance.gameObject);
+            }
+            _instance = null;
+        }
         
         public static WalletConnectUnitySession ActiveSession
         {
@@ -467,6 +476,7 @@ namespace WalletConnectSharp.Unity
 
         private async void OnDestroy()
         {
+            Debug.Log("444444444 WallectConnect.Destroy");
             await SaveOrDisconnect();
         }
 
