@@ -22,16 +22,19 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
         public PendingMessage PendingMessageExtraDelay { get { return _pendingMessageExtraDelay; }}
         public bool HasExtraDelay { get { return true; }}
         
+        
 		// Fields -----------------------------------------
 		private readonly PendingMessage _endingMessageActive = new PendingMessage("Confirm With Your Wallet", 0);
 		private readonly PendingMessage _pendingMessagePassive = new PendingMessage("Loading ...", 0);
         private readonly PendingMessage _pendingMessageExtraDelay = new PendingMessage("Waiting For Transaction ...", 0);
 		private readonly TheGameContract _theGameContract = null;
         
+        
         // Based on trial and error (and current network traffic)
         //  This is how long it takes for the state to change on the blockchain
         private const int DelayExtraAfterStateChangeMilliseconds = 7000; // I tested with 5000 and it die not always capture changes. Use more - srivello
 
+        
 		// Initialization Methods -------------------------
 		public TheGameContractService()
 		{
@@ -69,8 +72,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
             return result;
         }
 
+        
         //Debugging: Track how many times I call this. Maybe optimize by calling it less? Caching it local?
         private static int CallsThisSession = 0;
+        
         
         public async UniTask<List<Prize>> GetPrizesAsync()
         {
@@ -108,6 +113,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
             return prizes;
         }
         
+        
         // SETTER Methods -------------------------
         public async UniTask RegisterAsync()
         {
@@ -123,18 +129,21 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
             //Debug.Log($"UnregisterAsync() result = {result}");
         }
 
+        
         public async UniTask TransferGoldAsync(string toAddress)
         {
             string result = await _theGameContract.TransferGoldAsync(toAddress);
             //Debug.Log($"UnregisterAsync() result = {result}");
         }
 
+        
         public async UniTask TransferPrizeAsync(string toAddress, Prize prize)
         {
             string result = await _theGameContract.TransferPrizeAsync(toAddress, prize);
             //Debug.Log($"UnregisterAsync() result = {result}");
         }
 
+        
         /// <summary>
         /// Called from the "reset all data" button.
         /// Combine several operations into 1 to smooth the user experience
@@ -145,6 +154,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
             string result = await _theGameContract.SafeReregisterAndDeleteAllPrizesAsync(prizes);
             //Debug.Log($"SafeReregisterDeleteAllPrizesAsync() result = {result}");
         }
+        
         
         // Event Handlers ---------------------------------
 
