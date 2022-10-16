@@ -9,15 +9,35 @@ using MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
-using UnityEditor;
+using UnityEditor.Build.Reporting;
 #endif
 
 #pragma warning disable 1998
 namespace MoralisUnity.Samples.TheGame
 {
 
+#if UNITY_EDITOR
+	using UnityEditor;
+	using UnityEditor.Build;
+	class TheGameSingletonBuildProcessor : IProcessSceneWithReport 
+	{
+		public int callbackOrder { get { return 1;} }
+
+		public bool DidProcessAnyScene = false;
+		public void OnProcessScene(Scene scene, BuildReport report)
+		{
+			if (!DidProcessAnyScene)
+			{
+				DidProcessAnyScene = true;
+				TheGameSingleton.SetUniquePlayerPrefsKey();
+			}
+		}
+	}
+#endif
+	
 	/// <summary>
 	/// The main entry point for the whole game
 	/// <para />
@@ -58,18 +78,10 @@ namespace MoralisUnity.Samples.TheGame
 			Screen.fullScreen = false;
 			
 #endif
-			
-#if UNITY_EDITOR
-			//Set the product name inside the editor. 
-			//This value is use by both moralis and the unity FULL Multiplayer for 'am I unique'
-			
-			//Do this "!=" check to prevent issues
-			if (PlayerSettings.productName != TheGameConstants.GetNewProductName())
-			{
-				PlayerSettings.productName = TheGameConstants.GetNewProductName();
-			}
-			UnityEngine.Debug.Log($"PlayerSettings.productName={PlayerSettings.productName}");
-#endif
+
+			//Make Unique Key: UNITY EDITOR vs UNITY EDITOR CLONE vs UNITY BUILD
+			SetUniquePlayerPrefsKey();
+
 			// Name the runtime game object
 			gameObject.name = GetType().Name;
 			
@@ -122,6 +134,22 @@ namespace MoralisUnity.Samples.TheGame
 			
 		}
 
+		/// <summary>
+		///  Make Unique Key: UNITY EDITOR vs UNITY EDITOR CLONE vs UNITY BUILD
+		/// This **Maybe** affects the uniqueness of Unity Multiplayer and/or WalletConnect
+		/// </summary>
+		public static void SetUniquePlayerPrefsKey()
+		{
+#if UNITY_EDITOR
+			string uniquePlayerPrefsSuffix = TheGameConfiguration.Instance.UniquePlayerPrefsSuffix;
+			string newProductname = TheGameConstants.GetNewProductName(uniquePlayerPrefsSuffix);
+			PlayerSettings.productName = newProductname;
+#endif
+
+			//KEEP LOG FOREVER
+			UnityEngine.Debug.LogWarning($"Key = {TheGameConstants.GetPlayerPrefsKeyForWeb3AndMultiplayer()}");
+		}
+		
 		// Unity Methods --------------------------------
 		
 		public void Update()

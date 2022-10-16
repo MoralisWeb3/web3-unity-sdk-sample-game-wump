@@ -27,8 +27,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         //  Unity Methods----------------------------------
         protected async void Start()
         {
-            _ui.WalletConnectWrapper.EnsureWalletConnectExists();
-            
             _ui.PlayerView.PlayerNameText.text = TheGameHelper.GetPlayerNameAsSceneTitle("Settings"); 
             _ui.RandomizeNicknameButton.Button.onClick.AddListener(RandomizeNicknameButton_OnClicked);
             _ui.ResetButton.Button.onClick.AddListener(ResetButton_OnClicked);
@@ -44,12 +42,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                 RefreshUIAsync();
             }
         }
-        
-        protected void OnDestroy()
-        {
-            _ui.WalletConnectWrapper.EnsureWallectConnectIsDestroyed();
-        }
-
 
         //  General Methods -------------------------------
         private async UniTask RefreshUIAsync()
@@ -63,6 +55,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             _ui.RandomizeNicknameButton.IsInteractable = _isAuthenticated && _isRegistered;
             _ui.ResetButton.IsInteractable = _isAuthenticated && _isRegistered;
             _ui.BackButton.IsInteractable = true;
+            _ui.KeyText.text = $"Key = {TheGameConstants.GetPlayerPrefsKeyForWeb3AndMultiplayer()}";
+
         }
         
         

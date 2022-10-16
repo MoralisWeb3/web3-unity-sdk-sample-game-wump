@@ -36,10 +36,21 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration
         public TransferDialogView TransferDialogViewPrefab { get { return _transferDialogViewPrefab; } }
         
         public NetworkManagerView NetworkManagerViewPrefab { get { return _networkManagerViewPrefab; } }
-        
+        public bool IsControllingWc { get { return _isControllingWC;} }
+        public string UniquePlayerPrefsSuffix { get { return _uniquePlayerPrefsSuffix; } }
+
         // Fields -----------------------------------------
         public const string Title = "TheGameConfiguration";
+
+        [Tooltip("Default = ''. Optional, use for BUILDS, so each BUILD is treated unique per multiplayer/web3.")]
+        [SerializeField]
+        private string _uniquePlayerPrefsSuffix = "";
         
+        [Header("Settings (Web3)")]
+        [Tooltip("AuthKit and WalletConnect are not robust singletons. Default = true, to fix bugs.")]
+        [SerializeField]
+        private bool _isControllingWC = true;
+
         [Header("Cosmetics")]
         [SerializeField]
         private SceneTransition _sceneTransition = null;

@@ -1,6 +1,7 @@
 ﻿using System;
 using MoralisUnity.Samples.Shared;
 using RMC.Shared;
+using UnityEditor;
 using UnityEngine;
 
 namespace MoralisUnity.Samples.TheGame
@@ -68,6 +69,8 @@ namespace MoralisUnity.Samples.TheGame
         public const uint GoldOnTransfer = 25;
         public const uint PrizesOnTransfer = 1;
         //
+        public const uint GoldOnRegister = 100; //May be a ui-only limit
+        public const uint PrizesOnRegister = 3; //May be a ui-only limit
         public const uint GoldMax = 100; //May be a ui-only limit
         public const uint PrizesMax = 6; //May be a ui-only limit
 
@@ -79,29 +82,48 @@ namespace MoralisUnity.Samples.TheGame
         {
             return $"{Application.productName}_{Guid.NewGuid()}";
         }
-        
+
         /// <summary>
         /// Per Moralis, if you change this value, you have to auth again. ("Cookie" is lost)
         /// </summary>
         /// <returns></returns>
-        public static string GetNewProductName()
+        public static string GetNewProductName(string uniqueSuffix)
         {
-            // Running in a parelsync clone vs the original
             string clone = "";
+            string unityEditor = "";
+            string build = "";
+            
+#if UNITY_EDITOR   
+            unityEditor = "_UnityEditor";
+            
+            // Running in a parelsync clone vs the original
             if (ClonesManagerWrapper.HasClonesManager && ClonesManagerWrapper.IsClone)
             {
                 clone = "_Clone";
             }
             
             // Running inside the unity editor vs a build?
-            string unityEditor = "";
-            if (Application.isEditor)
+            if (BuildPipeline.isBuildingPlayer)
             {
-                unityEditor = "_UnityEditor2";
+                build = "_Build";
             }
+#endif
+            if (!string.IsNullOrEmpty(uniqueSuffix))
+            {
+                uniqueSuffix = $"_{uniqueSuffix}";
+            }
+            
+            return $"{ProjectNameShort}{unityEditor}{clone}{build}{uniqueSuffix}";
 
-            return $"{ProjectNameShort}{unityEditor}{clone}";
+        }
 
+        public static string GetPlayerPrefsKeyForWeb3AndMultiplayer()
+        {
+            // It is supspected that both WalletConnect and Unity Multiplayer use a local
+            // file path based on this for "is this instance of the game UNIQUE".
+            // If two instances have the same value, that is ok, but know they will share some 
+            // locally stored values. 
+            return $"{Application.companyName}/{Application.productName}";
         }
     }
 }

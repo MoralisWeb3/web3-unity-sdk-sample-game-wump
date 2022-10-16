@@ -1,9 +1,6 @@
-using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using MoralisUnity.Samples.Shared.Data.Types.Storage;
 using MoralisUnity.Samples.Shared.Debugging;
 using MoralisUnity.Samples.Shared.Exceptions;
-using MoralisUnity.Samples.Shared.Helpers;
 using MoralisUnity.Sdk.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace MoralisUnity.Samples.Shared.Components
 {
-	public class SceneManagerComponentUnityEvent : UnityEvent<SceneManagerComponent> {}
+	public class SceneManagerComponentUnityEvent : UnityEvent<SceneManagerComponent, string, string> {}
 	
 	/// <summary>
 	/// Determines "was the active scene loaded directly?
@@ -41,6 +38,7 @@ namespace MoralisUnity.Samples.Shared.Components
 		
 		protected void Start ()
 		{
+			SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
 			SceneManager.sceneLoaded += SceneManager_OnSceneLoaded;
 		}
 
@@ -90,15 +88,19 @@ namespace MoralisUnity.Samples.Shared.Components
 			await _sceneTransition.ApplyTransition(_sceneTransitionImage, () =>
 			{
 				_sceneNamePrevious = SceneManager.GetActiveScene().name;
-				OnSceneLoadingEvent.Invoke(this);
+				
+				Debug.LogWarning($" 1 _sceneNamePrevious={_sceneNamePrevious} sceneName={sceneName} ");
+				OnSceneLoadingEvent.Invoke(this, _sceneNamePrevious, sceneName);
 				SceneManager.LoadScene(sceneName);
+
 			});
 		}
 		
 		// Event Handlers ---------------------------------
 		private void SceneManager_OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
 		{
-			OnSceneLoadedEvent.Invoke(this);
+			Debug.LogWarning($"================================= 1 _sceneNamePrevious={_sceneNamePrevious} scene.name={scene.name} ");
+			OnSceneLoadedEvent.Invoke(this, _sceneNamePrevious, scene.name);
 		}
 
 	}

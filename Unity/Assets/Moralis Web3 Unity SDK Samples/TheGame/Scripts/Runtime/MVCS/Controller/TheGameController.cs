@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using MoralisUnity.Samples.Shared;
@@ -236,6 +237,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		// SETTER Methods -------------------------
 		public async UniTask RegisterAndUpdateModelAsync()
 		{
+			_theGameModel.ResetAllData();
 			await _theGameService.RegisterAsync();
 			_theGameModel.IsRegistered.Value = await GetIsRegisteredAndUpdateModelAsync();
 			
@@ -411,18 +413,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 					}
 					else
 					{
-						Debug.LogWarning("CanTransfer() failed. Nothing to transfer");
+						//Debug.LogWarning("CanTransfer() failed. Nothing to transfer");
 					}
 				}
 				else
 				{
-					Debug.LogWarning("CanTransfer() failed. The from/to cannot be identical");
+					//Debug.LogWarning("CanTransfer() failed. The from/to cannot be identical");
 				}
 		
 			}
 			else
 			{
-				Debug.LogWarning("CanTransfer() failed. No one is selected");
+				//Debug.LogWarning("CanTransfer() failed. No one is selected");
 			}
 
 			return false;
@@ -442,17 +444,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 					}
 					else
 					{
-						Debug.LogWarning("CanTransfer() failed. Nothing to transfer");
+						//Debug.LogWarning("CanTransfer() failed. Nothing to transfer");
 					}
 				}
 				else
 				{
-					Debug.LogWarning("CanTransfer() failed. The from/to cannot be identical");
+					//Debug.LogWarning("CanTransfer() failed. The from/to cannot be identical");
 				}
 			}
 			else
 			{
-				Debug.LogWarning("CanTransfer() failed. No one is selected");
+				//Debug.LogWarning("CanTransfer() failed. No one is selected");
 			}
 
 			return false;
@@ -471,6 +473,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 						OnTheGameModelChangedRefresh();
 						await TransferPrizeAsync(_theGameModel.SelectedPlayerView.Value.Web3Address, 
 							_theGameModel.Prizes.Value[0]);
+
+						// Update client UI
+						await GetPrizesAndUpdateModelAsync();
+						
+						//Finish the transfer by mimicking the cancel button
+						TransferDialogView_OnTransferCancelRequested(transferDialogView);
 					});
 			}
 		}
@@ -487,11 +495,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 						_theGameModel.IsTransferPending.Value = true;
 						OnTheGameModelChangedRefresh();
 						await TransferGoldAsync(_theGameModel.SelectedPlayerView.Value.Web3Address);
+
+						// Update client UI
+						await GetGoldAndUpdateModelAsync();
+
+						//Finish the transfer by mimicking the cancel button
+						TransferDialogView_OnTransferCancelRequested(transferDialogView);
 					});
 			}
 		}
 		
-		private void TransferDialogView_OnTransferCancelRequested(TransferDialogView transferDialogView)
+		private async void TransferDialogView_OnTransferCancelRequested(TransferDialogView transferDialogView)
 		{
 			TheGameSingleton.Instance.TheGameController.UnregisterView(transferDialogView); 
 			GameObject.Destroy(transferDialogView.gameObject);
@@ -499,7 +513,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			
 			_theGameModel.IsTransferPending.Value = false;
 			OnTheGameModelChangedRefresh();
-			
 			
 		}
 		
@@ -669,32 +682,55 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 
 		
-		private void SceneManagerComponent_OnSceneLoadingEvent(SceneManagerComponent sceneManagerComponent)
+		private void SceneManagerComponent_OnSceneLoadingEvent(SceneManagerComponent sceneManagerComponent, 
+			string currentSceneName, string nextSceneName)
 		{
 			if (_theGameView.BaseScreenCoverUI.IsVisible)
 			{
 				_theGameView.BaseScreenCoverUI.IsVisible = false;
 			}
 			
-			// HACK: The WalletConnect prefab is not a robust Singleton pattern.
-			// It does not work well if the prefab is in 2 or more scenes that are used at runtime. The 2 or more instances conflict.
-			// So I manually delete the current one BEFORE the next scene loads. Works 100%
-			if (CustomWeb3System.Instance.HasWalletConnectInstance)
-			{
-				Debug.Log("8888888 This is destroying every time");
-				CustomWeb3System.Instance.DestroyWalletConnectInstance();
-			}
-
 			if (DOTween.TotalPlayingTweens() > 0)
 			{
 				DOTween.KillAll();
 			}
+
+			if (nextSceneName == TheGameConfiguration.Instance.AuthenticationSceneData.SceneName)
+			{
+				if (CustomWeb3System.Instance.HasWalletConnectStaticInstance)
+				{
+					CustomWeb3System.Instance.EnsureDestroyedWalletConnectInstance();
+				}
+				var objects = GameObject.FindObjectsOfType<GameObject>().ToList();
+				foreach (GameObject g in objects)
+				{
+					Debug.LogWarning("NUKERLAR: " + g.name);
+					GameObject.Destroy(g);
+				}
+			}
+			else
+			{
+				if (TheGameConfiguration.Instance.IsControllingWc)
+				{
+					CustomWeb3System.Instance.EnsureDestroyedWalletConnectInstance();
+				}
+			}
 		}
 
 		
-		private void SceneManagerComponent_OnSceneLoadedEvent(SceneManagerComponent sceneManagerComponent)
+		private void SceneManagerComponent_OnSceneLoadedEvent(SceneManagerComponent sceneManagerComponent, 
+			string previousSceneName, string currentSceneName)
 		{
-			// Do anything?
+			if (currentSceneName == TheGameConfiguration.Instance.AuthenticationSceneData.SceneName)
+			{
+				//Debug.LogWarning($"Skipping DESTROY, because currentSceneName = {currentSceneName}");
+			}
+				if (TheGameConfiguration.Instance.IsControllingWc)
+				{
+					CustomWeb3System.Instance.EnsureInstantiatedWalletConnectInstance();
+				}
+			
+
 		}
 
 

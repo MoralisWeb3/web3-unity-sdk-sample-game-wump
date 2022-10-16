@@ -26,7 +26,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         //  Unity Methods----------------------------------
         protected async void Start()
         {
-            _ui.WalletConnectWrapper.EnsureWalletConnectExists();
             _ui.PlayerView.PlayerNameText.text = TheGameHelper.GetPlayerNameAsSceneTitle("Intro"); 
             
             _ui.AuthenticationButtonUI.Button.onClick.AddListener(AuthenticationButtonUI_OnClicked);
@@ -47,15 +46,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             RefreshUIAsync();
         }
 
-
-
-        protected void OnDestroy()
-        {
-            _ui.WalletConnectWrapper.EnsureWallectConnectIsDestroyed();
-        }
-
-        
-
         //  General Methods -------------------------------
         private async UniTask RefreshUIAsync()
         {
@@ -63,7 +53,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             _ui.Registerbutton.IsInteractable = _isAuthenticated && !_isRegistered;
             _ui.PlayGameButton.IsInteractable = _isAuthenticated && _isRegistered;
             _ui.SettingsButton.IsInteractable = _isAuthenticated && _isRegistered;
-           
+
         }
 
         //  Event Handlers --------------------------------

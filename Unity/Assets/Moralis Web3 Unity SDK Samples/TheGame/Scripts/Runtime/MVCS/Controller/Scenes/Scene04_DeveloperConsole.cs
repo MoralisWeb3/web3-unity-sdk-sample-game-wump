@@ -35,8 +35,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         //  Unity Methods----------------------------------
         protected async void Start()
         {
-            _ui.WalletConnectWrapper.EnsureWalletConnectExists();
-            
             _ui.IsAuthenticatedButton.Button.onClick.AddListener( async () => await IsAuthenticatedButton_OnClicked());
             _ui.IsRegisteredButton.Button.onClick.AddListener(async () => await IsRegisteredButton_OnClicked());
             _ui.RegisterButton.Button.onClick.AddListener(RegisterButton_OnClicked);
@@ -59,11 +57,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                 await IsRegisteredButton_OnClicked();
             }
             await RefreshUIAsync();
-        }
-
-        protected void OnDestroy()
-        {
-            _ui.WalletConnectWrapper.EnsureWallectConnectIsDestroyed();
         }
 
         //  General Methods -------------------------------

@@ -1,6 +1,7 @@
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.UI;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes;
+using TMPro;
 using UnityEngine;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
@@ -13,6 +14,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
         
         //  Properties ------------------------------------
         public WalletConnectWrapper WalletConnectWrapper { get { return _walletConnectWrapper; } }
+
+        public TMP_Text KeyText { get { return _keyText; } }
 
         public PlayerView PlayerView { get { return _playerView; } }
         public BaseButtonUI BackButton { get { return _backButton; } }
@@ -27,6 +30,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
 
         [SerializeField]
         private PlayerView _playerView = null;
+        
+        [SerializeField]
+        private TMP_Text _keyText = null;
         
         [SerializeField]
         private BaseButtonUI _resetButton = null;

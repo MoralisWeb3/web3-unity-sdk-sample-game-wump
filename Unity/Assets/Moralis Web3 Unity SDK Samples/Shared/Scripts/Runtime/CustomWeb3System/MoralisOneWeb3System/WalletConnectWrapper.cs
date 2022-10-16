@@ -1,4 +1,4 @@
-﻿using System;
+﻿using MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.CustomSingletonMonobehaviour;
 using UnityEngine;
 using WalletConnectSharp.Unity;
 
@@ -8,7 +8,7 @@ namespace MoralisUnity.Samples.Shared
 	/// <summary>
 	/// Custom wrapper for the client-side of Moralis functionality
 	/// </summary>
-	public class WalletConnectWrapper : MonoBehaviour
+	public class WalletConnectWrapper : CustomSingletonMonobehaviour<WalletConnectWrapper>
 	{
 		// Properties -------------------------------------
 	
@@ -20,49 +20,39 @@ namespace MoralisUnity.Samples.Shared
 		private WalletConnect _walletConnectLocallyCreated;
 
 		// Unity Methods -------------------------
+		protected void Awake()
+		{
+		}
 
-		public void EnsureWalletConnectExists()
-		{
-			if (WalletConnect.Instance == null)
-			{
-				Debug.Log("8888 Manually Creating WalletConnect");
-				_walletConnectLocallyCreated = Instantiate<WalletConnect>(_walletConnectPrefab);
-			}
-			Debug.Log($">>>>>>> EnsureWalletConnectExists() now = {WalletConnect.Instance}");
-				
-			WalletConnectQRImage walletConnectQRImage = FindObjectOfType<WalletConnectQRImage>();
-			if (walletConnectQRImage != null)
-			{
-				if (walletConnectQRImage.walletConnect == null)
-				{
-					walletConnectQRImage.walletConnect = WalletConnect.Instance;
-				}
-			}
-		}
-		
-		public void EnsureWallectConnectIsDestroyed()
-		{
-			if (_walletConnectLocallyCreated != null)
-			{
-				Debug.Log("8888 Manually Destroying WalletConnect");
-				Destroy(_walletConnectLocallyCreated.gameObject);
-			}
-			Debug.Log($">>>>>>> EnsureWallectConnectIsDestroyed() now = {WalletConnect.Instance}");
-		}
-		
-		protected void OnDestroy()
-		{
-			Debug.Log($"88888 OnDestroy:");
-			// if (_walletConnect != null || WalletConnect.Instance != null)
-			// {
-			// 	Debug.LogWarning("Destroy WalletConnect");
-			// 	Destroy(_walletConnect.gameObject);
-			// 	Destroy(this.gameObject);
-			// }
-		}
 		// General Methods --------------------------------
 		
-		
+		public void EnsureInstantiatedWalletConnectInstance()
+		{
+			Debug.LogWarning("1 EnsureInstantiatedWalletConnectInstance() before = " + CustomWeb3System.Instance.HasWalletConnectStaticInstance);
+			if (CustomWeb3System.Instance.HasWalletConnectStaticInstance) return;
+			_walletConnectLocallyCreated = Instantiate(_walletConnectPrefab);
+			Debug.LogWarning("2 EnsureInstantiatedWalletConnectInstance() after = " + CustomWeb3System.Instance.HasWalletConnectStaticInstance);
+
+			WalletConnectQRImage walletConnectQrImage = FindObjectOfType<WalletConnectQRImage>();
+			Debug.LogWarning("1111: " + walletConnectQrImage);
+			if (walletConnectQrImage != null)
+			{
+				walletConnectQrImage.walletConnect = WalletConnect.Instance;
+				Debug.LogWarning(
+					"3 EnsureInstantiatedWalletConnectInstance() after = " + walletConnectQrImage.walletConnect);
+
+				
+			}
+
+			WalletConnectQRImage[] walletConnectQrImage2 = Resources.FindObjectsOfTypeAll<WalletConnectQRImage>();
+
+			if (walletConnectQrImage2.Length > 0)
+			{
+				Debug.LogWarning("2222: " + walletConnectQrImage2[0]);
+			}
+			
+
+		}
 		// Event Handlers ---------------------------------
 	
 	}

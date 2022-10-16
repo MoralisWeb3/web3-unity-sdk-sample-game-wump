@@ -1,13 +1,13 @@
-using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Data.Types.Storage;
 using MoralisUnity.Samples.Shared.Attributes;
 using MoralisUnity.Samples.Shared.Data.Types;
 using MoralisUnity.Samples.Shared.Debugging;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
+using UnityEngine;
 
+#pragma warning disable CS0162
 namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
 {
 
@@ -20,11 +20,24 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
 	public class LocalDiskStorageData
 	{
 		//  Properties ------------------------------------
+		public bool IsRegistered
+		{
+			set
+			{
+				_isRegistered = value;
+			}
+			get
+			{
+				return _isRegistered;
+			}
+		}
 
 		//  Fields ----------------------------------------
-		public bool IsRegistered = false;
+		[SerializeField]
+		private bool _isRegistered = false;
 		public int Gold = 0;
-		public List<Prize> TreasurePrizeDtos = new List<Prize>();
+		public List<Prize> Prizes = new List<Prize>();
+		public TransferLog TransferLog;
 	}
 
 
@@ -65,7 +78,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
 		private static readonly int DelayExtraSimulatedAfterStateChange = 500;
 
 		//
-		private TransferLog _lastTransferLog;
+
 
 
 		// Initialization Methods -------------------------
@@ -83,15 +96,16 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
 		}
 
 		//  GETTER - LocalDiskStorage Methods --------------------------------
-		public UniTask<TransferLog> GetTransferLogHistoryAsync()
+		public async UniTask<TransferLog> GetTransferLogHistoryAsync()
 		{
-			return new UniTask<TransferLog>(_lastTransferLog);
+			await UniTask.Delay(DelaySimulatedPerMethod);
+			LocalDiskStorageData localDiskStorageData = LoadLocalDiskStorageData();
+			return localDiskStorageData.TransferLog;
 		}
 
 		public async UniTask<bool> GetIsRegisteredAsync()
 		{
 			await UniTask.Delay(DelaySimulatedPerMethod);
-
 			LocalDiskStorageData localDiskStorageData = LoadLocalDiskStorageData();
 			return localDiskStorageData.IsRegistered;
 		}
@@ -99,19 +113,15 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
 		public async UniTask<int> GetGoldAsync()
 		{
 			await UniTask.Delay(DelaySimulatedPerMethod);
-
 			LocalDiskStorageData localDiskStorageData = LoadLocalDiskStorageData();
-
 			return localDiskStorageData.Gold;
 		}
 
 		public async UniTask<List<Prize>> GetPrizesAsync()
 		{
 			await UniTask.Delay(DelaySimulatedPerMethod);
-
 			LocalDiskStorageData localDiskStorageData = LoadLocalDiskStorageData();
-
-			return localDiskStorageData.TreasurePrizeDtos;
+			return localDiskStorageData.Prizes;
 		}
 
 		//  SETTER - LocalDiskStorage Methods --------------------------------
@@ -168,7 +178,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
 
 			ClearTheGameLocalDiskStorage();
 
-			await SetGoldAsync(100);
+			await SetGoldAsync((int)TheGameConstants.GoldOnRegister);
+
+			List<Prize> prizes = new List<Prize>();
+			for (int i = 0; i < TheGameConstants.PrizesOnRegister; i++)
+			{
+				prizes.Add(new Prize());
+			}
+			await SetPrizesAsync(prizes);
 
 			LocalDiskStorageData localDiskStorageData = LoadLocalDiskStorageData();
 			localDiskStorageData.IsRegistered = true;
@@ -182,23 +199,45 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
 			await UniTask.Delay(DelaySimulatedPerMethod);
 
 			ClearTheGameLocalDiskStorage();
-
-			await SetGoldAsync(0);
-
 			LocalDiskStorageData localDiskStorageData = LoadLocalDiskStorageData();
 			localDiskStorageData.IsRegistered = false;
 			SaveLocalDiskStorageData(localDiskStorageData);
 
 		}
 
-		public UniTask TransferGoldAsync(string address)
+		public async UniTask TransferGoldAsync(string address)
 		{
-			throw new NotImplementedException();
+			int gold = await GetGoldAsync();
+			int newGold = gold - (int)TheGameConstants.GoldOnTransfer;
+			if (newGold < 0)
+			{
+				Debug.LogWarning("TransferGoldAsync() failed. not enough balance");
+				return;
+			}
+			Debug.LogWarning("TransferGoldAsync() PARTIAL functionality. This REMOVES, but doesn't transfer. That is ok for testing.");
+			await SetGoldAsync(newGold);
 		}
 
-		public UniTask TransferPrizeAsync(string address, Prize prize)
+		public async UniTask TransferPrizeAsync(string address, Prize prize)
 		{
-			throw new NotImplementedException();
+			List<Prize> prizes = await GetPrizesAsync();
+
+			if (prizes.Count < TheGameConstants.PrizesOnTransfer)
+			{
+				Debug.LogWarning("TransferPrizeAsync() failed. not enough balance");
+				return;
+			}
+
+			// Do a quick and dirty 'remove ONE' 
+			if (TheGameConstants.PrizesOnTransfer != 1)
+			{
+				Debug.LogError("Change implementation, per new value");
+				return;
+			}
+
+			prizes.RemoveAt(0);
+			Debug.LogWarning("TransferPrizeAsync() PARTIAL functionality. This REMOVES, but doesn't transfer. That is ok for testing.");
+			await SetPrizesAsync(prizes);
 		}
 
 		private async UniTask SetGoldAsync(int targetBalance)
@@ -210,13 +249,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
 			SaveLocalDiskStorageData(localDiskStorageData);
 		}
 
-
-		private async UniTask SetGoldByAsync(int deltaBalance)
+		private async UniTask SetPrizesAsync(List<Prize> prizes)
 		{
 			await UniTask.Delay(DelaySimulatedPerMethod);
 
 			LocalDiskStorageData localDiskStorageData = LoadLocalDiskStorageData();
-			localDiskStorageData.Gold = localDiskStorageData.Gold + deltaBalance;
+			localDiskStorageData.Prizes = prizes;
 			SaveLocalDiskStorageData(localDiskStorageData);
 		}
 
@@ -231,18 +269,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
 			{
 				await UnregisterAsync();
 			}
-
-			await RegisterAsync();
 			await DeleteAllTreasurePrizeAsync();
+			await RegisterAsync();
+			
 		}
 
-		public async UniTask DeleteAllTreasurePrizeAsync()
+		private async UniTask DeleteAllTreasurePrizeAsync()
 		{
 			await UniTask.Delay(DelaySimulatedPerMethod);
 
 			LocalDiskStorageData localDiskStorageData = LoadLocalDiskStorageData();
 
-			localDiskStorageData.TreasurePrizeDtos.Clear();
+			localDiskStorageData.Prizes.Clear();
 			SaveLocalDiskStorageData(localDiskStorageData);
 		}
 

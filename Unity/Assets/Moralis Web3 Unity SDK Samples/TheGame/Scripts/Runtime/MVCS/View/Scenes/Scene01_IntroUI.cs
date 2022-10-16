@@ -1,7 +1,9 @@
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.UI;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
 {
@@ -18,7 +20,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
         public BaseButtonUI Registerbutton { get { return _registerButton; } }
         public BaseButtonUI PlayGameButton { get { return _playGameButton; } }
         public BaseButtonUI SettingsButton { get { return _settingsButton; } }
-  
 
         //  Fields ----------------------------------------
         [Header ("References (Scene)")]

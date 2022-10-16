@@ -8,7 +8,7 @@ namespace MoralisUnity.Samples.Shared
 	/// <summary>
 	/// Custom wrapper for the client-side of Moralis functionality
 	/// </summary>
-	public class MyAuthenticationKitWrapper : MonoBehaviour
+	public class AuthenticationKitWrapper : MonoBehaviour
 	{
 		// Properties -------------------------------------
 		[HideInInspector]

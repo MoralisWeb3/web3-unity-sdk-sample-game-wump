@@ -42,8 +42,6 @@ namespace MoralisUnity.Samples.TheGame
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(OnTheGameModelChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
 			
-			_ui.WalletConnectWrapper.EnsureWalletConnectExists();
-	
 			Initialize();
 			
 			RefreshUIAsync();
@@ -79,8 +77,6 @@ namespace MoralisUnity.Samples.TheGame
 
 		protected async void OnDestroy()
 		{
-			_ui.WalletConnectWrapper.EnsureWallectConnectIsDestroyed();
-				
 			if (!TheGameSingleton.IsShuttingDown)
 			{
 				if (TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
