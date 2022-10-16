@@ -33,36 +33,11 @@ namespace MoralisUnity.Samples.Shared
 
 		public bool IsInitialized { get; private set; }
 		
-
 		public bool HasWalletConnectStaticInstance
 		{
-			get { return WalletConnect.Instance != null && WalletConnect.Instance.gameObject != null; }
+			get { return WalletConnect.Instance != null; }
 		}
 		
-		public bool HasWalletConnectFound
-		{
-			get { return GameObject.FindObjectOfType<WalletConnect>() != null; }
-		}
-
-		public void EnsureInstantiatedWalletConnectInstance()
-		{
-			if (HasWalletConnectStaticInstance) return;
-			WalletConnectWrapper.Instance.EnsureInstantiatedWalletConnectInstance();
-		}
-		
-		public async void EnsureDestroyedWalletConnectInstance()
-		{
-			Debug.LogWarning("77: " + HasWalletConnectStaticInstance);
-			if (!HasWalletConnectStaticInstance) return;
-			GameObject.Destroy(WalletConnect.Instance.gameObject);
-
-			await UniTask.WaitForEndOfFrame();
-			Debug.LogWarning("77: " + HasWalletConnectStaticInstance);
-			
-			if (!HasWalletConnectFound) return;
-			Debug.LogWarning("999999999999999 What?");
-			GameObject.Destroy(GameObject.FindObjectOfType<WalletConnect>());
-		}
 
 		// Initialization Methods -------------------------
 		void ICustomSingletonParent.OnInstantiatedChild()

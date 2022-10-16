@@ -8,8 +8,6 @@ namespace MoralisUnity.Samples.Shared
     public interface ICustomWeb3System 
     {
         bool HasWalletConnectStaticInstance { get; }
-        void EnsureDestroyedWalletConnectInstance();
-        void EnsureInstantiatedWalletConnectInstance();
         UniTask<bool> IsAuthenticatedAsync();
         Task<string> GetWeb3UserAddressAsync();
         string ConvertWeb3AddressToShortFormat(string address);

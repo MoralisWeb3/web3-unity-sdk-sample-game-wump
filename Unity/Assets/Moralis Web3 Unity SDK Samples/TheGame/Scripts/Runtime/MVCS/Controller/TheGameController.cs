@@ -19,6 +19,7 @@ using MoralisUnity.Samples.TheGame.MVCS.View;
 using RMC.Shared.Managers;
 using UnityEngine;
 using UnityEngine.Events;
+using WalletConnectSharp.Unity;
 using Debug = UnityEngine.Debug;
 
 #pragma warning disable CS4014
@@ -695,40 +696,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 				DOTween.KillAll();
 			}
 
-			if (nextSceneName == TheGameConfiguration.Instance.AuthenticationSceneData.SceneName)
-			{
-				if (CustomWeb3System.Instance.HasWalletConnectStaticInstance)
-				{
-					CustomWeb3System.Instance.EnsureDestroyedWalletConnectInstance();
-				}
-				var objects = GameObject.FindObjectsOfType<GameObject>().ToList();
-				foreach (GameObject g in objects)
-				{
-					Debug.LogWarning("NUKERLAR: " + g.name);
-					GameObject.Destroy(g);
-				}
-			}
-			else
-			{
-				if (TheGameConfiguration.Instance.IsControllingWc)
-				{
-					CustomWeb3System.Instance.EnsureDestroyedWalletConnectInstance();
-				}
-			}
+
 		}
 
 		
 		private void SceneManagerComponent_OnSceneLoadedEvent(SceneManagerComponent sceneManagerComponent, 
 			string previousSceneName, string currentSceneName)
 		{
-			if (currentSceneName == TheGameConfiguration.Instance.AuthenticationSceneData.SceneName)
-			{
-				//Debug.LogWarning($"Skipping DESTROY, because currentSceneName = {currentSceneName}");
-			}
-				if (TheGameConfiguration.Instance.IsControllingWc)
-				{
-					CustomWeb3System.Instance.EnsureInstantiatedWalletConnectInstance();
-				}
+
+			// if (TheGameConfiguration.Instance.IsControllingWc)
+			// {
+			// 	CustomWeb3System.Instance.EnsureInstantiatedWalletConnectInstance();
+			// }
 			
 
 		}

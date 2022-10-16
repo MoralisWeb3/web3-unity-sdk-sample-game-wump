@@ -8,7 +8,7 @@ using MoralisUnity.Samples.Shared.Debugging;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-
+#pragma warning disable CS0618
 namespace MoralisUnity.Samples.Shared
 {
     /// <summary>

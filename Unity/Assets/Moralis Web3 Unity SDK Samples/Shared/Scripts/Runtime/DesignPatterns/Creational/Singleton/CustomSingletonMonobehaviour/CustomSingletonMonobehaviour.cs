@@ -22,7 +22,7 @@ namespace MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.Custom
             internal set
             {
                 _IsShuttingDown = value;
-                Debug.Log("777777 _IsShuttingDown: " + _IsShuttingDown);
+               // Debug.Log("777777 _IsShuttingDown: " + _IsShuttingDown);
             }
         }
         
@@ -152,7 +152,7 @@ namespace MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.Custom
         {
             
             IsShuttingDown = true;
-            Debug.Log("77777777 Destroy: ");
+            //Debug.Log("77777777 Destroy: ");
             if (IsInstantiated)
             {
                 if (Application.isPlaying)

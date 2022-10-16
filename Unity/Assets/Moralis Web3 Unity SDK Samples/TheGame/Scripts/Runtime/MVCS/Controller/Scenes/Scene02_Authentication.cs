@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.TheGame.MVCS.View.Scenes;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         private bool _isAuthenticatedOnStart = false;
 
         //  Unity Methods----------------------------------
+
         protected async void Start()
         {
             _ui.PlayerView.PlayerNameText.text = TheGameHelper.GetPlayerNameAsSceneTitle("Web3 Auth", 5); 

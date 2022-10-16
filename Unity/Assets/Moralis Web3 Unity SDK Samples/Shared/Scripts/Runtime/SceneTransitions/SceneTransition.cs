@@ -4,6 +4,7 @@ using DG.Tweening;
 using MoralisUnity.Samples.Shared.Helpers;
 using UnityEngine;
     
+ #pragma warning disable CS0618
 namespace MoralisUnity.Samples.Shared.Data.Types.Storage
 {
     [CreateAssetMenu( menuName = SharedConstants.PathMoralisSharedCreateAssetMenu + Title, 
@@ -49,7 +50,9 @@ namespace MoralisUnity.Samples.Shared.Data.Types.Storage
                 halfDuration,
                 _delayBeforeSeconds,
                 _easeIn);
+
             await UniTask.WaitForEndOfFrame(); 
+
             
             // DURING
             action.Invoke();
