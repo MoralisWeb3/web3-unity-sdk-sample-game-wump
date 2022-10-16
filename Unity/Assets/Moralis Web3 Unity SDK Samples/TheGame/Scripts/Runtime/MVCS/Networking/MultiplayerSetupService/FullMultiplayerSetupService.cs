@@ -95,11 +95,65 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		}
 
 		//  Methods ---------------------------------------
-		public void Connect()
+		public async UniTask Connect()
 		{
 			RequireIsInitialized();
 			_onConnectStarted.Invoke();
 			_observableFullMultiplayerState.Value = FullMultiplayerState.Authenticating;
+		}
+		
+		
+		public bool CanStartAsHost()
+		{
+			return !NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer;
+		}
+		
+		
+		public bool CanJoinAsClient()
+		{
+			return !NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer;;
+		}
+		
+		public bool CanShutdown()
+		{
+			return NetworkManager.Singleton.IsClient && NetworkManager.Singleton.IsServer;
+		}
+		
+		
+		public async UniTask StartAsHost()
+		{
+			RequireIsInitialized();
+			if (!IsConnected)
+			{
+				Debug.LogWarning("StartAsHost () failed. Must be connected");
+			}
+			OnStateNameForDebuggingChanged.Invoke("StartHost");
+			NetworkManager.Singleton.StartHost();
+		}
+		
+		
+		public async UniTask JoinAsClient()
+		{
+			RequireIsInitialized();
+			if (!IsConnected)
+			{
+				Debug.LogWarning("JoinAsClient () failed. Must be connected");
+			}
+			
+			OnStateNameForDebuggingChanged.Invoke("StartClient");
+			NetworkManager.Singleton.StartClient();
+		}
+		
+		
+		public async UniTask Shutdown()
+		{
+			RequireIsInitialized();
+			if (!IsConnected)
+			{
+				Debug.LogWarning("Shutdown () failed. Must be connected");
+			}
+			OnStateNameForDebuggingChanged.Invoke("Shutdown");
+			NetworkManager.Singleton.Shutdown();
 		}
 
 		public void OnGUI()
@@ -169,7 +223,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 					joinAllocation.ConnectionData,
 					joinAllocation.HostConnectionData);
 
-				NetworkManager.Singleton.StartClient();
+				JoinAsClient();
+				
 				return lobby;
 			}
 			catch (Exception e)
@@ -225,10 +280,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 					allocation.Key,
 					allocation.ConnectionData);
 
-				if (NetworkManager.Singleton != null)
-				{
-					NetworkManager.Singleton.StartHost();
-				}
+				StartAsHost();
 				
 				return lobby;
 	

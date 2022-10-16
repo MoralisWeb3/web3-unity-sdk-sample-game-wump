@@ -47,6 +47,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		[HideInInspector]
 		public readonly PlayerViewUnityEvent OnRPCTransferLogHistoryChanged = new PlayerViewUnityEvent();
 
+		[HideInInspector]
+		public readonly StringUnityEvent OnMultiplayerStateNameChanged = new StringUnityEvent();
+
+		
 			
 		// Properties -------------------------------------
 		public PendingMessage PendingMessageForDeletion { get { return _theGameService.PendingMessageActive; } }
@@ -322,7 +326,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		/// <summary>
 		/// Connect to backend of Multiplayer system and show OnGUI menu (disconnect, ect...)
 		/// </summary>
-		public void MultiplayerSetupServiceConnect()
+		public async UniTask MultiplayerSetupServiceConnectAsync()
 		{
 			if (_multiplayerSetupService.IsInitialized && !_multiplayerSetupService.IsConnected)
 			{
@@ -331,29 +335,61 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 				_multiplayerSetupService.OnDisconnectStarted.AddListener(MultiplayerSetupService_OnDisconnectStarted);
 				_multiplayerSetupService.OnDisconnectCompleted.AddListener(MultiplayerSetupService_OnDisconnectCompleted);
 				_multiplayerSetupService.OnStateNameForDebuggingChanged.AddListener( MultiplayerSetupService_OnStateNameChanged);
-				_multiplayerSetupService.Connect();
+				await _multiplayerSetupService.Connect();
 			}
 		}
+
 		
+		public bool MultiplayerCanStartAsHost()
+		{
+			return _multiplayerSetupService.CanStartAsHost();
+		}
+		
+		
+		public bool MultiplayerCanJoinAsClient()
+		{
+			return _multiplayerSetupService.CanJoinAsClient();
+		}
+		
+		
+		public bool MultiplayerCanShutdown()
+		{
+			return _multiplayerSetupService.CanShutdown();
+		}
+
+		
+		public async UniTask MultiplayerStartAsHostAsync()
+		{
+			await _multiplayerSetupService.StartAsHost();
+		}
+		
+		
+		public async UniTask MultiplayerJoinAsClientAsync()
+		{
+			await _multiplayerSetupService.JoinAsClient();
+		}
+		
+		
+		public async UniTask MultiplayerLeaveAsync()
+		{
+			await _multiplayerSetupService.Shutdown();
+		}
+
+	
 		public bool MultiplayerSetupServiceIsConnected()
 		{
 			return _multiplayerSetupService.IsConnected;
 		}
 		
-		public async void MultiplayerSetupServiceDisconnectAsync()
+		
+		public async UniTask MultiplayerSetupServiceDisconnectAsync()
 		{
 			if (_multiplayerSetupService.IsConnected)
 			{
-		
 				await _multiplayerSetupService.DisconnectAsync();
 			}
-
-			
-			
 		}
 		
-
-
 		
 		private void PlayerView_OnIsWalkingChanged(PlayerView playerView)
 		{
@@ -361,17 +397,20 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			string status = playerView.IsWalking.Value ? "Walking" : "Idle";
 		}
 		
+		
 		private void PlayerView_OnPlayerAction(PlayerView playerView)
 		{
 			//Event Forwarding To External Scope
 			OnPlayerAction.Invoke(playerView);
 		}
 		
+		
 		private void PlayerView_OnRPCSharedStatusChanged(PlayerView playerView)
 		{
 			//Event Forwarding To External Scope
 			OnRPCSharedStatusChanged.Invoke(playerView);
 		}
+		
 		
 		private void PlayerView_OnRPCTransferLogHistoryChanged(PlayerView playerView)
 		{
@@ -713,6 +752,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		{
 			//Debug.Log($"OnStateNameChanged() {stateName}");
 			//UpdateMessageDuringMethod(TheGameConstants.Multiplayer + " " + stateName);
+			OnMultiplayerStateNameChanged.Invoke(stateName);
 		}
 
 		

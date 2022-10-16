@@ -5,6 +5,7 @@ using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using MoralisUnity.Samples.TheGame.MVCS.View.Scenes;
+using Unity.Netcode;
 using UnityEngine;
 
 #pragma warning disable 0472, CS4014, CS1998
@@ -38,12 +39,17 @@ namespace MoralisUnity.Samples.TheGame
 		
 		protected async void Start()
 		{
+			_ui.StartAsHostButton.Button.onClick.AddListener(StartAsHostButton_OnClicked);
+			_ui.JoinAsClientButton.Button.onClick.AddListener(JoinAsClientButton_OnClicked);
+			_ui.ShutdownButton.Button.onClick.AddListener(ShutdownButton_OnClicked);
 			_ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);
+			//
 			TheGameSingleton.Instance.TheGameController.OnPlayerAction.AddListener(OnPlayerAction);
 			TheGameSingleton.Instance.TheGameController.OnRPCSharedStatusChanged.AddListener(OnRPCSharedStatusChanged);
 			TheGameSingleton.Instance.TheGameController.OnRPCTransferLogHistoryChanged.AddListener(OnRPCTransferLogHistoryChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(OnTheGameModelChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
+			TheGameSingleton.Instance.TheGameController.OnMultiplayerStateNameChanged.AddListener(OnMultiplayerStateNameChanged);
 			
 			Initialize();
 			
@@ -72,10 +78,12 @@ namespace MoralisUnity.Samples.TheGame
 				if (TheGameConfiguration.Instance.MultiplayerIsAutoStart &&
 				    !TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
 				{
-					TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnect();
+					TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnectAsync();
 				}
 			}
 		}
+
+
 
 
 		protected async void OnDestroy()
@@ -106,16 +114,27 @@ namespace MoralisUnity.Samples.TheGame
 
 
 		//  Methods ---------------------------------------
-
 		private async UniTask RefreshUIAsync()
 		{
+			_ui.StartAsHostButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanStartAsHost();
+			_ui.JoinAsClientButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanJoinAsClient();
+			_ui.ShutdownButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanShutdown();
 			_ui.BackButton.IsInteractable = true;
+		}
+		
+		
+		
+		//  Event Handlers --------------------------------
+		
+		private async void OnMultiplayerStateNameChanged(string debugStateName)
+		{
+			Debug.Log("05 State " + debugStateName);
+			// Refresh for UI buttons
+			await RefreshUIAsync();
 		}
 		
 		private void OnTheGameModelChanged(TheGameModel theGameModel)
 		{
-		
-			
 		}
 		
 		private void OnPlayerAction(PlayerView playerView)
@@ -158,7 +177,38 @@ namespace MoralisUnity.Samples.TheGame
 			await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
 		}
 		
-		//  Event Handlers --------------------------------
+		private async void StartAsHostButton_OnClicked()
+		{
+			if (!TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
+			{
+				await TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnectAsync();
+			}
+
+			await TheGameSingleton.Instance.TheGameController.MultiplayerStartAsHostAsync();
+		}
+		
+		
+		private async void JoinAsClientButton_OnClicked()
+		{
+			if (!TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
+			{
+				await TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnectAsync();
+			}
+
+			await TheGameSingleton.Instance.TheGameController.MultiplayerJoinAsClientAsync();
+		}
+		
+		private async void ShutdownButton_OnClicked()
+		{
+			if (TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
+			{
+				await TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceDisconnectAsync();
+			}
+
+			await TheGameSingleton.Instance.TheGameController.MultiplayerLeaveAsync();
+		}
+		
+		
 		private void BackButton_OnClicked()
 		{
 			TheGameSingleton.Instance.TheGameController.LoadIntroSceneAsync();

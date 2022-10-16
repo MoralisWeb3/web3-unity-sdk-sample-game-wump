@@ -71,7 +71,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			}
 		}
 		//  Methods ---------------------------------------
-		public void Connect()
+		public async UniTask Connect()
 		{
 			RequireIsInitialized();
 			if (IsConnected)
@@ -86,24 +86,24 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 				if (ClonesManagerWrapper.IsClone)
 				{
 					_onConnectStarted.Invoke();
-					StartClient();
+					await JoinAsClient();
 				}
 				else
 				{
 					// Primary UNITY EDITOR
 					_onConnectStarted.Invoke();
-					StartHost();
+					await StartAsHost();
 				}
 			}
 			else
 			{
 				_onConnectStarted.Invoke();
-				StartClient();
+				await JoinAsClient();
 			}
 		}
 
 		
-		public void OnGUI() 
+		public async void OnGUI() 
 		{
 			if (!IsInitialized) return;
 			//Regardless of _isAutoStart, this will appear properly as needed
@@ -121,20 +121,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			{
 				if (GUILayout.Button("Host"))
 				{
-					StartHost();
-					OnStateNameForDebuggingChanged.Invoke("StartHost");
+					await StartAsHost();
 				}
-
-				// if (GUILayout.Button("Server"))
-				// {
-				// 	NetworkManager.Singleton.StartServer();
-				// 	OnStateNameChanged.Invoke("StartServer");
-				// }
 
 				if (GUILayout.Button("Client"))
 				{
-					StartClient();
-					OnStateNameForDebuggingChanged.Invoke("StartClient");
+					await JoinAsClient();
 				}
 			}
 			else
@@ -151,35 +143,81 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 
 				if (GUILayout.Button(label))
 				{
-					Shutdown(label);
+#pragma warning disable CS4014
+					Shutdown();
+#pragma warning restore CS4014
 				}
 			}
 			GUILayout.EndArea();
 		}
 
 		
-		private void StartHost()
+		public bool CanStartAsHost()
 		{
-			OnStateNameForDebuggingChanged.Invoke("StartHost");
+			return !NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer;
+		}
+		
+		
+		public bool CanJoinAsClient()
+		{
+			return !NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer;;
+		}
+		
+		public bool CanShutdown()
+		{
+			return NetworkManager.Singleton.IsClient && NetworkManager.Singleton.IsServer;
+		}
+		
+		
+		public async UniTask StartAsHost()
+		{	
+			RequireIsInitialized();
+			if (!IsConnected)
+			{
+				Debug.LogWarning("StartAsHost () failed. Must be connected");
+			}
+			
+			OnStateNameForDebuggingChanged.Invoke("StartHostStarting");
 			NetworkManager.Singleton.StartHost();
+			
+			await UniTask.Delay(1000);
+			OnStateNameForDebuggingChanged.Invoke("StartHostCompleted");
+			
 		}
-		
-		
-		private void StartClient()
+
+		public async UniTask JoinAsClient()
 		{
-			OnStateNameForDebuggingChanged.Invoke("StartClient");
+			RequireIsInitialized();
+			if (!IsConnected)
+			{
+				Debug.LogWarning("JoinAsClient () failed. Must be connected");
+			}
+			
+			OnStateNameForDebuggingChanged.Invoke("StartClientStarting");
 			NetworkManager.Singleton.StartClient();
+
+			await UniTask.Delay(1000);
+			OnStateNameForDebuggingChanged.Invoke("StartClientCompleted");
 		}
 		
+
 		
-		private void Shutdown(string label)
+		public async UniTask Shutdown()
 		{
-			OnStateNameForDebuggingChanged.Invoke("Shutdown");
+			RequireIsInitialized();
+			if (!IsConnected)
+			{
+				Debug.LogWarning("Shutdown () failed. Must be connected");
+			}
+			
+			OnStateNameForDebuggingChanged.Invoke("ShutdownStarting");
 			NetworkManager.Singleton.Shutdown();
+			await UniTask.Delay(1000);
+			OnStateNameForDebuggingChanged.Invoke("ShutdownCompleted");
 		}
 
 
-		public UniTask DisconnectAsync()
+		public async UniTask DisconnectAsync()
 		{
 			//When the scene is closing its 'too late' to do these things. That is ok.
 			try
@@ -193,7 +231,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 				
 						if (NetworkManager.Singleton.IsServer)
 						{
-							Shutdown("Shutdown");
+							await Shutdown();
 						}
 					}
 				}
@@ -205,8 +243,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 
 			IsConnected = false;
 
-			//Return dummy value
-			return UniTask.CompletedTask;
 		}
 		
 

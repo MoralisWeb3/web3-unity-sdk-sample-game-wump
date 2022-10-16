@@ -21,8 +21,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService
         bool IsConnected { get; }
         
         //  Methods ---------------------------------------
-        void Connect();
-        void OnGUI();
+        UniTask Connect();
+        void OnGUI(); //TODO: Remove this
         UniTask DisconnectAsync();
+        bool CanStartAsHost();
+        bool CanJoinAsClient();
+        bool CanShutdown();
+        UniTask StartAsHost();
+        UniTask JoinAsClient();
+        UniTask Shutdown();
     }
 }
