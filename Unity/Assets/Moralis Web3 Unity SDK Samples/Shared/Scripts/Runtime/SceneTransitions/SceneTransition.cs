@@ -39,14 +39,14 @@ namespace MoralisUnity.Samples.Shared.Data.Types.Storage
 
   
         //  Methods ---------------------------------------
-        public async UniTask ApplyTransition(SceneTransitionImage _sceneTransitionImage, Action action)
+        public async UniTask ApplyTransition(ImageAndCanvasView imageAndCanvasView, Action action)
         {
             //Half in / half out
             float halfDuration = _durationSeconds / 2;
             
             // BEFORE
-            _sceneTransitionImage.BlocksRaycasts = true;
-            await TweenHelper.AlphaDoFade(_sceneTransitionImage, 0, 1, 
+            imageAndCanvasView.BlocksRaycasts = true;
+            await TweenHelper.AlphaDoFade(imageAndCanvasView, 0, 1, 
                 halfDuration,
                 _delayBeforeSeconds,
                 _easeIn);
@@ -58,13 +58,13 @@ namespace MoralisUnity.Samples.Shared.Data.Types.Storage
             action.Invoke();
     
             // AFTER
-            await TweenHelper.AlphaDoFade(_sceneTransitionImage, 1, 0, 
+            await TweenHelper.AlphaDoFade(imageAndCanvasView, 1, 0, 
                 halfDuration,
                 _delayMidpointSeconds,
                 _easeOut);
             await UniTask.WaitForEndOfFrame();
             await UniTask.Delay((int)(_delayAfterSeconds*1000));
-            _sceneTransitionImage.BlocksRaycasts = false;
+            imageAndCanvasView.BlocksRaycasts = false;
         }
     }
 }

@@ -3,7 +3,6 @@ using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.View.UI;
 using UnityEngine;
-using UnityEngine.Events;
 
 #pragma warning disable 1998, CS4014
 namespace MoralisUnity.Samples.TheGame.MVCS.View

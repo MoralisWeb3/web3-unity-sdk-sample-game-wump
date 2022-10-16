@@ -4,8 +4,10 @@ using System.Linq;
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
+using MoralisUnity.Samples.TheGame.MVCS.View;
 using MoralisUnity.Samples.TheGame.MVCS.View.UI;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +27,11 @@ namespace MoralisUnity.Samples.TheGame
         
         // General Methods --------------------------------
         
-
+        public static PlayerView GetPlayerViewByClientId(ulong clientId)
+        {
+            return NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.GetComponent<PlayerView>();
+        }
+        
         public static uint GetGiftType(string name)
         {
             if (name == GiftGold)
@@ -173,13 +179,13 @@ namespace MoralisUnity.Samples.TheGame
             return string.Format("{000:00}/{001:00}", amount, TheGameConstants.PrizesMax);
         }
 
-        public static object GetTransferLogDisplayText(TransferLog transferLog)
+        public static string GetTransferLogDisplayText(TransferLog transferLog)
         {
             string fromAddress = CustomWeb3System.Instance.ConvertWeb3AddressToShortFormat(transferLog.FromAddress);
             string toAddress = CustomWeb3System.Instance.ConvertWeb3AddressToShortFormat(transferLog.ToAddress);
-            string type = TheGameHelper.GetGiftTypeNameByType(transferLog.Type);
+            string type = GetGiftTypeNameByType(transferLog.Type);
             string amount = transferLog.Amount.ToString();
-            return $"Player ({fromAddress}) sent {amount} {type} to Player ({toAddress})";
+            return $"Transfer complete for {amount} {type}.\n<size=30>From: {fromAddress}\nTo: {toAddress}</size>";
         }
 
         public static string GetRandomizedNickname()

@@ -61,7 +61,6 @@ namespace MoralisUnity.Samples.Shared
 				return;
 			}
 
-			Debug.Log("Init ))))))))))))))))))))))))))");
 			// HasMoralisUserAsync may be called early. So ensure this is called
 			Moralis.Start();
 			IsInitialized = true;

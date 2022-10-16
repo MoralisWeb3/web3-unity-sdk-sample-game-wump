@@ -293,6 +293,26 @@ PrefabInstance:
       propertyPath: _cancelButton
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6121402920190345556, guid: 36c510603862fbe4d90eb5807306e69d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -700
+      objectReference: {fileID: 0}
+    - target: {fileID: 6121402920190345556, guid: 36c510603862fbe4d90eb5807306e69d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6121402920190345556, guid: 36c510603862fbe4d90eb5807306e69d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -220
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263971846669618392, guid: 36c510603862fbe4d90eb5807306e69d, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263971846669618392, guid: 36c510603862fbe4d90eb5807306e69d, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1842627958843707389, guid: 36c510603862fbe4d90eb5807306e69d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 36c510603862fbe4d90eb5807306e69d, type: 3}

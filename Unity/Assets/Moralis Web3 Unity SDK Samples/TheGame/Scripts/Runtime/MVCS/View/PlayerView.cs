@@ -6,6 +6,7 @@ using MoralisUnity.Samples.TheGame.MVCS.Networking;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
 using TMPro;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
+using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -227,6 +228,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 return $"P{GetPlayerIndexByClientId(clientId)}"; 
             }
 
+
             
             public static ulong GetPlayerIndexByClientId(ulong clientId)
             {
@@ -234,10 +236,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             }
             
             
+            public void SendSharedStatus(string statusMessage)
+            {
+                _sharedStatus_NetworkBehaviour.SendSharedStatus(statusMessage);
+            }
+            
+            
             //  Event Handlers --------------------------------
             private void PlayerInputNetworkBehaviour_OnPlayerAction()
             {
-                _sharedStatus_NetworkBehaviour.SharedStatusUpdateRequest();
+                string statusText = $"Hi, from {PlayerName}";
+                _sharedStatus_NetworkBehaviour.SendSharedStatus(statusText);
                 
                 //Event Forwarding To External Scope
                 OnPlayerAction.Invoke(this);
@@ -246,7 +255,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             
             private void SharedStatus_NetworkBehaviour_OnSharedStatusChanged(string status)
             {
-                Debug.Log("Event: " + status);
                 //Event Forwarding To External Scope
                 OnSharedStatusChanged.Invoke(this);
             }
@@ -268,5 +276,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                     }
                 }
             }
+
+
         }
     }

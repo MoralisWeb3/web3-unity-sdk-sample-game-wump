@@ -324,7 +324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneManagerComponent: {fileID: 6265848395495177806}
   _baseScreenMessageUI: {fileID: 5262190874776816308}
-  _sceneTransitionImage: {fileID: 5442085105050057466}
+  _imageAndCanvasView: {fileID: 5442085105050057466}
 --- !u!1 &2429614118257420589
 GameObject:
   m_ObjectHideFlags: 0

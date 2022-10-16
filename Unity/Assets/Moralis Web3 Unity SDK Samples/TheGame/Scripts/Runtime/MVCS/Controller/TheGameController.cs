@@ -15,6 +15,7 @@ using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using RMC.Shared.Managers;
+using Unity.Netcode;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -77,7 +78,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		{
 			if (IsInitialized) return;
 			//
-			_theGameView.SceneManagerComponent.Initialize(TheGameConfiguration.Instance.SceneTransition, _theGameView.SceneTransitionImage);
+			_theGameView.SceneManagerComponent.Initialize(TheGameConfiguration.Instance.SceneTransition, _theGameView.ImageAndCanvasView);
 			_theGameView.SceneManagerComponent.OnSceneLoadingEvent.AddListener(SceneManagerComponent_OnSceneLoadingEvent);
 			_theGameView.SceneManagerComponent.OnSceneLoadedEvent.AddListener(SceneManagerComponent_OnSceneLoadedEvent);
 			SelectionManager.Instance.OnSelectionChanged.AddListener(SelectionManager_OnSelectionChanged);
@@ -355,7 +356,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		private void PlayerView_OnSharedStatusChanged(PlayerView playerView)
 		{
-			Debug.Log("cont ev: " + playerView.PlayerName );
 			//Event Forwarding To External Scope
 			OnSharedStatusChanged.Invoke(playerView);
 		}
@@ -512,6 +512,16 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			TheGameSingleton.Instance.TheGameController.UnregisterView(transferDialogView); 
 			GameObject.Destroy(transferDialogView.gameObject);
 			SelectionManager.Instance.Selection = null;
+
+			if (_theGameModel.IsTransferPending.Value)
+			{
+				//There was a transfer completed
+				TransferLog transferLog = await GetTransferLogHistoryAsync();
+
+				PlayerView me = TheGameHelper.GetPlayerViewByClientId(NetworkManager.Singleton.LocalClientId);
+				string statusMessage = TheGameHelper.GetTransferLogDisplayText(transferLog);
+				me.SendSharedStatus(statusMessage);
+			}
 			
 			_theGameModel.IsTransferPending.Value = false;
 			OnTheGameModelChangedRefresh();
@@ -647,10 +657,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 
 		// Event Handlers ---------------------------------
 				
-		private void MultiplayerSetupService_OnConnectStarted()
+		private async void MultiplayerSetupService_OnConnectStarted()
 		{
 			Debug.Log($"OnConnectionStarted() ");
-			ShowMessageWithDelayAsync(TheGameConstants.MultiplayerConnecting, 5000);
+			await ShowMessageWithDelayAsync(TheGameConstants.MultiplayerConnecting, 2000);
 		}
 			
 		
@@ -663,24 +673,26 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 
 		
-		private void MultiplayerSetupService_OnDisconnectStarted()
+		private async void MultiplayerSetupService_OnDisconnectStarted()
 		{
 			Debug.Log($"MultiplayerSetupService_OnDisconnectStarted() ");
-			ShowMessageWithDelayAsync(TheGameConstants.MultiplayerDisconnecting, 2000);
+			await ShowMessageWithDelayAsync(TheGameConstants.MultiplayerDisconnecting, 2000);
 		}
 		
 		
-		private void MultiplayerSetupService_OnDisconnectCompleted()
+		private async void MultiplayerSetupService_OnDisconnectCompleted()
 		{
 			Debug.Log($"MultiplayerSetupService_OnDisconnectionCompleted() ");
-			ShowMessageWithDelayAsync(TheGameConstants.MultiplayerDisconnected, 2000);
+			UpdateMessageDuringMethod(TheGameConstants.MultiplayerDisconnected);
+			await UniTask.Delay(1000);
+			HideMessageDuringMethod(true);
 		}
 		
 		
 		private void MultiplayerSetupService_OnStateNameChanged(string stateName)
 		{
-			Debug.Log($"OnStateNameChanged() {stateName}");
-			UpdateMessageDuringMethod(TheGameConstants.Multiplayer + " " + stateName);
+			//Debug.Log($"OnStateNameChanged() {stateName}");
+			//UpdateMessageDuringMethod(TheGameConstants.Multiplayer + " " + stateName);
 		}
 
 		

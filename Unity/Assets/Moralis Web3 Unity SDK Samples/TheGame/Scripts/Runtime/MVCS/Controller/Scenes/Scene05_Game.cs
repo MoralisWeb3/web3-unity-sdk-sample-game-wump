@@ -123,7 +123,7 @@ namespace MoralisUnity.Samples.TheGame
 		{
 			if (!string.IsNullOrEmpty(playerView.SharedStatus))
 			{
-				_ui.TopUI.QueueSharedStatusText(playerView.SharedStatus, 3000);
+				_ui.TopUI.QueueSharedStatusText(playerView.SharedStatus, 6000);
 			}
 		}
 		

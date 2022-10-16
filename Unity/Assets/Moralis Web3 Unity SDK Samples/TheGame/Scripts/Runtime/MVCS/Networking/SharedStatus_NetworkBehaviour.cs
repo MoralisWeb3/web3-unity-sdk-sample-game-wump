@@ -23,7 +23,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             //  Events ----------------------------------------
             [HideInInspector]
             public readonly StringUnityEvent OnSharedStatusChanged = new StringUnityEvent();
-            public string SharedStatus {  get { return _sharedStatus; } private set { _sharedStatus = value; OnSharedStatusChanged.Invoke(_sharedStatus); }  }
+
+            public string SharedStatus
+            {
+                get
+                {
+                    return _sharedStatus;
+                }
+                private set
+                {
+                    _sharedStatus = value; OnSharedStatusChanged.Invoke(_sharedStatus);
+                }
+            }
             private string _sharedStatus = "";
             
             //  Properties ------------------------------------
@@ -33,22 +44,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             //  Unity Methods ---------------------------------
 
             //  Methods ---------------------------------------
-            public void SharedStatusUpdateRequest()
+            public void SendSharedStatus(string statusText)
             {
-                SharedStatusUpdateRequestServerRpc();
+                SendSharedStatusServerRpc(statusText);
             }
-
-
+            
             /// <summary>
             /// **ANY** Client may call the **ONE** server... 
             /// </summary>
             [ServerRpc (RequireOwnership = false)]
-            private void SharedStatusUpdateRequestServerRpc(ServerRpcParams serverRpcParams = default)
+            private void SendSharedStatusServerRpc(string statusText, ServerRpcParams serverRpcParams = default)
             {
-                string playerName = PlayerView.GetPlayerNameByClientId(serverRpcParams.Receive.SenderClientId);
-                string statusText = $"Hi, from {playerName}";
-                Debug.Log("RPC: " + statusText);
-                SharedStatusUpdateRequestClientRpc(statusText);
+                SendSharedStatusClientRpc(statusText);
             }
  
             
@@ -56,7 +63,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             /// ... And the **ONE** server then calls **EVERY** client
             /// </summary>
             [ClientRpc (Delivery = RpcDelivery.Reliable)]
-            private void SharedStatusUpdateRequestClientRpc(string sharedStatus)
+            private void SendSharedStatusClientRpc(string sharedStatus)
             {
                 SharedStatus = sharedStatus;
             }

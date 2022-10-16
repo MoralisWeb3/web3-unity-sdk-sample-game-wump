@@ -28,7 +28,7 @@ namespace MoralisUnity.Samples.Shared.Components
 		private static string _sceneNameLoadedDirectly = "";
 		private static string _sceneNamePrevious = "";
 		private SceneTransition _sceneTransition;
-		private SceneTransitionImage _sceneTransitionImage;
+		private ImageAndCanvasView _imageAndCanvasView;
 
 		// Unity Methods ----------------------------------
 		protected void Awake ()
@@ -44,12 +44,12 @@ namespace MoralisUnity.Samples.Shared.Components
 		}
 
 		
-		public void Initialize(SceneTransition sceneTransition, SceneTransitionImage sceneTransitionImage)
+		public void Initialize(SceneTransition sceneTransition, ImageAndCanvasView imageAndCanvasView)
 		{
 			if (IsInitialized) return;
 			IsInitialized = true;
 			_sceneTransition = sceneTransition;
-			_sceneTransitionImage = sceneTransitionImage;
+			_imageAndCanvasView = imageAndCanvasView;
 		}
 		
 		public void Initialize()
@@ -86,7 +86,7 @@ namespace MoralisUnity.Samples.Shared.Components
 				return;
 			}
 
-			await _sceneTransition.ApplyTransition(_sceneTransitionImage, () =>
+			await _sceneTransition.ApplyTransition(_imageAndCanvasView, () =>
 			{
 				_sceneNamePrevious = SceneManager.GetActiveScene().name;
 				

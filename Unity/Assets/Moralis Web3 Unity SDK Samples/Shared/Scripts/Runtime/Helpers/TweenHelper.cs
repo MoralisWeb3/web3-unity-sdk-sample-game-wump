@@ -169,6 +169,8 @@ namespace MoralisUnity.Samples.Shared.Helpers
       public static async UniTask AlphaDoFade(
          IAlpha iAlpha, float fromAlpha, float toAlpha, float duration, float delay = 0, Ease ease = Ease.Linear)
       {
+         await UniTask.SwitchToMainThread();
+         
          bool isComplete = false;
          iAlpha.Alpha = fromAlpha;
          DOTween.To(() => iAlpha.Alpha, x => iAlpha.Alpha = x, toAlpha, duration).SetDelay(delay).SetEase(ease).onComplete = () =>

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace MoralisUnity.Samples.Shared.Data.Types.Storage
 {
-    public class SceneTransitionImage: MonoBehaviour, IAlpha, IBlocksRaycasts
+    public class ImageAndCanvasView: MonoBehaviour, IAlpha, IBlocksRaycasts
     {
         //  Properties ------------------------------------
         public Image Image { get { return _image; } }

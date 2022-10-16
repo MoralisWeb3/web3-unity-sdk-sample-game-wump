@@ -21,7 +21,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 		// Properties -------------------------------------
 		public SceneManagerComponent SceneManagerComponent { get { return _sceneManagerComponent;}}
 		public BaseScreenMessageUI BaseScreenCoverUI { get { return _baseScreenMessageUI; }}
-		public SceneTransitionImage SceneTransitionImage { get { return _sceneTransitionImage; }}
+		public ImageAndCanvasView ImageAndCanvasView { get { return _imageAndCanvasView; }}
 
 		// Fields -----------------------------------------
 		[Header("References (Scene)")] 
@@ -32,7 +32,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 		private BaseScreenMessageUI _baseScreenMessageUI = null;
 
 		[SerializeField] 
-		private SceneTransitionImage _sceneTransitionImage = null;
+		private ImageAndCanvasView _imageAndCanvasView = null;
 
 		
 		private static readonly Vector3 SmallScale = new Vector3(.75f, .75f, .75f);
@@ -112,7 +112,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 			}
 		}
 		
-		public void HideMessageDuringMethod(bool isAnimated = true)
+		public async UniTask HideMessageDuringMethod(bool isAnimated = true)
 		{
 			float duration = 0;
 			if (isAnimated)
@@ -120,13 +120,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
 				duration = 0.25f;
 			}
 
-			DOTween.KillAll(false);
+			DOTween.KillAll(true);
 			TweenHelper.TransformDoScale(BaseScreenCoverUI.Panel,
 				FullScale, NoScale, duration , 0).onComplete = () =>
 			{
 			};
 
-			TweenHelper.AlphaDoFade(BaseScreenCoverUI, 1, 0, duration);
+			await TweenHelper.AlphaDoFade(BaseScreenCoverUI, 1, 0, duration);
 		}
 		
 
