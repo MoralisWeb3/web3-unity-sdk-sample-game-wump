@@ -358,15 +358,6 @@
       "dependencies": {},
       "hash": "f45424822189ebd875d864a17d7f03b72eafbff7"
     },
-    "io.moralis.web3-unity-sdk": {
-      "version": "1.2.11",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "3.0.2"
-      },
-      "url": "https://registry.npmjs.org"
-    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
