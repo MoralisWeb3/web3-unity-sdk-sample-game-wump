@@ -17,7 +17,7 @@ public class WalletConnectQRImage : BindableMonoBehavior
     /// <summary>
     /// The WalletConnect instance we'll work with to generate the QR code.
     /// </summary>
-    public WalletConnect walletConnect;
+    private WalletConnect walletConnect;
     
     /// <summary>
     /// The image component we'll place the QR code texture into.
@@ -35,12 +35,15 @@ public class WalletConnectQRImage : BindableMonoBehavior
     /// </summary>
     void OnEnable()
     {
-        if (walletConnect == null)
+        if (WalletConnect.Instance == null)
         {
             Debug.LogError("WalletConnectQRImage: No WalletConnect object given, QRImage will be disabled");
             enabled = false;
             return;
         }
+
+        walletConnect = WalletConnect.Instance;
+
         
         // Only register the WalletConnectOnConnectionStarted handler once
         if (!registeredOnConnectionStartEvent)
