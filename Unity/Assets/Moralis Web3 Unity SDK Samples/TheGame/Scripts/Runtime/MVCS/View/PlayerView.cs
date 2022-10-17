@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using RMC.Shared.Data.Types;
 using RMC.Shared.Managers;
 using MoralisUnity.Samples.TheGame.MVCS.Networking;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using TMPro;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.Netcode;
@@ -38,7 +40,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             public readonly PlayerViewUnityEvent OnRPCSharedStatusChanged = new PlayerViewUnityEvent();
             
             [HideInInspector]
-            public readonly PlayerViewUnityEvent OnRPCTransferLogHistoryChanged = new PlayerViewUnityEvent();
+            public readonly TransferLogUnityEvent OnRPCTransferLogChanged = new TransferLogUnityEvent();
 
             
             //  Properties ------------------------------------
@@ -156,8 +158,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 TheGameSingleton.Instance.TheGameController.RegisterView(this);
                 
                 _playerView_NetworkBehaviour.OnPlayerAction.AddListener(PlayerInputNetworkBehaviour_OnPlayerAction);
-                _rpcMessageBusNetworkBehaviour.OnSharedStatusChanged.AddListener(SharedStatus_NetworkBehaviour_OnRPCSharedStatusChanged);
-                _rpcMessageBusNetworkBehaviour.OnRPCTransferLogHistoryChanged.AddListener(SharedStatus_NetworkBehaviour_OnRPCTransferLogHistoryChanged);
+                _rpcMessageBusNetworkBehaviour.OnRpcSharedStatusChanged.AddListener(SharedStatus_NetworkBehaviour_OnRPCSharedStatusChanged);
+                _rpcMessageBusNetworkBehaviour.OnRPCTransferLogChanged.AddListener(SharedStatus_NetworkBehaviour_OnRPCTransferLogChanged);
 
                 _isInitialized = true;
             }
@@ -243,9 +245,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             /// <summary>
             /// Send RPC message to all clients
             /// </summary>
-            public void SendMessageTransferLogHistoryChanged()
+            public async UniTask SendMessageTransferLogAsync()
             {
-                _rpcMessageBusNetworkBehaviour.SendMessageTransferLogHistoryChanged();
+                await _rpcMessageBusNetworkBehaviour.SendMessageTransferLogAsync();
             }
             
             /// <summary>
@@ -255,7 +257,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             {
                 string statusText = $"Hi, from {PlayerName}";
                 _rpcMessageBusNetworkBehaviour.SendMessageSharedStatus(statusText);
-
             }
             
             
@@ -275,10 +276,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
                 OnRPCSharedStatusChanged.Invoke(this);
             }
             
-            private void SharedStatus_NetworkBehaviour_OnRPCTransferLogHistoryChanged()
+            private void SharedStatus_NetworkBehaviour_OnRPCTransferLogChanged(TransferLog transferLog)
             {
                 //Event Forwarding To External Scope
-                OnRPCTransferLogHistoryChanged.Invoke(this);
+                OnRPCTransferLogChanged.Invoke(transferLog);
             }
             
             private void ReticlesView_OnPointerClicked()

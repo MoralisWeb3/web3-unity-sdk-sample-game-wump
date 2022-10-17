@@ -1,5 +1,6 @@
+using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
-using MoralisUnity.Samples.TheGame.MVCS.View;
+using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -22,10 +23,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
         {
             //  Events ----------------------------------------
             [HideInInspector]
-            public readonly StringUnityEvent OnSharedStatusChanged = new StringUnityEvent();
+            public readonly StringUnityEvent OnRpcSharedStatusChanged = new StringUnityEvent();
             
             [HideInInspector]
-            public readonly UnityEvent OnRPCTransferLogHistoryChanged = new UnityEvent();
+            public readonly TransferLogUnityEvent OnRPCTransferLogChanged = new TransferLogUnityEvent();
 
                 
             public string SharedStatus
@@ -36,7 +37,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
                 }
                 private set
                 {
-                    _sharedStatus = value; OnSharedStatusChanged.Invoke(_sharedStatus);
+                    _sharedStatus = value; OnRpcSharedStatusChanged.Invoke(_sharedStatus);
                 }
             }
             private string _sharedStatus = "";
@@ -46,27 +47,37 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             //  Fields ----------------------------------------
                 
             //  Unity Methods ---------------------------------
-            public void SendMessageTransferLogHistoryChanged()
+            public async UniTask SendMessageTransferLogAsync()
             {
-                SendMessageTransferLogHistoryChangedServerRpc();
+                TransferLog transferLog = await TheGameSingleton.Instance.TheGameController.GetTransferLogHistoryAsync();
+                
+                //CONVERT: 1 OF 2
+                //RPC needs serializable data. Unity supports custom, serializable classes.
+                //INSTEAD: Since I already have string-to-object methods for use in web3, I'll use them here
+                string transferLogString = TheGameHelper.ConvertTransferLogObjectToString(transferLog);
+                
+                SendMessageTransferLogHistoryChangedServerRpc(transferLogString);
             }
             
             /// <summary>
             /// **ANY** Client may call the **ONE** server... 
             /// </summary>
             [ServerRpc (RequireOwnership = false)]
-            private void SendMessageTransferLogHistoryChangedServerRpc(ServerRpcParams serverRpcParams = default)
+            private void SendMessageTransferLogHistoryChangedServerRpc(string transferLogString, ServerRpcParams serverRpcParams = default)
             {
-                SendMessageTransferLogHistoryChangedClientRpc();
+                SendMessageTransferLogHistoryChangedClientRpc(transferLogString);
             }
             
             /// <summary>
             /// ... And the **ONE** server then calls **EVERY** client
             /// </summary>
             [ClientRpc (Delivery = RpcDelivery.Reliable)]
-            private void SendMessageTransferLogHistoryChangedClientRpc()
+            private void SendMessageTransferLogHistoryChangedClientRpc(string transferLogString)
             {
-                OnRPCTransferLogHistoryChanged.Invoke();
+                //CONVERT: 2 OF 2
+                TransferLog transferLog = TheGameHelper.ConvertTransferLogStringToObject(transferLogString);
+                
+                OnRPCTransferLogChanged.Invoke(transferLog);
             }
             
             //  SendSharedStatus ---------------------------------------

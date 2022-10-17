@@ -28,9 +28,9 @@ namespace MoralisUnity.Samples.TheGame
         
         // General Methods --------------------------------
         
-        public static PlayerView GetPlayerViewByClientId(ulong clientId)
+        public static PlayerView GetLocalPlayerView()
         {
-            return NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.GetComponent<PlayerView>();
+            return NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerView>();
         }
         
         public static uint GetGiftType(string name)
@@ -168,6 +168,11 @@ namespace MoralisUnity.Samples.TheGame
                 Type = type,
                 Amount = amount,
             };
+        }
+        
+        public static string ConvertTransferLogObjectToString(TransferLog transferLog)
+        {
+            return $"FromAddress={transferLog.FromAddress}|ToAddress={transferLog.ToAddress}|Type={transferLog.Type}|Amount={transferLog.Amount}";
         }
 
         public static string FormatGoldCornerText(int amount)

@@ -315,54 +315,6 @@ PrefabInstance:
       propertyPath: _walletConnectWrapper
       value: 
       objectReference: {fileID: 1927964351}
-    - target: {fileID: 1004461658153304133, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1004461658153304133, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1004461658153304133, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1004461658153304133, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3223703033358748418, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3223703033358748418, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3223703033358748418, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3223703033358748418, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461625841454028472, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461625841454028472, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461625841454028472, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461625841454028472, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7181014349409107347, guid: a72543da44971f74d83e885eb236f7fe, type: 3}
       propertyPath: m_Name
       value: Scene03_SettingsUI

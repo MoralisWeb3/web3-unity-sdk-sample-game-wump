@@ -46,7 +46,7 @@ namespace MoralisUnity.Samples.TheGame
 			//
 			TheGameSingleton.Instance.TheGameController.OnPlayerAction.AddListener(OnPlayerAction);
 			TheGameSingleton.Instance.TheGameController.OnRPCSharedStatusChanged.AddListener(OnRPCSharedStatusChanged);
-			TheGameSingleton.Instance.TheGameController.OnRPCTransferLogHistoryChanged.AddListener(OnRPCTransferLogHistoryChanged);
+			TheGameSingleton.Instance.TheGameController.OnRPCTransferLogChanged.AddListener(OnRPCTransferLogHistoryChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(OnTheGameModelChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
 			TheGameSingleton.Instance.TheGameController.OnMultiplayerStateNameChanged.AddListener(OnMultiplayerStateNameChanged);
@@ -237,28 +237,9 @@ namespace MoralisUnity.Samples.TheGame
 			}
 		}
 		
-		private async void OnRPCTransferLogHistoryChanged(PlayerView playerView)
+		private async void OnRPCTransferLogHistoryChanged(TransferLog transferLog)
 		{
-			//OPTIONAL: Optimize and only refresh if the log contains a change to the LOCAL player
-			// if (transferLog.FromAddress == "my blah " ||
-			//     transferLog.FromAddress == "my blah ")
-			// {
-			// }
-
-			string message = "";
-			try
-			{
-				//TODO
-				//THE Unity client works
-				//The Unity build has a null ref here... not sure why
-				TransferLog transferLog = await TheGameSingleton.Instance.TheGameController.GetTransferLogHistoryAsync();
-				message = TheGameHelper.GetTransferLogDisplayText(transferLog);
-			}
-			catch (Exception e)
-			{
-				message = e.Message;
-			}
-	
+			string message = TheGameHelper.GetTransferLogDisplayText(transferLog);
 			_ui.TopUI.QueueSharedStatusText(message, 6000);
 			
 			//Update the gold/prize ui

@@ -76,15 +76,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		public async UniTask Connect()
 		{
 			RequireIsInitialized();
-			if (IsConnected)
+			if (!IsConnected)
 			{
-				return;
+				//NOTE: In this LAN implementation, not much happens in this method. That is ok.
+				IsConnected = true;
+				OnStateNameForDebuggingChanged.Invoke("Connected");
+				await UniTask.CompletedTask;
 			}
 			
 		}
 
 		
-		public async void OnGUI() 
+		public void OnGUI() 
 		{
 			//TODO: Remove this
 // 			if (!IsInitialized) return;

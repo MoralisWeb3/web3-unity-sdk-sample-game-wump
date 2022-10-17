@@ -45,7 +45,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public readonly PlayerViewUnityEvent OnRPCSharedStatusChanged = new PlayerViewUnityEvent();
 
 		[HideInInspector]
-		public readonly PlayerViewUnityEvent OnRPCTransferLogHistoryChanged = new PlayerViewUnityEvent();
+		public readonly TransferLogUnityEvent OnRPCTransferLogChanged = new TransferLogUnityEvent();
 
 		[HideInInspector]
 		public readonly StringUnityEvent OnMultiplayerStateNameChanged = new StringUnityEvent();
@@ -407,10 +407,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 		
 		
-		private void PlayerView_OnRPCTransferLogHistoryChanged(PlayerView playerView)
+		private void PlayerView_OnRPCTransferLogChanged(TransferLog transferLog)
 		{
 			//Event Forwarding To External Scope
-			OnRPCTransferLogHistoryChanged.Invoke(playerView);
+			OnRPCTransferLogChanged.Invoke(transferLog);
 		}
 		
 		
@@ -423,7 +423,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 					playerView.OnIsWalkingChanged.AddListener(PlayerView_OnIsWalkingChanged);
 					playerView.OnPlayerAction.AddListener(PlayerView_OnPlayerAction);
 					playerView.OnRPCSharedStatusChanged.AddListener(PlayerView_OnRPCSharedStatusChanged);
-					playerView.OnRPCTransferLogHistoryChanged.AddListener(PlayerView_OnRPCTransferLogHistoryChanged);
+					playerView.OnRPCTransferLogChanged.AddListener(PlayerView_OnRPCTransferLogChanged);
 					break;
 				case TransferDialogView transferDialogView:
 					transferDialogView.OnTransferGoldRequested.AddListener(TransferDialogView_OnTransferGoldRequested);
@@ -569,8 +569,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			if (_theGameModel.IsTransferPending.Value)
 			{
 				//There was a transfer completed. Notify all players via RPC
-				PlayerView localPlayerView = TheGameHelper.GetPlayerViewByClientId(NetworkManager.Singleton.LocalClientId);
-				localPlayerView.SendMessageTransferLogHistoryChanged();
+				PlayerView localPlayerView = TheGameHelper.GetLocalPlayerView();
+				localPlayerView.SendMessageTransferLogAsync();
 			}
 			
 			_theGameModel.IsTransferPending.Value = false;
