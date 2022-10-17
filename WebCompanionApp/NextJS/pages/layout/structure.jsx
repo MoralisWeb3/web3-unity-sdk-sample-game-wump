@@ -6,7 +6,7 @@ import { getSession } from "next-auth/react";
 
 const { Header, Content, Footer } = Layout;
 const githubLink =
-  "https://github.com/MoralisWeb3/web3-unity-sdk-sample-game-scw";
+  "https://github.com/MoralisWeb3/web3-unity-sdk-sample-game-wump";
 
 const getShortWallet = (wal) => {
   return `${wal.slice(0, 4)}...${wal.slice(38)}`;
