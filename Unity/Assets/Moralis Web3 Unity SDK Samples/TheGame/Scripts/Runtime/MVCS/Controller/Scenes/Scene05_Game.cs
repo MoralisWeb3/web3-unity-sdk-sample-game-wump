@@ -6,7 +6,6 @@ using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
 using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using MoralisUnity.Samples.TheGame.MVCS.View.Scenes;
-using Unity.Netcode;
 using UnityEngine;
 
 #pragma warning disable 0472, CS4014, CS1998
@@ -50,7 +49,7 @@ namespace MoralisUnity.Samples.TheGame
 			TheGameSingleton.Instance.TheGameController.OnRPCTransferLogChanged.AddListener(OnRPCTransferLogHistoryChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(OnTheGameModelChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChangedRefresh();
-			TheGameSingleton.Instance.TheGameController.OnMultiplayerStateNameChanged.AddListener(OnMultiplayerStateNameChanged);
+			TheGameSingleton.Instance.TheMultiplayerController.OnMultiplayerStateNameChanged.AddListener(OnMultiplayerStateNameChanged);
 			
 			Initialize();
 			
@@ -74,11 +73,45 @@ namespace MoralisUnity.Samples.TheGame
 					BackButton_OnClicked();
 				}
 
-				TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceInitialize();
+				TheGameSingleton.Instance.TheMultiplayerController.MultiplayerSetupServiceInitialize();
 				await AutoConnect();
 			}
 		}
+		
+		private void Initialize()
+		{
+			if (_isInitialized)
+			{
+				return;
+			}
+			_isInitialized = true;
+			
+			if (!_isInitialized)
+			{
+				Debug.LogWarning($"{GetType().Namespace}.Initialize() failed. ");
+			}
+		}
 
+		
+		protected async void OnDestroy()
+		{
+			TheGameSingleton.Instance.TheGameController.OnPlayerAction.RemoveListener(OnPlayerAction);
+			TheGameSingleton.Instance.TheGameController.OnRPCSharedStatusChanged.RemoveListener(OnRPCSharedStatusChanged);
+			TheGameSingleton.Instance.TheGameController.OnRPCTransferLogChanged.RemoveListener( OnRPCTransferLogHistoryChanged);
+			TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.RemoveListener(OnTheGameModelChanged);
+			TheGameSingleton.Instance.TheMultiplayerController.OnMultiplayerStateNameChanged.RemoveListener( OnMultiplayerStateNameChanged);
+
+			if (!TheGameSingleton.IsShuttingDown)
+			{
+				if (TheGameSingleton.Instance.TheMultiplayerController.MultiplayerSetupServiceIsConnected())
+				{
+					TheGameSingleton.Instance.TheMultiplayerController.MultiplayerSetupServiceDisconnectAsync();
+				}
+			}
+		}
+
+		
+		//  Methods ---------------------------------------
 		
 		/// <summary>
 		/// WIP
@@ -87,11 +120,11 @@ namespace MoralisUnity.Samples.TheGame
 		/// </summary>
 		private async UniTask AutoConnect()
 		{
-
-			if (TheGameConfiguration.Instance.MultiplayerSetupServiceType == MultiplayerSetupServiceType.Full)
+			if (!TheGameSingleton.Instance.TheMultiplayerController.MultiplayerSetupServiceIsConnected())
 			{
-				await TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnectAsync();
+				await TheGameSingleton.Instance.TheMultiplayerController.MultiplayerSetupServiceConnectAsync();
 			}
+			
 			/*
 			
 				//TODO: REmove this
@@ -127,45 +160,18 @@ namespace MoralisUnity.Samples.TheGame
 		}
 
 
-		protected async void OnDestroy()
-		{
-			if (!TheGameSingleton.IsShuttingDown)
-			{
-				if (TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
-				{
-					TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceDisconnectAsync();
-				}
-			}
-		}
 
-
-		private void Initialize()
-		{
-			if (_isInitialized)
-			{
-				return;
-			}
-			_isInitialized = true;
-			
-			if (!_isInitialized)
-			{
-				Debug.LogWarning($"{GetType().Namespace}.Initialize() failed. ");
-			}
-		}
-
-
-		//  Methods ---------------------------------------
 		private async UniTask RefreshUIAsync()
 		{
 			// Change label
 			TheGameHelper.SetShutdownButtonText(_ui.ShutdownButton,
-				TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected(),
-				TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsHost());
+				TheGameSingleton.Instance.TheMultiplayerController.MultiplayerSetupServiceIsConnected(),
+				TheGameSingleton.Instance.TheMultiplayerController.MultiplayerSetupServiceIsHost());
 			
 			//
-			_ui.StartAsHostButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanStartAsHost();
-			_ui.JoinAsClientButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanJoinAsClient();
-			_ui.ShutdownButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanShutdown();
+			_ui.StartAsHostButton.IsInteractable = TheGameSingleton.Instance.TheMultiplayerController.MultiplayerCanStartAsHost();
+			_ui.JoinAsClientButton.IsInteractable = TheGameSingleton.Instance.TheMultiplayerController.MultiplayerCanJoinAsClient();
+			_ui.ShutdownButton.IsInteractable = TheGameSingleton.Instance.TheMultiplayerController.MultiplayerCanShutdown();
 			_ui.BackButton.IsInteractable = true;
 		}
 		
@@ -177,12 +183,12 @@ namespace MoralisUnity.Samples.TheGame
 			TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
 
 			
-			if (!TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
+			if (!TheGameSingleton.Instance.TheMultiplayerController.MultiplayerSetupServiceIsConnected())
 			{
-				await TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnectAsync();
+				await TheGameSingleton.Instance.TheMultiplayerController.MultiplayerSetupServiceConnectAsync();
 			}
 
-			await TheGameSingleton.Instance.TheGameController.MultiplayerStartAsHostAsync();
+			await TheGameSingleton.Instance.TheMultiplayerController.MultiplayerStartAsHostAsync();
 		}
 		
 		
@@ -190,32 +196,37 @@ namespace MoralisUnity.Samples.TheGame
 		{
 			TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
 			
-			if (!TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
+			if (!TheGameSingleton.Instance.TheMultiplayerController.MultiplayerSetupServiceIsConnected())
 			{
-				await TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnectAsync();
+				await TheGameSingleton.Instance.TheMultiplayerController.MultiplayerSetupServiceConnectAsync();
 			}
 
-			await TheGameSingleton.Instance.TheGameController.MultiplayerJoinAsClientAsync();
+			await TheGameSingleton.Instance.TheMultiplayerController.MultiplayerJoinAsClientAsync();
 		}
 		
 		
 		private async void ShutdownButton_OnClicked()
 		{
-			TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
-
-			if (TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
+			if (TheGameSingleton.Instance.TheMultiplayerController.MultiplayerCanShutdown())
 			{
-				await TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceDisconnectAsync();
-			}
+				TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
 
-			await TheGameSingleton.Instance.TheGameController.MultiplayerLeaveAsync();
+				if (TheGameSingleton.Instance.TheMultiplayerController.MultiplayerSetupServiceIsConnected())
+				{
+					await TheGameSingleton.Instance.TheMultiplayerController.MultiplayerSetupServiceDisconnectAsync();
+				}
+
+				await TheGameSingleton.Instance.TheMultiplayerController.MultiplayerLeaveAsync();
+			}
 		}
 		
 		
 		private void BackButton_OnClicked()
 		{
-			TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+			//Mimic "Leave Multiplayer" button click too
+			ShutdownButton_OnClicked();
 			
+			TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
 			TheGameSingleton.Instance.TheGameController.LoadIntroSceneAsync();
 		}
 		

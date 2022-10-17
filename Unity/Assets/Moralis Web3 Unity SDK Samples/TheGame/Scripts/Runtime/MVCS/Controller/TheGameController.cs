@@ -11,11 +11,9 @@ using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
-using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using RMC.Shared.Managers;
-using Unity.Netcode;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -47,10 +45,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		[HideInInspector]
 		public readonly TransferLogUnityEvent OnRPCTransferLogChanged = new TransferLogUnityEvent();
 
-		[HideInInspector]
-		public readonly StringUnityEvent OnMultiplayerStateNameChanged = new StringUnityEvent();
-
-		
 			
 		// Properties -------------------------------------
 		public PendingMessage PendingMessageForDeletion { get { return _theGameService.PendingMessageActive; } }
@@ -60,9 +54,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		// Fields -----------------------------------------
 		private readonly TheGameModel _theGameModel = null;
 		private readonly TheGameView _theGameView = null;
-		private readonly NetworkManagerView _networkManagerView = null;
 		private readonly ITheGameService _theGameService = null;
-		private readonly IMultiplayerSetupService _multiplayerSetupService = null;
 		
 		// Wait, So click sound is audible before scene changes
 		private const int DelayLoadSceneMilliseconds = 100;
@@ -74,16 +66,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public TheGameController(
 			TheGameModel theGameModel,
 			TheGameView theGameView,
-			NetworkManagerView networkManagerView,
-			ITheGameService theGameService,
-			IMultiplayerSetupService multiplayerSetupService)
+			ITheGameService theGameService )
 		{
 			_theGameModel = theGameModel;
 			_theGameView = theGameView;
-			_networkManagerView = networkManagerView;
 			_theGameService = theGameService;
-			_multiplayerSetupService = multiplayerSetupService;
-			
 		}
 
 		public void Initialize()
@@ -116,18 +103,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 		
 		// Unity Methods --------------------------------
-		public async void OnDestroy()
+		public void OnDestroy()
 		{
 			if (!IsInitialized) return;
 			
 			SelectionManager.Instance.OnSelectionChanged.RemoveListener(SelectionManager_OnSelectionChanged);
-
-			Debug.Log($"{this.GetType().Name} OnDestroy() {_multiplayerSetupService.IsConnected}"); 
-			if (_multiplayerSetupService.IsConnected)
-			{
-				await _multiplayerSetupService.DisconnectAsync();
-			}
-	
 
 		}
 
@@ -305,95 +285,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			
 			// Wait for contract values to sync so the client will see the changes
 			await DelayExtraAfterStateChangeAsync();
-		}
-		
-		
-		///////////////////////////////////////////
-		// Related To: Networking
-		///////////////////////////////////////////
-
-		/// <summary>
-		/// Prepare system and show OnGUI menu (Connect, ect...)
-		/// </summary>
-		public void MultiplayerSetupServiceInitialize()
-		{
-			_multiplayerSetupService.Initialize();
-		}
-		
-		/// <summary>
-		/// Connect to backend of Multiplayer system and show OnGUI menu (disconnect, ect...)
-		/// </summary>
-		public async UniTask MultiplayerSetupServiceConnectAsync()
-		{
-			if (_multiplayerSetupService.IsInitialized && !_multiplayerSetupService.IsConnected)
-			{
-				_multiplayerSetupService.OnConnectStarted.AddListener(MultiplayerSetupService_OnConnectStarted);
-				_multiplayerSetupService.OnConnectCompleted.AddListener( MultiplayerSetupService_OnConnectCompleted);
-				_multiplayerSetupService.OnDisconnectStarted.AddListener(MultiplayerSetupService_OnDisconnectStarted);
-				_multiplayerSetupService.OnDisconnectCompleted.AddListener(MultiplayerSetupService_OnDisconnectCompleted);
-				_multiplayerSetupService.OnStateNameForDebuggingChanged.AddListener( MultiplayerSetupService_OnStateNameChanged);
-				await _multiplayerSetupService.Connect();
-			}
-		}
-
-		
-		public bool MultiplayerCanStartAsHost()
-		{
-			return _multiplayerSetupService.CanStartAsHost();
-		}
-		
-		
-		public bool MultiplayerCanJoinAsClient()
-		{
-			return _multiplayerSetupService.CanJoinAsClient();
-		}
-		
-		
-		public bool MultiplayerCanShutdown()
-		{
-			return _multiplayerSetupService.CanShutdown();
-		}
-
-		
-		public async UniTask MultiplayerStartAsHostAsync()
-		{
-			await _multiplayerSetupService.StartAsHost();
-		}
-		
-		
-		public async UniTask MultiplayerJoinAsClientAsync()
-		{
-			await _multiplayerSetupService.JoinAsClient();
-		}
-		
-		
-		public async UniTask MultiplayerLeaveAsync()
-		{
-			await _multiplayerSetupService.Shutdown();
-		}
-
-	
-		public bool MultiplayerSetupServiceIsConnected()
-		{
-			return _multiplayerSetupService.IsConnected;
-		}
-		
-		public bool MultiplayerSetupServiceIsHost()
-		{
-			return _multiplayerSetupService.IsHost;
-		}
-		
-		public bool MultiplayerSetupServiceIsClient()
-		{
-			return _multiplayerSetupService.IsClient;
-		}
-		
-		public async UniTask MultiplayerSetupServiceDisconnectAsync()
-		{
-			if (_multiplayerSetupService.IsConnected)
-			{
-				await _multiplayerSetupService.DisconnectAsync();
-			}
 		}
 		
 		
@@ -616,6 +507,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			_theGameView.PlayAudioClipClick();
 		}
 
+		public bool WasActiveSceneLoadedDirectly()
+		{
+			return _theGameView.SceneManagerComponent.WasActiveSceneLoadedDirectly();
+		}
 
 		public async void LoadIntroSceneAsync()
 		{
@@ -722,45 +617,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 		
 		
-		private async void MultiplayerSetupService_OnConnectStarted()
-		{
-			Debug.Log($"OnConnectionStarted() ");
-			await ShowMessageWithDelayAsync(TheGameConstants.MultiplayerConnecting, 2000);
-		}
-			
-		
-		private async void MultiplayerSetupService_OnConnectCompleted(string debugMessage)
-		{
-			await UniTask.Delay(1000);
-			UpdateMessageDuringMethod(TheGameConstants.MultiplayerConnected);
-			await UniTask.Delay(1000);
-			HideMessageDuringMethod(true);
-		}
-
-		
-		private async void MultiplayerSetupService_OnDisconnectStarted()
-		{
-			Debug.Log($"MultiplayerSetupService_OnDisconnectStarted() ");
-			await ShowMessageWithDelayAsync(TheGameConstants.MultiplayerDisconnecting, 2000);
-		}
-		
-		
-		private async void MultiplayerSetupService_OnDisconnectCompleted()
-		{
-			Debug.Log($"MultiplayerSetupService_OnDisconnectionCompleted() ");
-			UpdateMessageDuringMethod(TheGameConstants.MultiplayerDisconnected);
-			await UniTask.Delay(1000);
-			HideMessageDuringMethod(true);
-		}
-		
-		
-		private void MultiplayerSetupService_OnStateNameChanged(string stateName)
-		{
-			//Debug.Log($"OnStateNameChanged() {stateName}");
-			//UpdateMessageDuringMethod(TheGameConstants.Multiplayer + " " + stateName);
-			OnMultiplayerStateNameChanged.Invoke(stateName);
-		}
-
 		
 		private void SceneManagerComponent_OnSceneLoadingEvent(SceneManagerComponent sceneManagerComponent, 
 			string currentSceneName, string nextSceneName)

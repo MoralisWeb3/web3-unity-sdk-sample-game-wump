@@ -53,20 +53,18 @@ namespace MoralisUnity.Samples.TheGame
 	{
 
 		// Properties -------------------------------------
-		private TheGameModel TheGameModel  { get { return _theGameModel; }}
-		private TheGameView TheGameView  { get { return _theGameView; }}
 		public TheGameController TheGameController  { get { return _theGameController; }}
-		private ITheGameService TheGameService  { get { return _theGameService; }}
+		public TheMultiplayerController TheMultiplayerController  { get { return _theMultiplayerController; }}
 		
 		
 		// Fields -----------------------------------------
 		private TheGameModel _theGameModel;
 		private TheGameView _theGameView;
+		private NetworkManagerView _networkManagerView;
 		private TheGameController _theGameController;
+		private TheMultiplayerController _theMultiplayerController;
 		private ITheGameService _theGameService;
 		private IMultiplayerSetupService _multiplayerSetupService = null;
-		private NetworkManagerView _networkManagerView;
-		private bool _hadController;
 
 		// Initialization Methods -------------------------
 		public override void InstantiateCompleted()
@@ -102,9 +100,6 @@ namespace MoralisUnity.Samples.TheGame
 				null, new Vector3(0, 0, 0));	
 			SharedHelper.SafeDontDestroyOnLoad(_networkManagerView.gameObject);
 			
-			UnityTransport unityTransport = (UnityTransport)_networkManagerView.NetworkManager.NetworkConfig.NetworkTransport;
-
-			
 			///////////////////////////////////
 			// The Game Service
 			TheGameServiceType theGameServiceType = 
@@ -118,7 +113,7 @@ namespace MoralisUnity.Samples.TheGame
 				TheGameConfiguration.Instance.MultiplayerSetupServiceType;
 			_multiplayerSetupService = new MultiplayerSetupServiceFactory().CreateMultiplayerSetupService(
 				multiplayerSetupServiceType,
-				unityTransport,
+				(UnityTransport)_networkManagerView.NetworkManager.NetworkConfig.NetworkTransport,
 				TheGameConfiguration.Instance.LanSimulatorParameters);
 			
 			///////////////////////////////////
@@ -126,11 +121,15 @@ namespace MoralisUnity.Samples.TheGame
 			_theGameController = new TheGameController(
 				_theGameModel, 
 				_theGameView,
-				_networkManagerView,
-				_theGameService,
-				_multiplayerSetupService);
+				_theGameService);
 			
 			_theGameController.Initialize();
+			
+			_theMultiplayerController = new TheMultiplayerController(
+				_theGameController,
+				_multiplayerSetupService);
+			
+			_theMultiplayerController.Initialize();
 			
 		}
 
@@ -152,29 +151,6 @@ namespace MoralisUnity.Samples.TheGame
 		
 		// Unity Methods --------------------------------
 		
-		public void Update()
-		{
-			bool hasController = _theGameController != null;
-			if (hasController != _hadController)
-			{
-				UnityEngine.Debug.Log($"1 [[[[[[[[[HadCCONT goes from {_hadController} to {hasController}");
-			}
-			
-			_hadController = _theGameController != null;
-		}
-		
-		public void OnGUI()
-		{
-			//TDDO: Remove this debug stuff
-			bool hasController = _theGameController != null;
-			if (hasController != _hadController)
-			{
-				UnityEngine.Debug.Log($"2 [[[[[[[[[ HadCCONT goes from {_hadController} to {hasController}");
-			}
-			
-			_hadController = _theGameController != null;
-		}
-		
 		protected override void OnDestroy()
 		{
 			Debug.Log("NEVER BE IN HEre - unless unity is stopping");
@@ -185,10 +161,7 @@ namespace MoralisUnity.Samples.TheGame
 		
 		
 		// General Methods --------------------------------
-		public bool WasActiveSceneLoadedDirectly()
-		{
-			return _theGameView.SceneManagerComponent.WasActiveSceneLoadedDirectly();
-		}
+
 		
 		// Event Handlers ---------------------------------
 

@@ -40,7 +40,6 @@ namespace MoralisUnity.Samples.Shared.Components
 		{
 			SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
 			SceneManager.sceneLoaded += SceneManager_OnSceneLoaded;
-			Debug.Log("Start!!!!!");
 		}
 
 		
@@ -82,7 +81,7 @@ namespace MoralisUnity.Samples.Shared.Components
 			RequireIsInitialized();
 			if (string.IsNullOrEmpty(sceneName))
 			{
-				Custom.Debug.LogWarning($"Cannot LoadScene() when sceneName={sceneName}. That is ok.");
+				Custom.Debug.LogWarning($"Cannot LoadScene() when sceneName={sceneName}");
 				return;
 			}
 
@@ -90,7 +89,6 @@ namespace MoralisUnity.Samples.Shared.Components
 			{
 				_sceneNamePrevious = SceneManager.GetActiveScene().name;
 				
-				//Debug.LogWarning($" 1 _sceneNamePrevious={_sceneNamePrevious} sceneName={sceneName} ");
 				OnSceneLoadingEvent.Invoke(this, _sceneNamePrevious, sceneName);
 				SceneManager.LoadScene(sceneName);
 
@@ -100,7 +98,6 @@ namespace MoralisUnity.Samples.Shared.Components
 		// Event Handlers ---------------------------------
 		private void SceneManager_OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
 		{
-			//Debug.LogWarning($"================================= 1 _sceneNamePrevious={_sceneNamePrevious} scene.name={scene.name} ");
 			OnSceneLoadedEvent.Invoke(this, _sceneNamePrevious, scene.name);
 		}
 

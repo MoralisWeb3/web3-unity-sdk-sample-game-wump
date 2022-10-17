@@ -1,7 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared.Exceptions;
-using RMC.Shared;
 using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
 using Unity.Netcode;
@@ -140,18 +139,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		
 		public bool CanStartAsHost()
 		{
-			return !NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer;
+			return IsInitialized && !NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer;
 		}
 		
 		
 		public bool CanJoinAsClient()
 		{
-			return !NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer;;
+			return IsInitialized && !NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer;;
 		}
 		
 		public bool CanShutdown()
 		{
-			return NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer;
+			return IsInitialized && NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer;
 		}
 		
 		
@@ -163,6 +162,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 				Debug.LogWarning("StartAsHost () failed. Must be connected");
 			}
 			
+			Debug.LogError("Start as host!");
 			OnStateNameForDebuggingChanged.Invoke("StartHostStarting");
 			NetworkManager.Singleton.StartHost();
 			

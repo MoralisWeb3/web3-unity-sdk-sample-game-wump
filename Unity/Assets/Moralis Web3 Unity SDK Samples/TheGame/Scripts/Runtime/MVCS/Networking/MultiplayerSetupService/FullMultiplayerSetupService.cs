@@ -70,6 +70,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		//  Initializer Methods ---------------------------------
 		public FullMultiplayerSetupService(UnityTransport unityTransport)
 		{
+			Debug.LogError("Created!!! FullMultiplayerSetupService");
 			OnConnectStarted = new UnityEvent();
 			OnConnectCompleted = new StringUnityEvent();
 			OnDisconnectStarted = new UnityEvent();
@@ -125,18 +126,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		
 		public bool CanStartAsHost()
 		{
-			return _hasSetHostRelayData && !IsHost;
+			return IsInitialized && _hasSetHostRelayData && !IsHost;
 		}
 		
 		
 		public bool CanJoinAsClient()
 		{
-			return _hasSetClientRelayData && !IsClient;
+			return IsInitialized &&_hasSetClientRelayData && !IsClient;
 		}
 		
 		public bool CanShutdown()
 		{
-			return IsHost || IsClient;
+			return IsInitialized &&IsHost || IsClient;
 		}
 		
 		
@@ -338,9 +339,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 				_hasSetHostRelayData = false;
 				IsClient = false;
 				IsHost = false;
-				
-				Debug.LogError("_lobby.HostId: " + _lobby.HostId );
-				Debug.LogError(" _authenticatedPlayerId: " + _authenticatedPlayerId);
 				
 				// The creator can remove the entire lobby
 				if (_lobby.HostId == _authenticatedPlayerId)
