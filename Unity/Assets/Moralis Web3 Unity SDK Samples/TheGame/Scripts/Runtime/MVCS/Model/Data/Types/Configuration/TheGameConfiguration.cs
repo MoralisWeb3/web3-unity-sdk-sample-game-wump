@@ -28,29 +28,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration
 
         public TheGameServiceType TheGameServiceType { get { return _theGameServiceType;}}
         public MultiplayerSetupServiceType MultiplayerSetupServiceType { get { return _multiplayerSetupServiceType;}}
-        public bool MultiplayerIsAutoStart { get { return _multiplayerIsAutoStart;}}
-        public bool MultiplayerIsGuiVisible { get { return _multiplayerIsGuiVisible;}}
-        
         public UnityTransport.SimulatorParameters LanSimulatorParameters { get { return _lanSimulatorParameters;}}
             
         public TransferDialogView TransferDialogViewPrefab { get { return _transferDialogViewPrefab; } }
         
         public NetworkManagerView NetworkManagerViewPrefab { get { return _networkManagerViewPrefab; } }
-        public bool IsControllingWc { get { return _isControllingWC;} }
         public string UniquePlayerPrefsSuffix { get { return _uniquePlayerPrefsSuffix; } }
 
         // Fields -----------------------------------------
         public const string Title = "TheGameConfiguration";
 
-        [Tooltip("Default = ''. Optional, use for BUILDS, so each BUILD is treated unique per multiplayer/web3.")]
-        [SerializeField]
-        private string _uniquePlayerPrefsSuffix = "";
-        
-        [Header("Settings (Web3)")]
-        [Tooltip("AuthKit and WalletConnect are not robust singletons. Default = true, to fix bugs.")]
-        [SerializeField]
-        private bool _isControllingWC = true;
-
+   
         [Header("Cosmetics")]
         [SerializeField]
         private SceneTransition _sceneTransition = null;
@@ -76,6 +64,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration
         private NetworkManagerView _networkManagerViewPrefab;
         
         [Header("Settings (Edit-Time Only, General)")]
+        [Tooltip("Default = ''. Optional, use for BUILDS, so each BUILD is treated unique per multiplayer/web3.")]
+        [SerializeField]
+        private string _uniquePlayerPrefsSuffix = "";
+
+        [Header("Settings (Edit-Time Only, Web3)")]
         [Tooltip("Use either Moralis Database (dev) or Moralis Web3 (prod)")]
         [SerializeField]
         public TheGameServiceType _theGameServiceType = TheGameServiceType.Null;
@@ -85,15 +78,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration
         [SerializeField] 
         private MultiplayerSetupServiceType _multiplayerSetupServiceType = MultiplayerSetupServiceType.Null;
 
-        [Tooltip("Determines if the multiplayer server will automatically start in game scene. Set to true for production.")]
-        [SerializeField] 
-        private bool _multiplayerIsAutoStart = true;
-
-        [Tooltip("Determines if the multiplayer connection GUI is shown in game scene. Set to false for production.")]
-        [SerializeField] 
-        private bool _multiplayerIsGuiVisible = false;
-        
-            
         /// <summary>
         /// Can be used to simulate poor network conditions such as:
         /// - packet delay/latency

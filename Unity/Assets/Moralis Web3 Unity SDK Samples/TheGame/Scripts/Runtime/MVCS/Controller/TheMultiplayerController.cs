@@ -73,9 +73,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			if (!IsInitialized) return;
 			
 			Debug.Log($"{this.GetType().Name} OnDestroy() {_multiplayerSetupService.IsConnected}"); 
-			if (_multiplayerSetupService.IsConnected)
+			if (IsConnected())
 			{
-				await _multiplayerSetupService.DisconnectAsync();
+				await DisconnectAsync();
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		/// <summary>
 		/// Connect to backend of Multiplayer system and show OnGUI menu (disconnect, ect...)
 		/// </summary>
-		public async UniTask MultiplayerSetupServiceConnectAsync()
+		public async UniTask ConnectAsync()
 		{
 			if (_multiplayerSetupService.IsInitialized && !_multiplayerSetupService.IsConnected)
 			{
@@ -113,48 +113,48 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 
 		
-		public bool MultiplayerCanStartAsHost()
+		public bool CanStartAsHost()
 		{
 			return _multiplayerSetupService.CanStartAsHost();
 		}
 		
 		
-		public bool MultiplayerCanJoinAsClient()
+		public bool CanJoinAsClient()
 		{
 			return _multiplayerSetupService.CanJoinAsClient();
 		}
 		
 		
-		public bool MultiplayerCanShutdown()
+		public bool CanShutdown()
 		{
 			return _multiplayerSetupService.CanShutdown();
 		}
 
 		
-		public async UniTask MultiplayerStartAsHostAsync()
+		public async UniTask StartAsHostAsync()
 		{
 			await _multiplayerSetupService.StartAsHost();
 		}
 		
 		
-		public async UniTask MultiplayerJoinAsClientAsync()
+		public async UniTask JoinAsClientAsync()
 		{
 			await _multiplayerSetupService.JoinAsClient();
 		}
 		
 		
-		public async UniTask MultiplayerLeaveAsync()
+		public async UniTask LeaveAsync()
 		{
 			await _multiplayerSetupService.Shutdown();
 		}
 
 	
-		public bool MultiplayerSetupServiceIsConnected()
+		public bool IsConnected()
 		{
 			return _multiplayerSetupService.IsConnected;
 		}
 		
-		public bool MultiplayerSetupServiceIsHost()
+		public bool IsHost()
 		{
 			return _multiplayerSetupService.IsHost;
 		}
@@ -164,7 +164,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			return _multiplayerSetupService.IsClient;
 		}
 		
-		public async UniTask MultiplayerSetupServiceDisconnectAsync()
+		public async UniTask DisconnectAsync()
 		{
 			if (_multiplayerSetupService.IsConnected)
 			{
