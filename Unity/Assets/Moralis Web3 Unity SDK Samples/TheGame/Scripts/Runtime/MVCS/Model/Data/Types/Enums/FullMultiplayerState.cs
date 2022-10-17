@@ -16,5 +16,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
         Authenticated,
         LobbyConnecting,
         LobbyConnected,
+        LobbyDisconnecting,
+        LobbyDisconnected
     }
 }

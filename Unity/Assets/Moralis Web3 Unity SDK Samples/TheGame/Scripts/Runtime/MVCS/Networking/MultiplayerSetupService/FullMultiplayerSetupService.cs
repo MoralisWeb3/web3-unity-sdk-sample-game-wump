@@ -35,25 +35,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 	public class FullMultiplayerSetupService : IMultiplayerSetupService
 	{
 		//  Events ----------------------------------------
-		private UnityEvent _onConnectStarted = new UnityEvent();
-		private  StringUnityEvent _onConnectCompleted = new StringUnityEvent();
-		private UnityEvent _onDisconnectStarted = new UnityEvent();
-		private  UnityEvent _onDisconnectCompleted = new UnityEvent();
-		private StringUnityEvent _onStateNameForDebuggingChanged = new StringUnityEvent();
+		public UnityEvent OnConnectStarted { get; } 
+		public StringUnityEvent OnConnectCompleted { get; } 
+		public UnityEvent OnDisconnectStarted { get; } 
+		public UnityEvent OnDisconnectCompleted { get; } 
+		public StringUnityEvent OnStateNameForDebuggingChanged { get; } 
 		
 
 		//  Properties ------------------------------------
 		public bool IsInitialized { get; private set; }
-		
 		public bool IsConnected { get; private set; }
-		public bool IsHost { get { return _isHost; } private set { _isHost = value; Debug.LogWarning("IsHost: " + IsHost);} }
+		public bool IsHost { get { return _isHost; } private set { _isHost = value;} }
 		public bool IsClient { get { return _isClient; } private set { _isHost = value;} }
-		
-		public UnityEvent OnConnectStarted { get { return _onConnectStarted; } }
-		public StringUnityEvent OnConnectCompleted { get { return _onConnectCompleted; } }
-		public UnityEvent OnDisconnectStarted { get { return _onDisconnectStarted; } }
-		public UnityEvent OnDisconnectCompleted { get { return _onDisconnectCompleted; } }
-		public StringUnityEvent OnStateNameForDebuggingChanged { get { return _onStateNameForDebuggingChanged; } }
 		
 		//  Fields ----------------------------------------
 		private UnityTransport _unityTransport;
@@ -77,6 +70,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		//  Initializer Methods ---------------------------------
 		public FullMultiplayerSetupService(UnityTransport unityTransport)
 		{
+			OnConnectStarted = new UnityEvent();
+			OnConnectCompleted = new StringUnityEvent();
+			OnDisconnectStarted = new UnityEvent();
+			OnDisconnectCompleted = new UnityEvent();
+			OnStateNameForDebuggingChanged = new StringUnityEvent();
+			
+			//
 			_unityTransport = unityTransport;
 			_observableFullMultiplayerState.OnValueChanged.AddListener(ObservableFullMultiplayerState_OnValueChanged);
 			IsConnected = false;
@@ -118,7 +118,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		public async UniTask Connect()
 		{
 			RequireIsInitialized();
-			_onConnectStarted.Invoke();
+			OnConnectStarted.Invoke();
 			_observableFullMultiplayerState.Value = FullMultiplayerState.Authenticating;
 		}
 		
@@ -173,23 +173,19 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		public async UniTask Shutdown()
 		{
 			RequireIsInitialized();
-			RequireIsNotConnected();
+			RequireIsConnected();
 			
-			OnStateNameForDebuggingChanged.Invoke("Shutdown");
+			OnStateNameForDebuggingChanged.Invoke("ShuttingDown");
 			NetworkManager.Singleton.Shutdown();
+			OnStateNameForDebuggingChanged.Invoke("ShutDown");
 		}
 
 		public async UniTask DisconnectAsync()
 		{
 			RequireIsInitialized();
 			RequireIsConnected();
-			
-			_onConnectStarted.Invoke(); 
-			await LeaveLobbySafeAsync();
-			await DisconnectAsync_Internal();
+			_observableFullMultiplayerState.Value = FullMultiplayerState.LobbyDisconnecting;
 
-			_onStateNameForDebuggingChanged.Invoke("Disconnected");
-			_onDisconnectCompleted.Invoke(); 
 		}
 		
 		private async Task<Lobby> QuickJoinLobbyAsync()
@@ -327,45 +323,50 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		
 		private async Task LeaveLobbySafeAsync()
 		{
-			try
+			if (_sendHeartbeatCancellationTokenSource != null)
 			{
-				if (_sendHeartbeatCancellationTokenSource != null)
-				{
-					_sendHeartbeatCancellationTokenSource.Cancel();
-				}
+				_sendHeartbeatCancellationTokenSource.Cancel();
+			}
+			
+			if (_lobby != null && 
+			    Lobbies.Instance != null &&
+			    !string.IsNullOrEmpty(_lobby.Id) &&
+			    !string.IsNullOrEmpty(_authenticatedPlayerId))
+			{
+				// Reset the lobby data
+				_hasSetClientRelayData = false;
+				_hasSetHostRelayData = false;
+				IsClient = false;
+				IsHost = false;
 				
-				if (_lobby != null && 
-				    Lobbies.Instance != null &&
-				    !string.IsNullOrEmpty(_lobby.Id) &&
-				    !string.IsNullOrEmpty(_authenticatedPlayerId))
+				Debug.LogError("_lobby.HostId: " + _lobby.HostId );
+				Debug.LogError(" _authenticatedPlayerId: " + _authenticatedPlayerId);
+				
+				// The creator can remove the entire lobby
+				if (_lobby.HostId == _authenticatedPlayerId)
 				{
-					// Reset the lobby data
-					_hasSetClientRelayData = false;
-					_hasSetHostRelayData = false;
-					IsClient = false;
-					IsHost = false;
-					
-					if (_lobby.HostId == _authenticatedPlayerId)
+					try
 					{
 						await Lobbies.Instance.DeleteLobbyAsync(_lobby.Id);
 					}
-					else
+					catch (Exception e)
 					{
-						if (NetworkManager.Singleton != null)
-						{
-							foreach (var x in NetworkManager.Singleton.ConnectedClients)
-							{
-								Debug.Log("next : " + x.Key + " / " + x.Value);
-							}
-						}
-	
+						Debug.LogError($"DeleteLobbyAsync() failed. e = {e.Message}");
+					}
+					
+				}
+				// Otherwise just remove self
+				else
+				{
+					try
+					{
 						await Lobbies.Instance.RemovePlayerAsync(_lobby.Id, _authenticatedPlayerId);
 					}
+					catch (Exception e)
+					{
+						Debug.LogError($"RemovePlayerAsync() failed. e = {e.Message}");
+					}
 				}
-			}
-			catch (Exception e)
-			{
-				Debug.LogError($"CreateLobbyAsync() failed. e = {e.Message}");
 			}
 		}
 
@@ -507,6 +508,23 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 					}
 					
 					break;	
+				case FullMultiplayerState.LobbyDisconnecting:
+					
+					await LeaveLobbySafeAsync();
+					await DisconnectAsync_Internal();
+					
+					// Reset the lobby data
+					_hasSetClientRelayData = false;
+					_hasSetHostRelayData = false;
+					IsHost = false;
+					IsClient = false;
+					
+					_observableFullMultiplayerState.Value = FullMultiplayerState.LobbyDisconnected;
+					break;
+				case FullMultiplayerState.LobbyDisconnected:
+	
+					OnDisconnectCompleted.Invoke();
+					break;
 				default:
 					SwitchDefaultException.Throw(newValue);
 					break;

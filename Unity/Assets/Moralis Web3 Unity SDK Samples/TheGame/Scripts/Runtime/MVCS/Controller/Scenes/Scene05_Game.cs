@@ -166,14 +166,6 @@ namespace MoralisUnity.Samples.TheGame
 			_ui.StartAsHostButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanStartAsHost();
 			_ui.JoinAsClientButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanJoinAsClient();
 			_ui.ShutdownButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanShutdown();
-			Debug.Log("NetworkManager.Singleton.IsHost: " + NetworkManager.Singleton.IsHost);
-			Debug.Log("NetworkManager.Singleton.IsServer: " + NetworkManager.Singleton.IsServer);
-			Debug.Log("NetworkManager.Singleton.IsClient: " + NetworkManager.Singleton.IsClient);
-			
-			Debug.Log(" MultiplayerSetupServiceIsHost:  " + 
-			          TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsHost());
-			Debug.Log(" MultiplayerSetupServiceIsClient:  " + 
-			          TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsClient());
 			_ui.BackButton.IsInteractable = true;
 		}
 		
@@ -230,16 +222,9 @@ namespace MoralisUnity.Samples.TheGame
 		
 		private async void OnMultiplayerStateNameChanged(string debugStateName)
 		{
-			Debug.Log("05 State " + debugStateName);
+			Debug.Log("Scene OnMultiplayerStateNameChanged() state = " + debugStateName);
 			// Refresh for UI buttons
 			await RefreshUIAsync();
-
-			//TODO: Remove
-			UniTask.Delay(1000);
-			// Refresh for UI buttons
-			await RefreshUIAsync();
-
-			
 		}
 		
 		private void OnTheGameModelChanged(TheGameModel theGameModel)
