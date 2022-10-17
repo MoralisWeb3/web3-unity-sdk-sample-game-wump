@@ -383,6 +383,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			return _multiplayerSetupService.IsHost;
 		}
 		
+		public bool MultiplayerSetupServiceIsClient()
+		{
+			return _multiplayerSetupService.IsClient;
+		}
+		
 		public async UniTask MultiplayerSetupServiceDisconnectAsync()
 		{
 			if (_multiplayerSetupService.IsConnected)

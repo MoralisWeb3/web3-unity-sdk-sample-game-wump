@@ -34,6 +34,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		//  Properties ------------------------------------
 		public bool IsConnected { get; private set; }
 		public bool IsHost { get { return NetworkManager.Singleton.IsHost;} }
+		public bool IsClient { get { return NetworkManager.Singleton.IsClient;} }
 		
 		public UnityEvent OnConnectStarted { get { return _onConnectStarted; } }
 		public StringUnityEvent OnConnectCompleted { get { return _onConnectCompleted; } }

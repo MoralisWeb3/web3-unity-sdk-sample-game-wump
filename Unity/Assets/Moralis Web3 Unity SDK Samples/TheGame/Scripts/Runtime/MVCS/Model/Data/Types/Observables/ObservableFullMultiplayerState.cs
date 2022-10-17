@@ -33,7 +33,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types
 	        {
 		        AllowStateTransition(oldValue, newValue,
 			        FullMultiplayerState.Null,
+			        new FullMultiplayerState[] {FullMultiplayerState.Initialized});
+		        
+		        AllowStateTransition(oldValue, newValue,
+			        FullMultiplayerState.Initialized,
 			        new FullMultiplayerState[] {FullMultiplayerState.Authenticating});
+
 		        
 		        AllowStateTransition(oldValue, newValue,
 			        FullMultiplayerState.Authenticating,

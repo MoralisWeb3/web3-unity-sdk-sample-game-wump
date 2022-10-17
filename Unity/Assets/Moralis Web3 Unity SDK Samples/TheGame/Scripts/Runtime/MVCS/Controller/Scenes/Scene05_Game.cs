@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
+using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using MoralisUnity.Samples.TheGame.MVCS.View.Scenes;
 using Unity.Netcode;
@@ -74,7 +75,7 @@ namespace MoralisUnity.Samples.TheGame
 				}
 
 				TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceInitialize();
-				AutoConnectAndStart();
+				await AutoConnect();
 			}
 		}
 
@@ -84,11 +85,16 @@ namespace MoralisUnity.Samples.TheGame
 		///
 		/// Do I want to aut connect without using clicking 'join'? Maybe....
 		/// </summary>
-		private void AutoConnectAndStart()
+		private async UniTask AutoConnect()
 		{
+
+			if (TheGameConfiguration.Instance.MultiplayerSetupServiceType == MultiplayerSetupServiceType.Full)
+			{
+				await TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnectAsync();
+			}
 			/*
 			
-				
+				//TODO: REmove this
 			if (TheGameConfiguration.Instance.MultiplayerIsAutoStart &&
 			    !TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
 			{
@@ -160,6 +166,14 @@ namespace MoralisUnity.Samples.TheGame
 			_ui.StartAsHostButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanStartAsHost();
 			_ui.JoinAsClientButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanJoinAsClient();
 			_ui.ShutdownButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanShutdown();
+			Debug.Log("NetworkManager.Singleton.IsHost: " + NetworkManager.Singleton.IsHost);
+			Debug.Log("NetworkManager.Singleton.IsServer: " + NetworkManager.Singleton.IsServer);
+			Debug.Log("NetworkManager.Singleton.IsClient: " + NetworkManager.Singleton.IsClient);
+			
+			Debug.Log(" MultiplayerSetupServiceIsHost:  " + 
+			          TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsHost());
+			Debug.Log(" MultiplayerSetupServiceIsClient:  " + 
+			          TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsClient());
 			_ui.BackButton.IsInteractable = true;
 		}
 		
@@ -219,6 +233,13 @@ namespace MoralisUnity.Samples.TheGame
 			Debug.Log("05 State " + debugStateName);
 			// Refresh for UI buttons
 			await RefreshUIAsync();
+
+			//TODO: Remove
+			UniTask.Delay(1000);
+			// Refresh for UI buttons
+			await RefreshUIAsync();
+
+			
 		}
 		
 		private void OnTheGameModelChanged(TheGameModel theGameModel)

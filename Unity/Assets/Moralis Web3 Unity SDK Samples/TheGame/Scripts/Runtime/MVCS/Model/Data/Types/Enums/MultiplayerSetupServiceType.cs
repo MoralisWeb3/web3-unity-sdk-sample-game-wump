@@ -20,7 +20,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService
         StringUnityEvent OnStateNameForDebuggingChanged { get; }
         bool IsConnected { get; }
         bool IsHost { get; }
-        
+        bool IsClient { get; }
         //  Methods ---------------------------------------
         UniTask Connect();
         UniTask DisconnectAsync();

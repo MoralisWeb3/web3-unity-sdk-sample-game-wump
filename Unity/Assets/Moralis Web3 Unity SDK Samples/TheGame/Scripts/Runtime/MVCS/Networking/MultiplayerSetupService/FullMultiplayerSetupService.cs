@@ -46,7 +46,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		public bool IsInitialized { get; private set; }
 		
 		public bool IsConnected { get; private set; }
-		public bool IsHost { get { return NetworkManager.Singleton.IsHost;} }
+		public bool IsHost { get { return _isHost; } private set { _isHost = value; Debug.LogWarning("IsHost: " + IsHost);} }
+		public bool IsClient { get { return _isClient; } private set { _isHost = value;} }
 		
 		public UnityEvent OnConnectStarted { get { return _onConnectStarted; } }
 		public StringUnityEvent OnConnectCompleted { get { return _onConnectCompleted; } }
@@ -68,7 +69,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		private string _lastAllocatedRegion = "";
 		private const int HeartBeatWaitTimeMilliseconds = 15000;
 		private const int RateLimitWaitTimeMilliseconds = 11000;
-
+		private bool _hasSetClientRelayData = false;
+		private bool _hasSetHostRelayData = false;
+		public bool _isHost = false;
+		public bool _isClient = false;
+		
 		//  Initializer Methods ---------------------------------
 		public FullMultiplayerSetupService(UnityTransport unityTransport)
 		{
@@ -82,7 +87,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			if (!IsInitialized)
 			{
 				_observableFullMultiplayerState.Value = FullMultiplayerState.Initialized;
-				IsInitialized = true;
+				//set IsInitialized = true, below in the state machine
 			}
 		}
 
@@ -91,6 +96,21 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			if (!IsInitialized)
 			{
 				throw new NotInitializedException(this);
+			}
+		}
+		
+		private void RequireIsConnected()
+		{
+			if (!IsConnected)
+			{
+				throw new Exception("Must be connected");
+			}
+		}
+		private void RequireIsNotConnected()
+		{
+			if (IsConnected)
+			{
+				throw new Exception("Must NOT be connected");
 			}
 		}
 
@@ -105,68 +125,76 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		
 		public bool CanStartAsHost()
 		{
-			return !NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer;
+			return _hasSetHostRelayData && !IsHost;
 		}
 		
 		
 		public bool CanJoinAsClient()
 		{
-			return !NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer;;
+			return _hasSetClientRelayData && !IsClient;
 		}
 		
 		public bool CanShutdown()
 		{
-			return NetworkManager.Singleton.IsClient && NetworkManager.Singleton.IsServer;
+			return IsHost || IsClient;
 		}
 		
 		
 		public async UniTask StartAsHost()
 		{
 			RequireIsInitialized();
-			if (!IsConnected)
+			RequireIsConnected();
+
+			OnStateNameForDebuggingChanged.Invoke("StartingHost");
+			IsHost = NetworkManager.Singleton.StartHost();
+			if (IsHost)
 			{
-				Debug.LogWarning("StartAsHost () failed. Must be connected");
+				OnStateNameForDebuggingChanged.Invoke("StartedHost");
 			}
-			OnStateNameForDebuggingChanged.Invoke("StartHost");
-			NetworkManager.Singleton.StartHost();
+			
 		}
 		
 		
 		public async UniTask JoinAsClient()
 		{
 			RequireIsInitialized();
-			if (!IsConnected)
+			RequireIsConnected();
+
+			OnStateNameForDebuggingChanged.Invoke("StartingClient");
+			IsClient = NetworkManager.Singleton.StartClient();
+			if (IsClient)
 			{
-				Debug.LogWarning("JoinAsClient () failed. Must be connected");
+				OnStateNameForDebuggingChanged.Invoke("StartedClient");
 			}
 			
-			OnStateNameForDebuggingChanged.Invoke("StartClient");
-			NetworkManager.Singleton.StartClient();
 		}
 		
 		
 		public async UniTask Shutdown()
 		{
 			RequireIsInitialized();
-			if (!IsConnected)
-			{
-				Debug.LogWarning("Shutdown () failed. Must be connected");
-			}
+			RequireIsNotConnected();
+			
 			OnStateNameForDebuggingChanged.Invoke("Shutdown");
 			NetworkManager.Singleton.Shutdown();
 		}
 
 		public async UniTask DisconnectAsync()
 		{
+			RequireIsInitialized();
+			RequireIsConnected();
+			
 			_onConnectStarted.Invoke(); 
 			await LeaveLobbySafeAsync();
 			await DisconnectAsync_Internal();
+
 			_onStateNameForDebuggingChanged.Invoke("Disconnected");
 			_onDisconnectCompleted.Invoke(); 
 		}
 		
 		private async Task<Lobby> QuickJoinLobbyAsync()
 		{
+			Debug.LogWarning("7777777 QuickJoinLobbyAsync()");
 			Lobby lobby = null;
 			try
 			{
@@ -217,7 +245,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 					joinAllocation.ConnectionData,
 					joinAllocation.HostConnectionData);
 
-				JoinAsClient();
+				_hasSetClientRelayData = true;
 				
 				return lobby;
 			}
@@ -248,35 +276,37 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		
 		private async Task<Lobby> CreateLobbyAsync()
 		{
-				Allocation allocation = await RelayService.Instance.CreateAllocationAsync(MaxConnections);
+			Debug.LogWarning("7777777 CreateLobbyAsync()");
+			
+			Allocation allocation = await RelayService.Instance.CreateAllocationAsync(MaxConnections);
 
-				_lastAllocatedRegion = allocation.Region;
-				string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+			_lastAllocatedRegion = allocation.Region;
+			string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
-				CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
+			CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
+			{
+				Data = new Dictionary<string, DataObject>
 				{
-					Data = new Dictionary<string, DataObject>
 					{
-						{
-							JoinCodeKey, new DataObject(DataObject.VisibilityOptions.Public, joinCode)
-						}
-					},
-					IsPrivate = false
-				};
+						JoinCodeKey, new DataObject(DataObject.VisibilityOptions.Public, joinCode)
+					}
+				},
+				IsPrivate = false
+			};
 
-				Lobby lobby = await Lobbies.Instance.CreateLobbyAsync("any lobby name",
-					MaxConnections, createLobbyOptions);
+			Lobby lobby = await Lobbies.Instance.CreateLobbyAsync("any lobby name",
+				MaxConnections, createLobbyOptions);
 
-				_unityTransport.SetHostRelayData(
-					allocation.RelayServer.IpV4,
-					(ushort)allocation.RelayServer.Port,
-					allocation.AllocationIdBytes,
-					allocation.Key,
-					allocation.ConnectionData);
+			_unityTransport.SetHostRelayData(
+				allocation.RelayServer.IpV4,
+				(ushort)allocation.RelayServer.Port,
+				allocation.AllocationIdBytes,
+				allocation.Key,
+				allocation.ConnectionData);
 
-				StartAsHost();
+			_hasSetHostRelayData = true;
 				
-				return lobby;
+			return lobby;
 	
 		}
 
@@ -309,6 +339,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 				    !string.IsNullOrEmpty(_lobby.Id) &&
 				    !string.IsNullOrEmpty(_authenticatedPlayerId))
 				{
+					// Reset the lobby data
+					_hasSetClientRelayData = false;
+					_hasSetHostRelayData = false;
+					IsClient = false;
+					IsHost = false;
+					
 					if (_lobby.HostId == _authenticatedPlayerId)
 					{
 						await Lobbies.Instance.DeleteLobbyAsync(_lobby.Id);
@@ -376,6 +412,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 				case FullMultiplayerState.Null:
 					// Do nothing
 					break;
+				case FullMultiplayerState.Initialized:
+					// Do nothing
+					IsInitialized = true;
+					break;
 				case FullMultiplayerState.Authenticating:
 
 					InitializationOptions initializationOptions = new InitializationOptions();
@@ -427,6 +467,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 					_observableFullMultiplayerState.Value = FullMultiplayerState.LobbyConnecting;
 					break;	
 				case FullMultiplayerState.LobbyConnecting:
+					
+					// Reset the lobby data
+					_hasSetClientRelayData = false;
+					_hasSetHostRelayData = false;
+					IsHost = false;
+					IsClient = false;
+					
 					_lobby = await QuickJoinLobbyAsync();
 
 					if (_lobby == null)
@@ -452,7 +499,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 					//////////////
 					// Keep the connection alive with a heartbeat
 					// Do not await this call
-					if (NetworkManager.Singleton.IsHost)
+					if (IsHost)
 					{
 						_sendHeartbeatCancellationTokenSource = new CancellationTokenSource();
 						Task.Run(async () => await SendHeartbeatPingRepeatingAsync(
