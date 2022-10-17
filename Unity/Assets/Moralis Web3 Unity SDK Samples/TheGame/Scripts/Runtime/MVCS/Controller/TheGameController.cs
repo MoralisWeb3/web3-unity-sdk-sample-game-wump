@@ -220,13 +220,19 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		public void SetPlayerNicknameAndUpdateModel(string nickname)
 		{
-			_theGameModel.CustomPlayerInfo.Value.Nickname = nickname;
+			// Set COMPLETE object to properly trigger events
+			CustomPlayerInfo customPlayerInfo = _theGameModel.CustomPlayerInfo.Value;
+			customPlayerInfo.Nickname = nickname;
+			_theGameModel.CustomPlayerInfo.Value = customPlayerInfo;
 		}
 		
 		
 		public void SetPlayerWeb3AddressAndUpdateModel(string web3address)
 		{
-			_theGameModel.CustomPlayerInfo.Value.Web3Address = web3address;
+			// Set COMPLETE object to properly trigger events
+			CustomPlayerInfo customPlayerInfo = _theGameModel.CustomPlayerInfo.Value;
+			customPlayerInfo.Web3Address = web3address;
+			_theGameModel.CustomPlayerInfo.Value = customPlayerInfo;
 		}
 		
 		

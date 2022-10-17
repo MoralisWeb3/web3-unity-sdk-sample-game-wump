@@ -13,7 +13,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
     {
         
         //  Properties ------------------------------------
-        public WalletConnectWrapper WalletConnectWrapper { get { return _walletConnectWrapper; } }
 
         public TMP_Text KeyText { get { return _keyText; } }
 
@@ -24,9 +23,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
         
         //  Fields ----------------------------------------
         [Header ("References (Scene)")]
-
-        [SerializeField]
-        private WalletConnectWrapper _walletConnectWrapper = null;
 
         [SerializeField]
         private PlayerView _playerView = null;
