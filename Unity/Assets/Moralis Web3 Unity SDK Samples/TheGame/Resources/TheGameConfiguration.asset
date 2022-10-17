@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TheGameConfiguration
   m_EditorClassIdentifier: 
   _isLogEnabled: 1
-  _uniquePlayerPrefsSuffix: 1
+  _uniquePlayerPrefsSuffix: 2
   _isControllingWC: 1
   _sceneTransition: {fileID: 11400000, guid: 6e55bad36842ed14690b63268c818bff, type: 2}
   _sceneDataStorage: {fileID: 11400000, guid: b26de83d10480624f82cf855ce76b933, type: 2}
