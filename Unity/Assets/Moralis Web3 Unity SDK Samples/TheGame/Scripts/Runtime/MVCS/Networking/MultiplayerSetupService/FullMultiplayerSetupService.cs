@@ -44,9 +44,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 
 		//  Properties ------------------------------------
 		public bool IsInitialized { get; private set; }
-
 		
 		public bool IsConnected { get; private set; }
+		public bool IsHost { get { return NetworkManager.Singleton.IsHost;} }
 		
 		public UnityEvent OnConnectStarted { get { return _onConnectStarted; } }
 		public StringUnityEvent OnConnectCompleted { get { return _onConnectCompleted; } }
@@ -154,12 +154,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			}
 			OnStateNameForDebuggingChanged.Invoke("Shutdown");
 			NetworkManager.Singleton.Shutdown();
-		}
-
-		public void OnGUI()
-		{
-			if (!IsInitialized) return;
-			//Do nothing
 		}
 
 		public async UniTask DisconnectAsync()

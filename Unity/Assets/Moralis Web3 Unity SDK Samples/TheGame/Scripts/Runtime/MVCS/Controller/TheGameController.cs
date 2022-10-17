@@ -116,15 +116,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 		
 		// Unity Methods --------------------------------
-		public void OnGUI()
-		{
-			if (IsInitialized && TheGameConfiguration.Instance.MultiplayerIsGuiVisible)
-			{
-				_multiplayerSetupService.OnGUI();
-			}
-		}
-		
-		
 		public async void OnDestroy()
 		{
 			if (!IsInitialized) return;
@@ -381,6 +372,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			return _multiplayerSetupService.IsConnected;
 		}
 		
+		public bool MultiplayerSetupServiceIsHost()
+		{
+			return _multiplayerSetupService.IsHost;
+		}
 		
 		public async UniTask MultiplayerSetupServiceDisconnectAsync()
 		{

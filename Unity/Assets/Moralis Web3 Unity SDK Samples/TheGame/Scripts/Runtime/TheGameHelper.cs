@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MoralisUnity.Samples.Shared;
+using MoralisUnity.Samples.Shared.UI;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.View;
@@ -222,6 +223,25 @@ namespace MoralisUnity.Samples.TheGame
         public static string GetPlayerNameAsSceneTitle(string title, int fontSize = 9)
         {
             return $"<size=9>\n</size><size={fontSize}>{title}</size>";
+        }
+
+        public static void SetShutdownButtonText(BaseButtonUI button, bool isConnected, bool isHost)
+        {
+            if (isConnected)
+            {
+                if (isHost)
+                {
+                    button.Text.text = $"<size=30>Leave</size><size=20> (Host)</size>";
+                }
+                else
+                {
+                    button.Text.text = $"<size=30>Leave</size><size=20> (Client)</size>";
+                }
+            }
+            else
+            {
+                button.Text.text = $"<size=30>Leave</size><size=20></size>";
+            }
         }
     }
 }

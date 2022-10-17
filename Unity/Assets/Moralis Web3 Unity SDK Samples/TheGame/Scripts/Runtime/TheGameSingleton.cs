@@ -165,6 +165,7 @@ namespace MoralisUnity.Samples.TheGame
 		
 		public void OnGUI()
 		{
+			//TDDO: Remove this debug stuff
 			bool hasController = _theGameController != null;
 			if (hasController != _hadController)
 			{
@@ -172,12 +173,6 @@ namespace MoralisUnity.Samples.TheGame
 			}
 			
 			_hadController = _theGameController != null;
-
-			if (hasController)
-			{
-				_theGameController.OnGUI();
-			}
-			
 		}
 		
 		protected override void OnDestroy()

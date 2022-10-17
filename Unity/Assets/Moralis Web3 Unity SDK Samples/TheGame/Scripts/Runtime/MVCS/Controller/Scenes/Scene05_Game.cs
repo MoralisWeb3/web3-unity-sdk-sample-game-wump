@@ -74,16 +74,51 @@ namespace MoralisUnity.Samples.TheGame
 				}
 
 				TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceInitialize();
-				
-				if (TheGameConfiguration.Instance.MultiplayerIsAutoStart &&
-				    !TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
-				{
-					TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnectAsync();
-				}
+				AutoConnectAndStart();
 			}
 		}
 
-
+		
+		/// <summary>
+		/// WIP
+		///
+		/// Do I want to aut connect without using clicking 'join'? Maybe....
+		/// </summary>
+		private void AutoConnectAndStart()
+		{
+			/*
+			
+				
+			if (TheGameConfiguration.Instance.MultiplayerIsAutoStart &&
+			    !TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
+			{
+				TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnectAsync();
+			}
+				
+				
+			// The instance playing in the Primary UNITY EDITOR will host
+			// All others will NOT host
+			if (ClonesManagerWrapper.HasClonesManager)
+			{
+				if (ClonesManagerWrapper.IsClone)
+				{
+					_onConnectStarted.Invoke();
+					await JoinAsClient();
+				}
+				else
+				{
+					// Primary UNITY EDITOR
+					_onConnectStarted.Invoke();
+					await StartAsHost();
+				}
+			}
+			else
+			{
+				_onConnectStarted.Invoke();
+				await JoinAsClient();
+			}
+			*/
+		}
 
 
 		protected async void OnDestroy()
@@ -116,6 +151,12 @@ namespace MoralisUnity.Samples.TheGame
 		//  Methods ---------------------------------------
 		private async UniTask RefreshUIAsync()
 		{
+			// Change label
+			TheGameHelper.SetShutdownButtonText(_ui.ShutdownButton,
+				TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected(),
+				TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsHost());
+			
+			//
 			_ui.StartAsHostButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanStartAsHost();
 			_ui.JoinAsClientButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanJoinAsClient();
 			_ui.ShutdownButton.IsInteractable = TheGameSingleton.Instance.TheGameController.MultiplayerCanShutdown();
