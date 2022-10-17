@@ -1,0 +1,6 @@
+APP_DOMAIN=wump.web.companion.app
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=
+MORALIS_API_KEY=
+
+

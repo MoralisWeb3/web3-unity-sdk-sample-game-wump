@@ -16,7 +16,7 @@ function Structure({ children, user }) {
   const { push } = useRouter();
   return (
     <Layout className={styles.container}>
-      <Header className={styles.header}>Sim City Web3 Companion App</Header>
+      <Header className={styles.header}>WUMP - Web Companion App</Header>
       <Content className={styles.content}>{children}</Content>
       <Footer className={styles.footer}>
         <div
