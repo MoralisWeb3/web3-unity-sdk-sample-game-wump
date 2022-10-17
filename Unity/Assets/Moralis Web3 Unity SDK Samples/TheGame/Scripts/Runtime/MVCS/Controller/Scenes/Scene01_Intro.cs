@@ -47,6 +47,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             
             RefreshUIAsync();
         }
+        
 
         //  General Methods -------------------------------
         private async UniTask RefreshUIAsync()
@@ -58,9 +59,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
 
         }
 
+        
         //  Event Handlers --------------------------------
         private async void AuthenticationButtonUI_OnClicked()
         {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+            
             //Before loading the one-and-only scene with AuthenticationKit
             //Destroy the Existing WalletConnect. Otherwise bug in AuthenticationKit.
             if (CustomWeb3System.Instance.HasWalletConnectStaticInstance)
@@ -72,15 +76,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         }
         
         
-        private async void PlayGameButtonUI_OnClicked()
-        {
-            TheGameSingleton.Instance.TheGameController.LoadGameSceneAsync();
-        }
-
-        
         private async void Registerbutton_OnClicked()
         {
-
+            
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+            
             await TheGameSingleton.Instance.TheGameController.ShowMessageActiveAsync(
                 TheGameConstants.Registering,
                 async delegate()
@@ -97,16 +97,28 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         }
 
         
+        private async void SettingsButton_OnClicked()
+        {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+            
+            TheGameSingleton.Instance.TheGameController.LoadSettingsSceneAsync();
+        }
+        
+        
+        private async void PlayGameButtonUI_OnClicked()
+        {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+            
+            TheGameSingleton.Instance.TheGameController.LoadGameSceneAsync();
+        }
+
+        
         private void OnTheGameModelChange(TheGameModel theGameModel)
         {
             _isRegistered = theGameModel.IsRegistered.Value;
             RefreshUIAsync();
         }
         
-        
-        private async void SettingsButton_OnClicked()
-        {
-            TheGameSingleton.Instance.TheGameController.LoadSettingsSceneAsync();
-        }
+
     }
 }

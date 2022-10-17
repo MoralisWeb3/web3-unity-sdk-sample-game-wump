@@ -52,9 +52,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         {
             _ui.CancelButton.IsInteractable = true;
         }
-
-        //  Event Handlers --------------------------------
-        private async void CancelButton_OnClicked()
+        
+        private async UniTask LeaveSceneAsync()
         {
             bool isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
             //Debug.Log($"CancelButton_OnClicked() wasA = {_isAuthenticatedOnStart}, isA = {isAuthenticated}");
@@ -66,18 +65,27 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             TheGameSingleton.Instance.TheGameController.LoadIntroSceneAsync();
         }
         
+
+
+        //  Event Handlers --------------------------------
+        private async void CancelButton_OnClicked()
+        {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+
+            await LeaveSceneAsync();
+
+        }
+        
         
         private async void AuthenticationUI_OnConnected()
         {
-            //Debug.Log($"AuthenticationUI_OnConnected()");
-            CancelButton_OnClicked();
+            await LeaveSceneAsync();
         }
 
         
-        private void AuthenticationUI_OnDisconnected()
+        private async void AuthenticationUI_OnDisconnected()
         {
-           // Debug.Log("AuthenticationUI_OnConnected");
-            CancelButton_OnClicked();
+            await LeaveSceneAsync();
         }
     }
 }

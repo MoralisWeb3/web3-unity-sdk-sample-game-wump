@@ -61,15 +61,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         
         
         //  Event Handlers --------------------------------
-        private void TheGameSingleton_OnTheGameModelChanged(TheGameModel theGameModel)
-        {
-            _customPlayerInfo = theGameModel.CustomPlayerInfo.Value;
-            RefreshUIAsync();
-        }
-        
-        
         private async void RandomizeNicknameButton_OnClicked()
         {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+            
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
                 Debug.LogWarning("User held SHIFT key during button click. Opening secret menu.");
@@ -87,6 +82,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         
         private async void ResetButton_OnClicked()
         {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+            
             await TheGameSingleton.Instance.TheGameController.ShowMessageActiveAsync(
                 TheGameConstants.SafeReregistering,
                 async delegate ()
@@ -101,7 +98,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         
         private async void BackButton_OnClicked()
         {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+            
             TheGameSingleton.Instance.TheGameController.LoadIntroSceneAsync();
         }
+        
+        private void TheGameSingleton_OnTheGameModelChanged(TheGameModel theGameModel)
+        {
+            _customPlayerInfo = theGameModel.CustomPlayerInfo.Value;
+            RefreshUIAsync();
+        }
+        
+        
+        
     }
 }

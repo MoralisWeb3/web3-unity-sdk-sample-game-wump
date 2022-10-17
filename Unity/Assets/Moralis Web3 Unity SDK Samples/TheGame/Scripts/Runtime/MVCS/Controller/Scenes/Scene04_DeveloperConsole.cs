@@ -132,6 +132,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         
         private async void RegisterButton_OnClicked()
         {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+
+            
             if (_isRegistered)
             {
                 await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
@@ -157,6 +160,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         
         private async void UnregisterButton_OnClicked()
         {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+
+            
             if (!_isRegistered)
             {
                 await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
@@ -181,6 +187,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
 
         private async void GetPrizesButton_OnClicked()
         {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+
+            
             if (!_isRegistered)
             {
                 await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
@@ -208,6 +217,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         
         private async void GetTransferLogHistoryButton_OnClicked()
         {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+
+            
             if (!_isRegistered)
             {
                 await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
@@ -245,6 +257,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         
         private async void TransferGoldButton_OnClicked()
         {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+
+            
             if (!_isRegistered)
             {
                 await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
@@ -281,6 +296,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         
         private async void TransferPrizeButton_OnClicked()
         {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+
+            
             if (!_isRegistered)
             {
                 await TheGameSingleton.Instance.TheGameController.ShowMessageWithDelayAsync(
@@ -317,6 +335,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         
         private async void SafeReregisterButton_OnClicked()
         {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+
+            
             await TheGameSingleton.Instance.TheGameController.ShowMessageActiveAsync(
                 TheGameConstants.SafeReregistering,
                 async delegate ()
@@ -334,6 +355,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
 
         private async void BackButton_OnClicked()
         {
+            TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+
+            
             TheGameSingleton.Instance.TheGameController.LoadSettingsSceneAsync();
         }
     }
