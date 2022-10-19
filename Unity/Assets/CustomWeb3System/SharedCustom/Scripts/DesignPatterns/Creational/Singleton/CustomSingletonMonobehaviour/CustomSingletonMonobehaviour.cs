@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.CustomSingletonMonobehaviour
+namespace MoralisUnity.Samples.SharedCustom.DesignPatterns.Creational.Singleton.CustomSingletonMonobehaviour
 {
 
     public abstract class CustomSingletonMonobehaviour : MonoBehaviour

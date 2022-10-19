@@ -38,7 +38,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             
             RefreshUIAsync();
             
-            _isAuthenticated = _ui.AuthenticationButtonUI.IsAuthenticated;
+            _isAuthenticated = await _ui.AuthenticationButtonUI.IsAuthenticatedAsync();
             if (_isAuthenticated)
             {
                 _isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
@@ -69,7 +69,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             
             
             Debug.LogWarning("BEFORE: This destroyed an instance of wallet connect. needed?");
-            
+
+            CustomWeb3System.Instance.ClearActiveSession();
             TheGameSingleton.Instance.TheGameController.LoadAuthenticationSceneAsync();
         }
         

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Cysharp.Threading.Tasks;
-using MoralisUnity.Samples.CustomShared.Exceptions;
+using MoralisUnity.Samples.SharedCustom.Exceptions;
 using MoralisUnity.Samples.SharedCustom.Interfaces;
 using UnityEngine;
 using Newtonsoft.Json;

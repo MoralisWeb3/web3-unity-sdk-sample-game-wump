@@ -58,6 +58,7 @@ namespace MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.Custom
                     if (_instance == null)
                     {
                         _instance = new T();
+                        // ReSharper disable once TryCastAlwaysSucceeds
                         (_instance as ICustomSingletonParent).OnInstantiatedBase();
                     }
  

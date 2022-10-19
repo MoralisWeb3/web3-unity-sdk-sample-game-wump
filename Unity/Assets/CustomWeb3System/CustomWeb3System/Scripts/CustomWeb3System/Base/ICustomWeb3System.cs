@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using MoralisUnity.Samples.Shared.UnityWeb3Tools.Models;
 
 namespace MoralisUnity.Samples.Shared
 {
@@ -25,7 +27,7 @@ namespace MoralisUnity.Samples.Shared
         Task<string> GetWeb3UserAddressAsync();
         UniTask<String> ExecuteContractFunctionAsync(string contractAddress, string abi, string functionName, object[] args, bool isLogging = false);
         UniTask<object> RunContractFunctionAsync(string contractAddress, string functionName, string abi, object args, bool isLogging = false);
-        UniTask<int> GetNFTsForContractAsync(string contractAddress, bool isLogging = false);
+        UniTask<List<NftOwner>> GetNFTsForContractAsync(string contractAddress, bool isLogging = false);
 
 
     

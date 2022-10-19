@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.CustomSingleton
+namespace MoralisUnity.Samples.SharedCustom.DesignPatterns.Creational.Singleton.CustomSingleton
 {
     public interface ICustomSingletonParent
     {

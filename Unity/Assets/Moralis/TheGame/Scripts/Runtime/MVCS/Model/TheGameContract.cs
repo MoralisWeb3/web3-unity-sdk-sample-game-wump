@@ -25,7 +25,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 
 
 		// Initialization Methods -------------------------
- protected override void SetContractDetails()
+	protected override void SetContractDetails()
         {
 
                 _prizeContractAddress  = "0xa428423695D2052676A1d6e4a8C5d78d8C5dB7e8";
@@ -98,8 +98,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 			Dictionary<string, object> args = new Dictionary<string, object>();
 			args.Add("address", moralisUserEthAddress);
 
-			string result = await RunContractFunctionAsync("getIsRegistered", args, IsLogging);
-			bool resultBool = bool.Parse(result);
+			string resultString = await RunContractFunctionAsync("getIsRegistered", args, IsLogging);
+			bool resultBool = bool.Parse(resultString);
 			return resultBool;
 		}
 

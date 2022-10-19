@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
-using MoralisUnity.Samples.CustomShared.Exceptions;
-using MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.CustomSingleton;
+using MoralisUnity.Samples.SharedCustom.DesignPatterns.Creational.Singleton.CustomSingleton;
+using MoralisUnity.Samples.SharedCustom.Exceptions;
 using MoralisUnity.Samples.SharedCustom.Interfaces;
 using PlayFab;
 using PlayFab.ClientModels;
@@ -82,7 +82,7 @@ namespace MoralisUnity.Samples.Shared
 		
 		private void PlayFabAuthService_OnLoginSuccess(LoginResult loginResult)
 		{
-			//Debug.Log($"PlayFabAuthService_OnLoginSuccess () loginResult = {loginResult}");
+			Debug.Log($"PlayFabAuthService_OnLoginSuccess () loginResult = {loginResult}");
 			RequireIsInitialized();
 			IsAuthenticated = true;
 			RequireIsAuthenticated();

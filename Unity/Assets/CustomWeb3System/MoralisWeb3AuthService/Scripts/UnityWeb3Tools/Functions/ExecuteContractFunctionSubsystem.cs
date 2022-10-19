@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using Cysharp.Threading.Tasks;
-using MoralisUnity.Samples.CustomShared.Exceptions;
 using MoralisUnity.Samples.Shared.Interfaces;
 using Nethereum.Contracts;
 using Nethereum.Hex.HexTypes;
@@ -11,6 +10,7 @@ using WalletConnectSharp.Core;
 using WalletConnectSharp.NEthereum;
 using WalletConnectSharp.Unity;
 using MoralisUnity.Samples.Shared.UnityWeb3Tools.Other;
+using MoralisUnity.Samples.SharedCustom.Exceptions;
 
 namespace MoralisUnity.Samples.Shared.UnityWeb3Tools.Functions
 {
@@ -23,7 +23,8 @@ namespace MoralisUnity.Samples.Shared.UnityWeb3Tools.Functions
          {
              if (!IsInitialized)
              {
-                 await UniTask.Run(() =>
+                 Debug.LogWarning("Changed to RunOnThreadPool before testing it");
+                 await UniTask.RunOnThreadPool(() =>
                  {
                      WalletConnectSession client = WalletConnect.Instance.Session;
                      // Create a web3 client using Wallet Connect as write client and a dummy client as read client.

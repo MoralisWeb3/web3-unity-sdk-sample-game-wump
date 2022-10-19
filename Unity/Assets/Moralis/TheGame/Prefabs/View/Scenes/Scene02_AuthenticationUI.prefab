@@ -343,9 +343,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899a1ac739dc414c907daa7bd350aa93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walletConnectWrapper: {fileID: 0}
+  _authenticationKit: {fileID: 0}
   _playerView: {fileID: 0}
-  _authenticationKitWrapper: {fileID: 0}
   _cancelButton: {fileID: 8858308337429945018}
 --- !u!224 &7328711981939541876 stripped
 RectTransform:

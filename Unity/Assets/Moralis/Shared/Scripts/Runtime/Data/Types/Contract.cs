@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared.Debugging;
 using MoralisUnity.Samples.Shared.Exceptions;
 using MoralisUnity.Samples.Shared.Interfaces;
+using Newtonsoft.Json;
 
 namespace MoralisUnity.Samples.Shared.Data.Types
 {
@@ -84,15 +85,28 @@ namespace MoralisUnity.Samples.Shared.Data.Types
 		{
 			RequireIsInitialized();
 
+			string functionAbiJson = JsonConvert.SerializeObject(GetAbiObject());
 			object result = await CustomWeb3System.Instance.RunContractFunctionAsync(_address, functionName, 
-				_abi, args, isLogging);
+				functionAbiJson, args, isLogging);
 
 			if (isLogging)
 			{
 				Custom.Debug.Log($"{functionName} RunContractFunction() FINISH, result = {result}");
 			}
 
-			return result.ToString();
+			//TODO: Remove
+			if (result == null)
+			{
+				Custom.Debug.Log($"{functionName} RunContractFunction() FAILED, result = {result}");
+				return "";
+			}
+			else
+			{
+				return result.ToString();
+			}
+			
+				
+			
 		}
 
 

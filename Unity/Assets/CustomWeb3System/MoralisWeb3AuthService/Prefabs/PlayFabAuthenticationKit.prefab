@@ -54,15 +54,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5167312599123748553, guid: 323343aa2aef83e44946ef937e0f415f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11959.934
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5167312599123748553, guid: 323343aa2aef83e44946ef937e0f415f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4802.1094
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5167312599123748553, guid: 323343aa2aef83e44946ef937e0f415f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1612.7401
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5167312599123748553, guid: 323343aa2aef83e44946ef937e0f415f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -98,6 +98,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 323343aa2aef83e44946ef937e0f415f, type: 3}
+--- !u!114 &7668476649847229474 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5167312599123748552, guid: 323343aa2aef83e44946ef937e0f415f, type: 3}
+  m_PrefabInstance: {fileID: 3305111665022757610}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74db7211a0ac6ab41ad281b8114bdbd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7668476649847229475 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5167312599123748553, guid: 323343aa2aef83e44946ef937e0f415f, type: 3}
@@ -110,9 +121,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1292729166204139483}
     m_Modifications:
+    - target: {fileID: 1028142497262709266, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -540
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028142497262709266, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028142497262709266, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 280
+      objectReference: {fileID: 0}
     - target: {fileID: 1028142497502137021, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: m_Name
       value: AuthenticationKit
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028142497502137021, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1028142497502137022, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: m_RootOrder
@@ -120,15 +147,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1028142497502137022, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10999.934
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1028142497502137022, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4262.1094
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1028142497502137022, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1612.7401
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1028142497502137022, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: m_LocalRotation.w
@@ -156,6 +183,46 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1028142497502137022, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2410550152947054597, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4f033cdd2b09f9a43b139729d09d002c, type: 3}
+    - target: {fileID: 5515571558560360584, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: OnStateChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5515571558560360584, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: OnStateChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7668476649847229474}
+    - target: {fileID: 5515571558560360584, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: OnStateChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5515571558560360584, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: OnStateChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StateObservable_OnValueChanged
+      objectReference: {fileID: 0}
+    - target: {fileID: 5515571558560360584, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: OnStateChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MoralisUnity.Samples.Shared.MoralisWeb3AuthService, CustomWeb3System.Runtime
+      objectReference: {fileID: 0}
+    - target: {fileID: 5515571558560360584, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: OnStateChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6711608146466190628, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7666298087028915231, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: DefaultWallet
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7666298087028915231, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: createNewSessionOnSessionDisconnect
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

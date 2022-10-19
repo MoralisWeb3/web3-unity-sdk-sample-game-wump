@@ -4,8 +4,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using MoralisUnity.Samples.CustomShared.Exceptions;
-using MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.CustomSingleton;
 using MoralisUnity.Samples.Shared.Interfaces;
 using MoralisUnity.Samples.Shared.UnityWeb3Tools.Functions;
 using Newtonsoft.Json;
@@ -13,6 +11,8 @@ using PlayFab;
 using PlayFab.CloudScriptModels;
 using UnityEngine;
 using MoralisUnity.Samples.Shared.UnityWeb3Tools.Models;
+using MoralisUnity.Samples.SharedCustom.DesignPatterns.Creational.Singleton.CustomSingleton;
+using MoralisUnity.Samples.SharedCustom.Exceptions;
 
 #pragma warning disable 1998, CS4014
 namespace MoralisUnity.Samples.Shared
@@ -85,10 +85,8 @@ namespace MoralisUnity.Samples.Shared
 		{
 			if (!IsInitialized)
 			{
-	
 				_runContractFunctionSubsystem = new RunContractFunctionSubsystem();
 				_executeContractFunctionSubsystem = new ExecuteContractFunctionSubSystem();
-				
 				
 				// Do initialize
 				_customBackendSystem.Initialize();
@@ -280,14 +278,14 @@ namespace MoralisUnity.Samples.Shared
 		}
 
 
-		public async UniTask<int> GetNFTsForContractAsync(string contractAddress, bool isLogging = false)
+		public async UniTask<List<NftOwner>> GetNFTsForContractAsync(string contractAddress, bool isLogging = false)
 		{
 			RequireIsInitialized();
 			RequireIsAuthenticated();
 			//
 			string web3UserAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
 			int chainid = this.ChainId;
-			int finalResult = 0;
+			List<NftOwner> matchingNftOwners = new List<NftOwner>();
 			bool hasCompletedExecuteFunction = false;
 			
 			if (isLogging)
@@ -309,9 +307,7 @@ namespace MoralisUnity.Samples.Shared
 					new Dictionary<string, object>() //This is the data that you would want to pass into your function.
 					{
 						{ "walletAddress", web3UserAddress },
-						{
-							"chainid", chainid
-						} // We are supposing the contract is deployed in the same chain we're using for authenticating. Mumbai in this case.
+						{ "chainid", chainid } 
 					},
 				GeneratePlayStreamEvent = true //Set this to true if you would like this call to show up in PlayStream
 			}, (ExecuteFunctionResult result) =>
@@ -333,29 +329,29 @@ namespace MoralisUnity.Samples.Shared
 				}
 				else
 				{
-					List<NftOwner> nftOwners =
+					
+					List<NftOwner> allNftOwners =
 						JsonConvert.DeserializeObject<List<NftOwner>>(result.FunctionResult.ToString());
 
-					if (nftOwners == null)
+					if (allNftOwners == null)
 					{
 						Debug.Log("No owners for this contractAddress");
 						hasCompletedExecuteFunction = true;
 					}
 
-					foreach (NftOwner nft in nftOwners)
+					foreach (NftOwner nftOwner in allNftOwners)
 					{
 						try
 						{
 							// Check if its minted in our contract
-							if (nft.TokenAddress == contractAddress)
+							if (string.Equals(nftOwner.TokenAddress, contractAddress, StringComparison.InvariantCultureIgnoreCase))
 							{
-								//These are NFTs I own from the desired contract
-								finalResult++;
+								matchingNftOwners.Add(nftOwner);
 							}
 						}
 						catch (Exception e)
 						{
-							Debug.Log("My NFT called: " + e.Message);
+							Debug.LogError("Error with My NFT called: " + e.Message);
 							throw;
 						}
 					}
@@ -378,12 +374,12 @@ namespace MoralisUnity.Samples.Shared
 			{
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.AppendLine($"GetNFTsForContractAsync() Completed ...\n\n");
-				stringBuilder.AppendLine($"result = {finalResult}");
+				stringBuilder.AppendLine($"result.count = {matchingNftOwners.Count}");
 				stringBuilder.AppendLine($"\n\n\n");
 				Debug.Log(stringBuilder);
 			}
 			
-			return finalResult;
+			return matchingNftOwners;
 		}
 	}
 }

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 #pragma warning disable 1998
 namespace MoralisUnity.Samples.Shared.UI
@@ -10,6 +11,16 @@ namespace MoralisUnity.Samples.Shared.UI
     {
         //  Properties  ---------------------------------------
         public bool IsAuthenticated { get { return _isAuthenticated;}}
+
+        public async UniTask<bool> IsAuthenticatedAsync()
+        {
+            if (!_isAuthenticated)
+            {
+                await CustomWeb3System.Instance.AuthenticateAsync();
+                _isAuthenticated = await CustomWeb3System.Instance.IsAuthenticatedAsync();
+            }
+            return _isAuthenticated;
+        }
       
         //  Fields  ---------------------------------------
         private bool _isAuthenticated = false;

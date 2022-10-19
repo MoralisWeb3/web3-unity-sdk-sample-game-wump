@@ -78,7 +78,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		// Event Handlers ---------------------------------
 		private void OnValueChangedForAnything()
 		{
-			Debug.LogWarning("Changed!");
 			OnTheGameModelChanged.Invoke(this);
 		}
 	}

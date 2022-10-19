@@ -5,7 +5,6 @@ using PlayFab.CloudScriptModels;
 using UnityEngine;
 using UnityEngine.Events;
 using WalletConnectSharp.Unity;
-using MoralisUnity.Samples.Shared;
 
 namespace MoralisUnity.Samples.Shared
 {
@@ -53,6 +52,7 @@ namespace MoralisUnity.Samples.Shared
 
         private void CreateMessage(string address, int chainid)
         {
+            Debug.Log("Create message: " + address);
             // Get message from Moralis with PlayFab Azure Functions 
             PlayFabCloudScriptAPI.ExecuteFunction(new ExecuteFunctionRequest()
             {

@@ -3,6 +3,7 @@ using System.Security.Authentication;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Data.Types;
+using MoralisUnity.Samples.Shared.UnityWeb3Tools.Models;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using UnityEngine;
@@ -71,16 +72,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
             int result = await _theGameContract.getGoldAsync();
             return result;
         }
-
-        
-        //Debugging: Track how many times I call this. Maybe optimize by calling it less? Caching it local?
-        private static int CallsThisSession = 0;
-        
         
         public async UniTask<List<Prize>> GetPrizesAsync()
         {
             
-                
             // Create Method Return Value
             List<Prize> prizes = new List<Prize>();
 
@@ -93,26 +88,20 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
             }
 
             // Get NFT Info
-            string ethAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
+            List<NftOwner> nftOwners = await CustomWeb3System.Instance.GetNFTsForContractAsync(
+                _theGameContract.PrizeContractAddress);
             
-            Debug.LogWarning("MUST fix");
-            //
-            // CustomNftOwnerCollection customNftOwnerCollection = await CustomWeb3System.Instance.GetNFTsForContract(
-            //     ethAddress,
-            //     _theGameContract.PrizeContractAddress);
-            //
-            // // Create Method Return Value
-            // foreach (CustomNftOwner customNftOwner in customNftOwnerCollection.CustomResult)
-            // {
-            //     string ownerAddress = customNftOwner.OwnerOf;
-            //     string tokenIdString = customNftOwner.TokenId;
-            //     string metadata = customNftOwner.TokenUri;
-            //     Prize prize = Nft.CreateNewFromMetadata<Prize>(ownerAddress, tokenIdString, metadata);
-            //     prizes.Add(prize);
-            // }
-            //
-            // Debug.Log($"GetPrizesAsync!!!!!!! (debug, CallsThisSession = {++CallsThisSession}) count = {prizes.Count}");
-            // // Finalize Method Return Value
+            // Create Method Return Value
+            foreach (NftOwner nftOwner in nftOwners)
+            {
+                string ownerAddress = nftOwner.OwnerOf;
+                string tokenIdString = nftOwner.TokenId;
+                string metadata = nftOwner.TokenUri;
+                Prize prize = Nft.CreateNewFromMetadata<Prize>(ownerAddress, tokenIdString, metadata);
+                prizes.Add(prize);
+            }
+            
+            // Finalize Method Return Value
             return prizes;
         }
         

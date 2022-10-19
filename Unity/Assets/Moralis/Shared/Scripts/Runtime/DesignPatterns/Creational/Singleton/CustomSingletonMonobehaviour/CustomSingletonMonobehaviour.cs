@@ -110,7 +110,13 @@ namespace MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.Custom
                 {
                     GameObject go = new GameObject();
                     _Instance = go.AddComponent<T>();
-                    go.name = _Instance.GetType().FullName;
+
+                    string nextName = _Instance.GetType().FullName;
+                    if (nextName != null)
+                    {
+                        go.name = nextName;
+                    }
+                    
                     DontDestroyOnLoad(go);
                 }
 

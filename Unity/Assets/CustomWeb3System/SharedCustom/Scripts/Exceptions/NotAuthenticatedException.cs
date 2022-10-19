@@ -1,6 +1,6 @@
 using System;
 
-namespace MoralisUnity.Samples.CustomShared.Exceptions
+namespace MoralisUnity.Samples.SharedCustom.Exceptions
 {
     /// <summary>
     /// Thrown when initialization is required but not complete.

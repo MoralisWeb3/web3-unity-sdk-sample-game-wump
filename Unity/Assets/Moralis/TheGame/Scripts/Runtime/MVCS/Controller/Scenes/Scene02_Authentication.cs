@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.TheGame.MVCS.View.Scenes;
 using UnityEngine;
 
@@ -25,12 +26,15 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
 
         protected async void Start()
         {
+            _ui.AuthenticationKit.gameObject.SetActive(true);
+            
             _ui.PlayerView.PlayerNameText.text = TheGameHelper.GetPlayerNameAsSceneTitle("Web3 Auth", 5); 
             _ui.CancelButton.Button.onClick.AddListener(CancelButton_OnClicked);
             
             RefreshUIAsync();
-
-            _isAuthenticatedOnStart = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
+            
+            await CustomWeb3System.Instance.AuthenticateAsync();
+            _isAuthenticatedOnStart = await CustomWeb3System.Instance.IsAuthenticatedAsync();
             if (_isAuthenticatedOnStart)
             {
                 //BUG: Mysteriously the AuthenticationKit will DISCONNECT in this situation
@@ -42,8 +46,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             }
             else
             {
+                _ui.AuthenticationKit.gameObject.SetActive(true);
                 _ui.AuthenticationKit.OnConnected.AddListener(AuthenticationUI_OnConnected);
             }
+            RefreshUIAsync();
         }
 
 
