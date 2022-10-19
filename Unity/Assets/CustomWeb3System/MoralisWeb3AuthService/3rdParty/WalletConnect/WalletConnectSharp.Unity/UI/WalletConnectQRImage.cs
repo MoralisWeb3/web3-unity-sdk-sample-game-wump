@@ -77,7 +77,11 @@ public class WalletConnectQRImage : BindableMonoBehavior
         }
         else
         {
-            walletConnect.StartCoroutine(ShowLoader());
+            if (walletConnect)
+            {
+                walletConnect.StartCoroutine(ShowLoader());
+            }
+            
         }
         
     }
