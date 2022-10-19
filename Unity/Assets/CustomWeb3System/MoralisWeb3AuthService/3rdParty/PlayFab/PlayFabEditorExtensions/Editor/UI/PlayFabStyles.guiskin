@@ -1620,7 +1620,7 @@ MonoBehaviour:
     m_StretchHeight: 0
   - m_Name: pfLogo
     m_Normal:
-      m_Background: {fileID: 2800000, guid: bad3ceedae1d46d4fac0389e8b02d6d3, type: 3}
+      m_Background: {fileID: 0}
       m_ScaledBackgrounds: []
       m_TextColor: {r: 0, g: 0, b: 0, a: 0}
     m_Hover:
@@ -3402,7 +3402,7 @@ MonoBehaviour:
     m_StretchHeight: 0
   - m_Name: gpStyleBlur
     m_Normal:
-      m_Background: {fileID: 2800000, guid: 9de03259c3d2e43fc91ef7dc9054b186, type: 3}
+      m_Background: {fileID: 0}
       m_ScaledBackgrounds: []
       m_TextColor: {r: 0.58431375, g: 0.6, b: 0.58431375, a: 1}
     m_Hover:

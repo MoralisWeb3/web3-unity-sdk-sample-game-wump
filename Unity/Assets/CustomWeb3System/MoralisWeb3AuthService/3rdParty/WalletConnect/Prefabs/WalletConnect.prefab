@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5175095894888145819}
-  - component: {fileID: 5175095894888145818}
-  - component: {fileID: 5175095894888145821}
+  - component: {fileID: 1059417157516236491}
+  - component: {fileID: 3737754862886272891}
   m_Layer: 0
   m_Name: WalletConnect
   m_TagString: Untagged
@@ -28,11 +28,12 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5175095894888145818
+--- !u!114 &1059417157516236491
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,10 +42,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5175095894888145820}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17303ab972a16184e8ba0066d294c7ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d34e9f3d2d609845be91473a17050b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5175095894888145821
+--- !u!114 &3737754862886272891
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -53,15 +54,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 5175095894888145820}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 801bffbf4c62cc244b55ea230d19649d, type: 3}
+  m_Script: {fileID: 11500000, guid: f7595f831aff33544ac75e337a4f441a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllowedWalletIds: []
-  DefaultWallet: 2
+  AllowedWalletNames: []
+  DefaultWallet: 0
+  retryOnTimeout: 1
   autoSaveAndResume: 1
   connectOnAwake: 0
   connectOnStart: 1
-  createNewSessionOnSessionDisconnect: 0
+  createNewSessionOnSessionDisconnect: 1
   connectSessionRetryCount: 3
   customBridgeUrl: 
   chainId: 1

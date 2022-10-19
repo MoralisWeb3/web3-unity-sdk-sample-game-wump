@@ -6,18 +6,18 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Moralis Web3 Unity SDK Samples/TheGame/Scenes/Scene01_Intro.unity
+    path: Assets/Moralis/TheGame/Scenes/Scene01_Intro.unity
     guid: e86d776073058a543aa040dcc9919139
   - enabled: 1
-    path: Assets/Moralis Web3 Unity SDK Samples/TheGame/Scenes/Scene02_Authentication.unity
+    path: Assets/Moralis/TheGame/Scenes/Scene02_Authentication.unity
     guid: 2915f7ee87395e345ab2cec573420b4a
   - enabled: 1
-    path: Assets/Moralis Web3 Unity SDK Samples/TheGame/Scenes/Scene03_Settings.unity
+    path: Assets/Moralis/TheGame/Scenes/Scene03_Settings.unity
     guid: edb971288910f714e82bfc9c7b3073f8
   - enabled: 1
-    path: Assets/Moralis Web3 Unity SDK Samples/TheGame/Scenes/Scene04_DeveloperConsole.unity
+    path: Assets/Moralis/TheGame/Scenes/Scene04_DeveloperConsole.unity
     guid: 62202ffebe062ca499b23540ddff96b4
   - enabled: 1
-    path: Assets/Moralis Web3 Unity SDK Samples/TheGame/Scenes/Scene05_Game.unity
+    path: Assets/Moralis/TheGame/Scenes/Scene05_Game.unity
     guid: 72f7cde6697d6214e927b487784a8bea
   m_configObjects: {}

@@ -21,11 +21,16 @@ MonoBehaviour:
     componentIgnores: []
     sceneIncludesFilters: []
     pathIgnoresFilters: []
-    pathIncludesFilters: []
+    pathIncludesFilters:
+    - enabled: 1
+      ignoreCase: 0
+      kind: 1
+      value: CustomWeb3System
+      exactMatch: 0
     componentIgnoresFilters: []
-    lookInScenes: 1
+    lookInScenes: 0
     lookInAssets: 1
-    lookInProjectSettings: 1
+    lookInProjectSettings: 0
     scenesSelection: 0
     scanGameObjects: 1
     touchInactiveGameObjects: 1

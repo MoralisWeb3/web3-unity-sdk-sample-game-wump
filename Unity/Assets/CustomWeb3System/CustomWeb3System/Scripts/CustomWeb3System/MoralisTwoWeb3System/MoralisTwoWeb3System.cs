@@ -172,6 +172,7 @@ namespace MoralisUnity.Samples.Shared
 			// Do initialize
 			if (!_customWeb3WalletSystem.IsConnected)
 			{
+				
 				// Call without await
 				_customWeb3WalletSystem.ConnectAsync();
 
