@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 735c907e254444444bd1c7caa888aa2c
+labels:
+- ProjectCleaner
+- Cleaner
+- Maintainer
+- Janitor
+- Fixer
+- IssuesFinder
+- FindErrors
+- Errors
+- ErrorsFinder
+- Maintenance
+- Housekeeping
+- Missing
+- MissingScript
+- CodeStage
+- Doctor
+- SceneScanner
+- Scanner
+- Clean
+- focus
+- Project
+DefaultImporter:
+  userData: 

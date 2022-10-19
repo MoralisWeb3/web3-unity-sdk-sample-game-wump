@@ -94,22 +94,25 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
 
             // Get NFT Info
             string ethAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
-            CustomNftOwnerCollection customNftOwnerCollection = await CustomWeb3System.Instance.GetNFTsForContract(
-                ethAddress,
-                _theGameContract.PrizeContractAddress);
-
-            // Create Method Return Value
-            foreach (CustomNftOwner customNftOwner in customNftOwnerCollection.CustomResult)
-            {
-                string ownerAddress = customNftOwner.OwnerOf;
-                string tokenIdString = customNftOwner.TokenId;
-                string metadata = customNftOwner.TokenUri;
-                Prize prize = Nft.CreateNewFromMetadata<Prize>(ownerAddress, tokenIdString, metadata);
-                prizes.Add(prize);
-            }
-
-            Debug.Log($"GetPrizesAsync!!!!!!! (debug, CallsThisSession = {++CallsThisSession}) count = {prizes.Count}");
-            // Finalize Method Return Value
+            
+            Debug.LogWarning("MUST fix");
+            //
+            // CustomNftOwnerCollection customNftOwnerCollection = await CustomWeb3System.Instance.GetNFTsForContract(
+            //     ethAddress,
+            //     _theGameContract.PrizeContractAddress);
+            //
+            // // Create Method Return Value
+            // foreach (CustomNftOwner customNftOwner in customNftOwnerCollection.CustomResult)
+            // {
+            //     string ownerAddress = customNftOwner.OwnerOf;
+            //     string tokenIdString = customNftOwner.TokenId;
+            //     string metadata = customNftOwner.TokenUri;
+            //     Prize prize = Nft.CreateNewFromMetadata<Prize>(ownerAddress, tokenIdString, metadata);
+            //     prizes.Add(prize);
+            // }
+            //
+            // Debug.Log($"GetPrizesAsync!!!!!!! (debug, CallsThisSession = {++CallsThisSession}) count = {prizes.Count}");
+            // // Finalize Method Return Value
             return prizes;
         }
         

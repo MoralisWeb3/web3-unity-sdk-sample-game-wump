@@ -42,7 +42,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             }
             else
             {
-                _ui.AuthenticationKitWrapperWrapper.OnConnected.AddListener(AuthenticationUI_OnConnected);
+                _ui.AuthenticationKit.OnConnected.AddListener(AuthenticationUI_OnConnected);
             }
         }
 

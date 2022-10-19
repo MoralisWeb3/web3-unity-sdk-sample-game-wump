@@ -11,26 +11,20 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
     public class Scene02_AuthenticationUI : MonoBehaviour
     {
         //  Properties ------------------------------------
-        public WalletConnectWrapper WalletConnectWrapper { get { return _walletConnectWrapper; } }
-
         public PlayerView PlayerView { get { return _playerView; } }
         
         public BaseButtonUI CancelButton { get { return _cancelButton; } }
-
-        public AuthenticationKitWrapper AuthenticationKitWrapperWrapper { get { return _authenticationKitWrapper; } }
+        
+        public AuthenticationKit AuthenticationKit { get { return _authenticationKit; } }
         
         //  Fields ----------------------------------------
         [Header ("References (Scene)")]
 
         [SerializeField]
-        private WalletConnectWrapper _walletConnectWrapper = null;
+        private AuthenticationKit _authenticationKit = null;
 
-        
         [SerializeField]
         private PlayerView _playerView = null;
-
-        [SerializeField]
-        private AuthenticationKitWrapper _authenticationKitWrapper;
 
         [SerializeField]
         private BaseButtonUI _cancelButton = null;

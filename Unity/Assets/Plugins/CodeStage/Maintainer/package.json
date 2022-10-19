@@ -1,0 +1,22 @@
+{
+  "name": "net.codestage.maintainer",
+  "version": "1.16.0",
+  "displayName": "Code Stage Maintainer",
+  "description": "Maintainer keeps your projects neat and clean with this 3-in-1 feature set:\n\n\u25AA Issues Finder: find & fix problems and issues\n\u25AA References Finder: find references to assets in project or to objects in hierarchy\n\u25AA Project Cleaner: clean unused assets from your project",
+  "unity": "2018.4",
+  "keywords": [
+    "Issues Finder",
+    "Project Cleaner",
+    "References Finder",
+    "scene",
+    "clean",
+    "reference",
+    "issue",
+    "problem"
+  ],
+  "author": {
+    "name": "Code Stage",
+    "email": "support@codestage.net",
+    "url": "https://codestage.net"
+  }
+}

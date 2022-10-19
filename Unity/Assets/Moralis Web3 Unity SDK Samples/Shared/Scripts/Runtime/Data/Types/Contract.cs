@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared.Debugging;
 using MoralisUnity.Samples.Shared.Exceptions;
-using MoralisUnity.Sdk.Interfaces;
-using MoralisUnity.Web3Api.Models;
+using MoralisUnity.Samples.Shared.Interfaces;
 
 namespace MoralisUnity.Samples.Shared.Data.Types
 {
@@ -69,7 +68,7 @@ namespace MoralisUnity.Samples.Shared.Data.Types
 
 			RequireIsInitialized();
 
-			string result = await CustomWeb3System.Instance.ExecuteContractFunction(_address, _abi, 
+			string result = await CustomWeb3System.Instance.ExecuteContractFunctionAsync(_address, _abi, 
 				functionName, args, isLogging);
 
 			if (isLogging)
@@ -81,20 +80,19 @@ namespace MoralisUnity.Samples.Shared.Data.Types
 		}
 
 		public async UniTask<string> RunContractFunctionAsync(string functionName, 
-			Dictionary<string, object>  args, bool isLogging)
+			object args, bool isLogging)
 		{
 			RequireIsInitialized();
 
-			object[] abiObject = GetAbiObject();
-			string result = await CustomWeb3System.Instance.RunContractFunction<string>(_address, functionName, 
-				abiObject, args, isLogging);
+			object result = await CustomWeb3System.Instance.RunContractFunctionAsync(_address, functionName, 
+				_abi, args, isLogging);
 
 			if (isLogging)
 			{
 				Custom.Debug.Log($"{functionName} RunContractFunction() FINISH, result = {result}");
 			}
 
-			return result;
+			return result.ToString();
 		}
 
 

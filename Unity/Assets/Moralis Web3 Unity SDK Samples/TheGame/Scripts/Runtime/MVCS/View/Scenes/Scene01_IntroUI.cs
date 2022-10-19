@@ -13,8 +13,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
     public class Scene01_IntroUI : Scene_UIWithTop
     {
         //  Properties ------------------------------------
-        public WalletConnectWrapper WalletConnectWrapper { get { return _walletConnectWrapper; } }
-
         public PlayerView PlayerView { get { return _playerView; } }
         public AuthenticationButtonUI AuthenticationButtonUI { get { return _authenticationButtonUI; } }
         public BaseButtonUI Registerbutton { get { return _registerButton; } }
@@ -24,8 +22,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
         //  Fields ----------------------------------------
         [Header ("References (Scene)")]
         
-        [SerializeField]
-        private WalletConnectWrapper _walletConnectWrapper = null;
 
         [SerializeField]
         private PlayerView _playerView = null;

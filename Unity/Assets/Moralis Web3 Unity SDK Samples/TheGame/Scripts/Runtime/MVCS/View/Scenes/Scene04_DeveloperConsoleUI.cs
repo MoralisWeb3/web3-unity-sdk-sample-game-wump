@@ -12,7 +12,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
     public class Scene04_DeveloperConsoleUI : Scene_UIWithTop
     {
         //  Properties ------------------------------------
-        public WalletConnectWrapper WalletConnectWrapper { get { return _walletConnectWrapper; } }
         
         //  Fields ----------------------------------------
  
@@ -32,9 +31,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
 
         //  Fields ----------------------------------------
         [Header ("References (Scene)")]
-
-        [SerializeField]
-        private WalletConnectWrapper _walletConnectWrapper = null;
 
         [SerializeField]
         private TMP_Text _outputText = null;

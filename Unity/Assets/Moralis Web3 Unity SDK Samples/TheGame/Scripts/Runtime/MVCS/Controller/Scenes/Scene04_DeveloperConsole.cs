@@ -17,14 +17,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
     public class Scene04_DeveloperConsole : MonoBehaviour
     {
         //  Properties ------------------------------------
-        //TODO: Remove the serialized references for all WalletConnectWrapper
-        public WalletConnectWrapper WalletConnectWrapper { get { return _walletConnectWrapper; } }
-
+        
         //  Fields ----------------------------------------
         [Header ("References (Scene)")]
-
-        [SerializeField]
-        private WalletConnectWrapper _walletConnectWrapper = null;
 
         [SerializeField]
         private Scene04_DeveloperConsoleUI _ui;

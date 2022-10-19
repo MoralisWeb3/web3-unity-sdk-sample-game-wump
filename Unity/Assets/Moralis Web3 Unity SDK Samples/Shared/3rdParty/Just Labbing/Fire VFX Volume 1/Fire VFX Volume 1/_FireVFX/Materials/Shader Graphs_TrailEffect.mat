@@ -38,6 +38,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _TrailPower: 1
     m_Colors:
     - Vector2_87a1170c130c45ea942fb23b00421b15: {r: 0.4, g: 0.5, b: 0, a: 0}

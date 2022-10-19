@@ -3,7 +3,6 @@ using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.View.Scenes;
 using UnityEngine;
-using WalletConnectSharp.Unity;
 
 #pragma warning disable 1998, CS4014
 namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
@@ -67,10 +66,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             
             //Before loading the one-and-only scene with AuthenticationKit
             //Destroy the Existing WalletConnect. Otherwise bug in AuthenticationKit.
-            if (CustomWeb3System.Instance.HasWalletConnectStaticInstance)
-            {
-                WalletConnect.DestroyInstance();
-            }
+            
+            
+            Debug.LogWarning("BEFORE: This destroyed an instance of wallet connect. needed?");
             
             TheGameSingleton.Instance.TheGameController.LoadAuthenticationSceneAsync();
         }

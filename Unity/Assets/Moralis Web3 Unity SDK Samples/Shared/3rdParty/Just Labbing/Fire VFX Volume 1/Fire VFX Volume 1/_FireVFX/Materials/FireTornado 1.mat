@@ -69,6 +69,8 @@ Material:
     m_Floats:
     - Vector1_035d8f3a96184b20b6e63db38145b3a2: 0
     - Vector1_663221fb8fc143df9728e3d86489998d: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
     m_Colors:
     - Color_4f623fa3259a4e63837f685800e51f95: {r: 17.14837, g: 0, b: 0, a: 1}
     - Vector2_4949a836901b4e16927904178d0f0947: {r: 0, g: 0, b: 0, a: 0}

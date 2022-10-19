@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using MoralisUnity.Platform.Objects;
 using MoralisUnity.Samples.Shared.Debugging;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -129,57 +128,12 @@ namespace MoralisUnity.Samples.Shared
             await UniTask.WaitForEndOfFrame();
         }
         
-        /// <summary>
-        /// Changes "blah_blah" to "Blah Blah"
-        /// </summary>
-        /// <param name="chainEntry"></param>
-        /// <returns></returns>
-        public static string GetPrettifiedNameByChainEntry(ChainEntry chainEntry)
-        {
-	        string name = chainEntry.Name.Replace("_", " ");
-	        name = ToTitleCase(name);
-	        return name;
-        }
-
         
         private static string ToTitleCase(string message)
         {
 	        TextInfo myTI = new CultureInfo("en-US",false).TextInfo;
 	        return myTI.ToTitleCase(message);
         }
-
         
-        /// <summary>
-        /// Call Moralis Servers and get the current server time.
-        /// This is used for specific use-cases including EthSign.
-        /// </summary>
-        /// <returns></returns>
-        public static async UniTask<long> GetServerTime()
-        {
-            long serverTime = 0;
-            // Get Server Time (Needed for EthSign)
-            Dictionary<string, object> serverTimeResponse = 
-                await Moralis.GetClient().Cloud.RunAsync<Dictionary<string, object>>("getServerTime", new Dictionary<string, object>());
-            if (serverTimeResponse == null || 
-                !serverTimeResponse.ContainsKey("dateTime") ||
-                !long.TryParse(serverTimeResponse["dateTime"].ToString(), out serverTime))
-            {
-                Custom.Debug.Log("Failed to retrieve server time from Moralis Server!");
-            }
-
-            return serverTime;
-        }
-
-        
-        /// <summary>
-        /// Determines if Moralis is logged in with an active user.
-        /// </summary>
-        /// <returns></returns>
-        public static async UniTask<bool> HasMoralisUser()
-        {
-            MoralisUser moralisUser = await Moralis.GetUserAsync();
-            return moralisUser != null;
-        }
-
     }
 }

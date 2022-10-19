@@ -1,4 +1,4 @@
-﻿using MoralisUnity.Sdk.Constants;
+﻿using MoralisUnity.Samples.Shared.Constants;
 
 namespace MoralisUnity.Samples.Shared
 {

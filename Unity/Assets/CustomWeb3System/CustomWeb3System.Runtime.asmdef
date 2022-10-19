@@ -1,0 +1,25 @@
+{
+    "name": "CustomWeb3System.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:0da6d172d18a54e4389d0dce1e1ffdf2",
+        "GUID:e5bb55debec4f1641b6f7aef10820e4f",
+        "GUID:e1804ce6acd70574e8f6371d699539c6"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "Select...",
+            "expression": "",
+            "define": ""
+        }
+    ],
+    "noEngineReferences": false
+}

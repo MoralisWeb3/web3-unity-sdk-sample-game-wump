@@ -1,7 +1,7 @@
 using MoralisUnity.Samples.Shared.Data.Types.Storage;
 using MoralisUnity.Samples.Shared.Debugging;
 using MoralisUnity.Samples.Shared.Exceptions;
-using MoralisUnity.Sdk.Interfaces;
+using MoralisUnity.Samples.Shared.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;

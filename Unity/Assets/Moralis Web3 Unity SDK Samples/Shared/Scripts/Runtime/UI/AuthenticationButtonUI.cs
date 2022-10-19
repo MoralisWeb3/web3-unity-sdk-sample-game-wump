@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using MoralisUnity.Sdk.Utilities;
 
 #pragma warning disable 1998
 namespace MoralisUnity.Samples.Shared.UI
