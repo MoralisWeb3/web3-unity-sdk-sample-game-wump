@@ -28,7 +28,7 @@ MonoBehaviour:
     url: https://docs.moralis.io/unity
   - heading: 
     subheading: Web3 Unity Multiplayer Playground
-    text: Enter the multiplayer playground - an shared environment to move, trade currency, and trade NFTs.
+    text: This sample game offers the players web3 authentication in a shared, persistent environment.
     linkText: github.com/MoralisWeb3/web3-unity-sdk-sample-game-wump
     url: https://github.com/MoralisWeb3/web3-unity-sdk-sample-game-wump
   - heading: Getting Started
