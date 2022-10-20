@@ -17,14 +17,16 @@ See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
 
 ---
 
+
+
 **Documentation**
 * `README.md` - The primary documentation for this repo
-* `Assets/Moralis Web3 Unity SDK Samples/TheGame/Documentation/ReadMe.asset` - Select this asset in Unity to get started
+* `Assets/Moralis/TheGame/Documentation/ReadMe.asset` - Select this asset in Unity to get started
 
 **Configuration**
 * `Unity Target` - [Standalone MAC/PC](https://support.unity.com/hc/en-us/articles/206336795-What-platforms-are-supported-by-Unity-)
 * `Unity Version` - Use this [Version](./Unity/ProjectSettings/ProjectVersion.txt)
-* `Unity Rendering` - [Standard Render Pipeline (URP)](https://docs.unity3d.com/Manual/built-in-render-pipeline.html)
+* `Unity Rendering` - [Universal Render Pipeline (URP)](https://docs.unity3d.com/Manual/built-in-render-pipeline.html)
 * `Unity Aspect Ratio` - [Game View 16x10](https://docs.unity3d.com/Manual/GameView.html)
 
 **Structure**
@@ -38,19 +40,69 @@ See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
 
 ## Media
 
-**Images**
+
+<BR>
+
+**Unity Images**
 
 <table>
   <tr>
-    <th>Image 01</th>
-    <th>Image 02</th>
+    <th>Intro Scene</th>
+    <th>Game Scene</th>
   </tr>
   <tr>
-    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Documentation/Images/Screenshot_01.png" width = "250"></td>
-    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Documentation/Images/Screenshot_02.png" width = "250"></td>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_03.png" width = "250"></td>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_07.png" width = "250"></td>
   </tr> 
 </table>
 
+<table>
+  <tr>
+    <th>Transfer Nft</th>
+    <th>Transferred Nft</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_012.png" width = "250"></td>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_09.png" width = "250"></td>
+  </tr> 
+</table>
+
+<table>
+  <tr>
+    <th>Readme.asset</th>
+    <th>TheGameConfiguration.asset</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_01.png" width = "250"></td>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_02.png" width = "250"></td>
+  </tr> 
+</table>
+
+**Unity Planning Images**
+
+<table>
+  <tr>
+    <th>Readme.asset</th>
+    <th>TheGameConfiguration.asset</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_01.png" width = "250"></td>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_02.png" width = "250"></td>
+  </tr> 
+</table>
+
+**Web Companion App Images**
+
+<table>
+  <tr>
+    <th>Authentication Page</th>
+    <th>Players' Account Page</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/WebCompanionApp_02.png" width = "250"></td>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/WebCompanionApp_03.png" width = "250"></td>
+  </tr> 
+</table>
 
 ----
 
