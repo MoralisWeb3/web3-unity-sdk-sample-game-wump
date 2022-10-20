@@ -173,17 +173,23 @@ namespace MoralisUnity.Samples.Shared
 				
 				// Call without await
 				_customWeb3WalletSystem.ConnectAsync();
-
 				CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-				cancellationTokenSource.CancelAfterSlim(TimeSpan.FromSeconds(2)); // 5sec timeout
-				
-				await UniTask.WaitWhile(
-					() =>
-					{
-						return !_customWeb3WalletSystem.IsConnected;
-					}, PlayerLoopTiming.Update, cancellationTokenSource.Token);
+				cancellationTokenSource.CancelAfterSlim(TimeSpan.FromSeconds(2)); // 2sec timeout is enough
+
+				try
+				{
+					await UniTask.WaitWhile(
+						() =>
+						{
+							return !_customWeb3WalletSystem.IsConnected;
+						}, PlayerLoopTiming.Update, cancellationTokenSource.Token);
+				}
+				catch (OperationCanceledException common)
+				{
+					//Called for timeout. No problem.
+				}
+
 			}
-		
 			await IsAuthenticatedAsync();
 		}
 		

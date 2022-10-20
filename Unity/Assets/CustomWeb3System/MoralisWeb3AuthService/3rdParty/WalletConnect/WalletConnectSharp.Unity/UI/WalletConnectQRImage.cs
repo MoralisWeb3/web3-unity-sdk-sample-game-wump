@@ -124,6 +124,10 @@ public class WalletConnectQRImage : BindableMonoBehavior
         // Convert the texture into a sprite and assign it to our QR code image
         var qrCodeSprite = Sprite.Create(qrCodeAsTexture2D, new Rect(0, 0, qrCodeAsTexture2D.width, qrCodeAsTexture2D.height),
             new Vector2(0.5f, 0.5f), 100f);
-        _image.sprite = qrCodeSprite;
+
+        if (_image)
+        {
+            _image.sprite = qrCodeSprite;
+        }
     }
 }

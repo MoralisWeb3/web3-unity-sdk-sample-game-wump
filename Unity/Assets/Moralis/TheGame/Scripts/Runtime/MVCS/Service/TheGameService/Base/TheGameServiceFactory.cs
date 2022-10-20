@@ -18,8 +18,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService
 		// General Methods --------------------------------
 		public ITheGameService Create (TheGameServiceType theGameServiceType)
 		{
-			TheGameSingleton.Debug.Log($"Using Service For {theGameServiceType}");
-			
+			//KEEP LOG
+			TheGameSingleton.Debug.LogBlueMessage($"TheGameServiceFactory() Using The Service For {theGameServiceType}");
+
 			ITheGameService theGameService = null;
 			switch (theGameServiceType)
 			{

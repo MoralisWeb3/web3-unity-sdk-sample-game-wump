@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Data.Types;
+using MoralisUnity.Samples.SharedCustom.Exceptions;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 
 
 		// Initialization Methods -------------------------
-	protected override void SetContractDetails()
+		protected override void SetContractDetails()
         {
 
                 _prizeContractAddress  = "0xa428423695D2052676A1d6e4a8C5d78d8C5dB7e8";
@@ -34,9 +35,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 
         }
 
-
-
-
+		private async UniTask RequireIsAuthenticated()
+		{
+			if (!await CustomWeb3System.Instance.IsAuthenticatedAsync())
+			{
+				throw new NotAuthenticatedException(this);
+			}
+		}
 
 		/// <summary>
 		/// Format for ABI:
@@ -89,23 +94,33 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		// General Methods --------------------------------
 		public async UniTask<bool> getIsRegisteredAsync()
 		{
-			if (!await CustomWeb3System.Instance.IsAuthenticatedAsync())
-			{
-				return false;
-			}
+			await RequireIsAuthenticated();
 			
 			string moralisUserEthAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
 			Dictionary<string, object> args = new Dictionary<string, object>();
 			args.Add("address", moralisUserEthAddress);
 
 			string resultString = await RunContractFunctionAsync("getIsRegistered", args, IsLogging);
-			bool resultBool = bool.Parse(resultString);
+			bool resultBool = false;
+			try
+			{
+				resultBool = bool.Parse(resultString);
+			}
+			catch (Exception e)
+			{
+				// If the parse fails, its likely that the call to PlayFab failed. Was Playfab connected before call?
+				Debug.LogError(e.Message);
+			}
+			
 			return resultBool;
 		}
 
-		
+
+
 		public async UniTask<int> getGoldAsync()
 		{
+			await RequireIsAuthenticated();
+			
 			string moralisUserEthAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
 			Dictionary<string, object> args = new Dictionary<string, object>();
 			args.Add("address", moralisUserEthAddress);
@@ -118,6 +133,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 
 		public async UniTask<TransferLog> GetTransferLogHistoryAsync()
 		{
+			await RequireIsAuthenticated();
+			
 			string moralisUserEthAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
 			Dictionary<string, object> args = new Dictionary<string, object>();
 			args.Add("address", moralisUserEthAddress);
@@ -140,6 +157,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		///////////////////////////////////////////////////////////
 		public async UniTask<string> RegisterAsync()
 		{
+			await RequireIsAuthenticated();
 			
 			object[] args =
 			{
@@ -153,6 +171,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		
 		public async UniTask<string> UnregisterAsync(List<Prize> prizes)
 		{
+			await RequireIsAuthenticated();
+			
 			int[] tokenIds = GetTokenIds(prizes);
 			object[] args =
 			{
@@ -165,6 +185,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 
 		public async UniTask<string> TransferGoldAsync(string toAddress)
 		{
+			await RequireIsAuthenticated();
+			
 			string address = toAddress;
 			object[] args =
 			{
@@ -177,6 +199,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		
 		public async UniTask<string> TransferPrizeAsync(string toAddress, Prize prize)
 		{
+			await RequireIsAuthenticated();
+			
 			int tokenId = GetTokenId(prize);
 			
 			string address = toAddress; 
@@ -186,11 +210,25 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 				tokenId
 			};
 			
-			Debug.Log("calling transfer prize");
 			string result = await ExecuteContractFunctionAsync("transferPrize", args, IsLogging);
 			return result;
 		}
 		
+		public async UniTask<string> SafeReregisterAndDeleteAllPrizesAsync(List<Prize> prizes)
+		{
+			await RequireIsAuthenticated();
+			
+			int[] tokenIds = GetTokenIds(prizes);
+			object[] args =
+			{
+				tokenIds
+			};
+
+			string result = await ExecuteContractFunctionAsync("safeReregisterAndDeleteAllPrizes", args, IsLogging);
+			return result;
+		}
+
+		// Helper Methods  ---------------------------------
 
 		private int[] GetTokenIds(List<Prize> prizes)
 		{
@@ -210,25 +248,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 			if (prize != null)
 			{
 				tokenId = prize.TokenId;
-				Debug.Log(" GetTokenId() = " + tokenId);
 			}
 
 			return tokenId;
 		}
 		
-		public async UniTask<string> SafeReregisterAndDeleteAllPrizesAsync(List<Prize> prizes)
-		{
-			int[] tokenIds = GetTokenIds(prizes);
-			object[] args =
-			{
-				tokenIds
-			};
-
-			const bool isLogging = true;
-			string result = await ExecuteContractFunctionAsync("safeReregisterAndDeleteAllPrizes", args, isLogging);
-			return result;
-		}
-
+		
 
 		// Event Handlers ---------------------------------
 		

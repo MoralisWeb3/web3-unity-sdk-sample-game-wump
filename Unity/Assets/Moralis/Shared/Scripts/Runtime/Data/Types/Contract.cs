@@ -94,11 +94,10 @@ namespace MoralisUnity.Samples.Shared.Data.Types
 				Custom.Debug.Log($"{functionName} RunContractFunction() FINISH, result = {result}");
 			}
 
-			//TODO: Remove
 			if (result == null)
 			{
-				Custom.Debug.Log($"{functionName} RunContractFunction() FAILED, result = {result}");
-				return "";
+				Custom.Debug.LogError($"{functionName} RunContractFunction() FAILED, result = {result}");
+				return string.Empty;
 			}
 			else
 			{

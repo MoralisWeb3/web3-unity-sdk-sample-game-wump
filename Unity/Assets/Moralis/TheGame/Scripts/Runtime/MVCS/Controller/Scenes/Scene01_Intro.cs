@@ -38,13 +38,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             
             RefreshUIAsync();
             
-            _isAuthenticated = await _ui.AuthenticationButtonUI.IsAuthenticatedAsync();
+            _isAuthenticated = await _ui.AuthenticationButtonUI.AuthenticateAndReturnBoolAsync();
             if (_isAuthenticated)
             {
                 _isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
+                RefreshUIAsync();
+            }
+            else
+            {
+                Debug.LogWarning("Not Authenticated. That is ok. Must visit Authentication Scene"); 
             }
             
-            RefreshUIAsync();
+           
         }
         
 

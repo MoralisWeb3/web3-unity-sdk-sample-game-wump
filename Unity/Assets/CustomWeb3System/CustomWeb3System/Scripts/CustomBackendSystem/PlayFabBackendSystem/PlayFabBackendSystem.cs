@@ -82,7 +82,7 @@ namespace MoralisUnity.Samples.Shared
 		
 		private void PlayFabAuthService_OnLoginSuccess(LoginResult loginResult)
 		{
-			Debug.Log($"PlayFabAuthService_OnLoginSuccess () loginResult = {loginResult}");
+			Debug.LogWarning($"PlayFabAuthService_OnLoginSuccess () loginResult = {loginResult}");
 			RequireIsInitialized();
 			IsAuthenticated = true;
 			RequireIsAuthenticated();

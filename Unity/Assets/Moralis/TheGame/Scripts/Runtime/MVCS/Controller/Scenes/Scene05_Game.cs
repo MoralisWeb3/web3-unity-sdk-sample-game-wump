@@ -233,7 +233,7 @@ namespace MoralisUnity.Samples.TheGame
 		
 		private async void OnMultiplayerStateNameChanged(string debugStateName)
 		{
-			Debug.Log("Scene OnMultiplayerStateNameChanged() state = " + debugStateName);
+			//Debug.Log("Scene OnMultiplayerStateNameChanged() state = " + debugStateName);
 			// Refresh for UI buttons
 			await RefreshUIAsync();
 		}

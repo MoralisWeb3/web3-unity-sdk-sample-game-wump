@@ -100,7 +100,7 @@ namespace MoralisUnity.Samples.Shared.DesignPatterns.Creational.Singleton.Custom
         {
             if (IsShuttingDown || !Application.isPlaying)
             {
-                Debug.LogError("Must check IsShuttingDown before calling Instantiate/Instance.");
+                //Debug.LogError("Must check IsShuttingDown before calling Instantiate/Instance.");
             }
             if (!IsInstantiated)
             {

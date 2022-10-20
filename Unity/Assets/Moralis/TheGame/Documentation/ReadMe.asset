@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbf97db7a39f7034cb1921274cbfaaaa, type: 3}
+  m_Script: {fileID: 11500000, guid: 36cf3b74950b299408cc642cd2423789, type: 3}
   m_Name: ReadMe
   m_EditorClassIdentifier: 
-  icon: {fileID: 2800000, guid: 3f2157c8e2f264c4c8eeba93b9b7bfd2, type: 3}
+  icon: {fileID: 2800000, guid: 7c0822b0780ca4a74b276e50db2c68a3, type: 3}
   title: Web3 Unity Multiplayer Playground
   sections:
   - heading: What is Moralis?
@@ -56,7 +56,14 @@ MonoBehaviour:
     openMenuName: Load Moralis Layout (16x10)
     openMenuNameId: Tools/Moralis Web3 Unity SDK/Samples/The Game/Load Moralis Layout (16x10)
   - heading: 
-    subheading: 5. Open Any Example Scene
+    subheading: 5. Update The Game Configuration
+    text: Use our default layout or choose your own
+    linkText: 
+    url: 
+    pingObjectName: TheGameConfiguration
+    pingObjectGuid: f56178f34d5af1045b6eac5b834d4982
+  - heading: 
+    subheading: 6. Open Any Example Scene
     text: Play this scene or choose your own
     linkText: 
     url: 
@@ -68,3 +75,5 @@ MonoBehaviour:
     linkText: forum.moralis.io/unity
     url: https://forum.moralis.io/unity
   loadedLayout: 1
+
+f56178f34d5af1045b6eac5b834d4982

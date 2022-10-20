@@ -10,7 +10,7 @@ This sample game demonstrates [Moralis](https://moralis.io/) Web3 Unity SDK.
 1. Download this repo (*.zip or *.git)
 1. Download the [Unity Editor](https://store.unity.com/#plans-individual)
 1. Open this repo in the Unity Editor
-1. Follow https://docs.moralis.io/docs/unity-demos instructions for `Setup Unity` and `Setup Backend`
+1. Follow instructions at [docs.moralis.io/docs/unity-demos](https://docs.moralis.io/docs/unity-demos) for `Setup Unity` and `Setup Backend`
 1. Enjoy!
 
 See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
@@ -46,8 +46,8 @@ See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
     <th>Image 02</th>
   </tr>
   <tr>
-    <td align="center"><img src="./Unity/Assets/Moralis%20Web3%20Unity%20SDK%20Samples/TheGame/Documentation/Images/Screenshot_01.png" width = "250"></td>
-    <td align="center"><img src="./Unity/Assets/Moralis%20Web3%20Unity%20SDK%20Samples/TheGame/Documentation/Images/Screenshot_02.png" width = "250"></td>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Documentation/Images/Screenshot_01.png" width = "250"></td>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Documentation/Images/Screenshot_02.png" width = "250"></td>
   </tr> 
 </table>
 

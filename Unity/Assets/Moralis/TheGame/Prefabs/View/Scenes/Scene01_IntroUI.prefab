@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 674051984248597036}
   - component: {fileID: 8647730526456924610}
   m_Layer: 5
-  m_Name: KeyPanel
+  m_Name: InstructionsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,8 +220,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 369.99997, y: 35}
-  m_SizeDelta: {x: 740, y: 90}
+  m_AnchoredPosition: {x: 369.99997, y: 65}
+  m_SizeDelta: {x: 750, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &674051984248597036
 CanvasRenderer:
@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 8121702521629118798}
   - component: {fileID: 3788229203049727555}
   m_Layer: 5
-  m_Name: KeyText
+  m_Name: InstructionsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -327,9 +327,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Game Instructions:
-
-    Arrow Keys = Move. Spacebar = Send Message'
+  m_text: "Game Instructions:\n\u2022 Arrow Keys = Move\n\u2022 Spacebar = Send text
+    message to all players\n\u2022 MouseClick = Send transaction to player"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9641ce046d2227445b9684161a165f68, type: 2}
   m_sharedMaterial: {fileID: -4106257185398102161, guid: 9641ce046d2227445b9684161a165f68, type: 2}
@@ -1130,7 +1129,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _topUI: {fileID: 1895731522179559903}
-  _walletConnectWrapper: {fileID: 0}
   _playerView: {fileID: 0}
   _authenticationButtonUI: {fileID: 8310015755765159749}
   _registerButton: {fileID: 6193383323866093407}

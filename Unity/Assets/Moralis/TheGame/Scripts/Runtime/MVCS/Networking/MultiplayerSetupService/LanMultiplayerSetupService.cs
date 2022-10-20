@@ -162,7 +162,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 				Debug.LogWarning("StartAsHost () failed. Must be connected");
 			}
 			
-			Debug.LogError("Start as host!");
+			//Debug.LogError("Start as host!");
 			OnStateNameForDebuggingChanged.Invoke("StartHostStarting");
 			NetworkManager.Singleton.StartHost();
 			
@@ -191,15 +191,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		public async UniTask Shutdown()
 		{
 			RequireIsInitialized();
-			if (!IsConnected)
+			if (IsConnected)
 			{
-				Debug.LogWarning("Shutdown () failed. Must be connected");
+				OnStateNameForDebuggingChanged.Invoke("ShutdownStarting");
+				NetworkManager.Singleton.Shutdown();
+				await UniTask.Delay(1000);
+				OnStateNameForDebuggingChanged.Invoke("ShutdownCompleted");
 			}
-			
-			OnStateNameForDebuggingChanged.Invoke("ShutdownStarting");
-			NetworkManager.Singleton.Shutdown();
-			await UniTask.Delay(1000);
-			OnStateNameForDebuggingChanged.Invoke("ShutdownCompleted");
+			else
+			{
+				Debug.LogWarning("Shutdown () failed. Must be IsConnected==true");
+			}
 		}
 
 

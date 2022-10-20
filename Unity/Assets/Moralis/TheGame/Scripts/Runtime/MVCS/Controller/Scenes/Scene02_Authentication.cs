@@ -32,9 +32,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             _ui.CancelButton.Button.onClick.AddListener(CancelButton_OnClicked);
             
             RefreshUIAsync();
-            
-            await CustomWeb3System.Instance.AuthenticateAsync();
-            _isAuthenticatedOnStart = await CustomWeb3System.Instance.IsAuthenticatedAsync();
+
+            _isAuthenticatedOnStart = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
             if (_isAuthenticatedOnStart)
             {
                 //BUG: Mysteriously the AuthenticationKit will DISCONNECT in this situation

@@ -21,20 +21,22 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService
             UnityTransport unityTransport,
             UnityTransport.SimulatorParameters lanSimulatorParameters)
         {
-            IMultiplayerSetupService multiplayerSetupService = null;
             
+            
+            //KEEP LOG
+            TheGameSingleton.Debug.LogBlueMessage($"MultiplayerSetupServiceFactory() Using The Service For {multiplayerSetupServiceType}");
+
+            IMultiplayerSetupService multiplayerSetupService = null;
             switch (multiplayerSetupServiceType)
             {
                 case MultiplayerSetupServiceType.Lan:
-                    
                     multiplayerSetupService = new LanMultiplayerSetupService(unityTransport, lanSimulatorParameters);
-                    
                     break;
+                
                 case MultiplayerSetupServiceType.Full:
-                    
                     multiplayerSetupService = new FullMultiplayerSetupService(unityTransport);
-                    
                     break;
+                
                 default:
                     SwitchDefaultException.Throw(multiplayerSetupServiceType);
                     break;

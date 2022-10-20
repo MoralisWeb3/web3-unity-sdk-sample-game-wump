@@ -12,7 +12,7 @@ namespace MoralisUnity.Samples.Shared.UI
         //  Properties  ---------------------------------------
         public bool IsAuthenticated { get { return _isAuthenticated;}}
 
-        public async UniTask<bool> IsAuthenticatedAsync()
+        public async UniTask<bool> AuthenticateAndReturnBoolAsync()
         {
             if (!_isAuthenticated)
             {

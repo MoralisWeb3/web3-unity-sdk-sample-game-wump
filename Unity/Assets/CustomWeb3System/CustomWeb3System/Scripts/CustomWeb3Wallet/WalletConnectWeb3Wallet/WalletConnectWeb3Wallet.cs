@@ -42,7 +42,7 @@ namespace MoralisUnity.Samples.Shared
 		// General Methods --------------------------------
 		public async UniTask ConnectAsync()
 		{
-			await WalletConnect.ActiveSession.Connect();
+			await WalletConnect.Instance.Connect();
 		}
 		
 		

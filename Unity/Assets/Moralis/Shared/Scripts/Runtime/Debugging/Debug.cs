@@ -17,6 +17,7 @@ namespace MoralisUnity.Samples.Shared.Debugging
         void LogException(System.Exception exception);
         void LogException(System.Exception exception, UnityEngine.Object context);
         void LogWarning(object message);
+        void LogBlueMessage(object message); // for common, helpful logs
         void LogWarning(object message, UnityEngine.Object context);
     }
 }
@@ -86,6 +87,11 @@ namespace MoralisUnity.Samples.Shared.Debugging
             UnityEngine.Debug.LogWarning(message);
         }
         
+        public void LogBlueMessage( object message )
+        {
+            if (!IsEnabled) return;
+            UnityEngine.Debug.Log($"<color=cyan>{message}</color>\n\n"); // end with linebreaks, looks cleaner
+        }
         
         public void LogWarning( object message, UnityEngine.Object context )
         {

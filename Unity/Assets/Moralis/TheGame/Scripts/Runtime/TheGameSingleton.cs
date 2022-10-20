@@ -77,9 +77,6 @@ namespace MoralisUnity.Samples.TheGame
 			
 #endif
 
-			//Make Unique Key: UNITY EDITOR vs UNITY EDITOR CLONE vs UNITY BUILD
-			SetUniquePlayerPrefsKey();
-
 			// Name the runtime game object
 			gameObject.name = GetType().Name;
 			
@@ -134,8 +131,17 @@ namespace MoralisUnity.Samples.TheGame
 		}
 
 		/// <summary>
-		///  Make Unique Key: UNITY EDITOR vs UNITY EDITOR CLONE vs UNITY BUILD
-		/// This **Maybe** affects the uniqueness of Unity Multiplayer and/or WalletConnect
+		///  Makes a Unique Key: UNITY EDITOR vs UNITY EDITOR CLONE vs UNITY BUILD
+		///
+		///   *   This **maybe** affects the uniqueness of Unity Multiplayer.
+		///				-- Unique value means that instance of unity running is a 'different player in the multiplayer room'
+		///   *   This **certainly** affects the uniqueness of WalletConnect
+		///				-- Unique value means that instance of unity has a different Web3 Login State and Web3 Wallet Address
+		///
+		///  NOT REQUIRED, BUT IF YOU WANT TO BE MOST VIGILANT FOR UNIQUENESS...
+		///   * Set a unique value for TheGameConfiguration.Instance.UniquePlayerPrefsSuffix for EVERY unity instance and before EACH unity build
+		///   * Play with each player on a UNIQUE build.
+		/// 
 		/// </summary>
 		public static void SetUniquePlayerPrefsKey()
 		{
@@ -146,14 +152,14 @@ namespace MoralisUnity.Samples.TheGame
 #endif
 
 			//KEEP LOG FOREVER
-			UnityEngine.Debug.LogWarning($"Key = {TheGameConstants.GetPlayerPrefsKeyForWeb3AndMultiplayer()}");
+			TheGameSingleton.Debug.LogBlueMessage($"SetUniquePlayerPrefsKey() key = {TheGameConstants.GetPlayerPrefsKeyForWeb3AndMultiplayer()}");
 		}
 		
 		// Unity Methods --------------------------------
 		
 		protected override void OnDestroy()
 		{
-			Debug.Log("NEVER BE IN HEre - unless unity is stopping");
+			//Debug.LogWarning("It is expected to never reach this, unless the Unity Scene stops.");
 			base.OnDestroy();
 			if (_theGameController == null) return;
 			_theGameController.OnDestroy();

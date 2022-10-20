@@ -118,14 +118,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		///////////////////////////////////////////
 		public async UniTask<bool> GetIsAuthenticatedAndUpdateModelAsync()
 		{
-			//The FIRST time the app finds IsAuthenticatedAsync=false, then call AuthenticateAsync
+			// Call auth, the get value
+			await CustomWeb3System.Instance.AuthenticateAsync();
 			bool isAuthenticated =  await CustomWeb3System.Instance.IsAuthenticatedAsync();
-			if (!isAuthenticated)
-			{
-				await CustomWeb3System.Instance.AuthenticateAsync();
-			}
-			isAuthenticated =  await CustomWeb3System.Instance.IsAuthenticatedAsync();
-			
 			_theGameModel.IsAuthenticated.Value = isAuthenticated;
 			return _theGameModel.IsAuthenticated.Value;
 		}
@@ -493,7 +488,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		private void SelectionManager_OnSelectionChanged(ISelectionManagerSelectable selection)
 		{
-			Debug.Log($"OnSelectionChanged() selection = {selection}");
 			_theGameModel.SelectedPlayerView.Value = (PlayerView)selection;
 
 			if (_theGameModel.HasSelectedPlayerView)
