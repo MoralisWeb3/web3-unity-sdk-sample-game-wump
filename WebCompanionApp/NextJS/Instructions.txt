@@ -9,43 +9,38 @@
 
     Complete & Deploy Solidity With Success Per: https://github.com/MoralisWeb3/web3-unity-sdk-sample-game-wump/blob/main/README.md
     Complete & Run Unity Game With Success Per: https://github.com/MoralisWeb3/web3-unity-sdk-sample-game-wump/blob/main/SmartContracts/Hardhat/Instructions.txt
-
-
-// 02. INSTALL THE LATEST VERSION OF NODEJS
-
-    https://nodejs.org/en/download/
     
 
-// 03. OPEN FOLDER "./WebCompanionApp/NextJS/" IN A TEXT EDITOR (EX. VISUAL STUDIO CODE)
+// 02. OPEN FOLDER "./WebCompanionApp/NextJS/" IN A TEXT EDITOR (EX. VISUAL STUDIO CODE)
 
 
-// 04. COPY FILE "./WebCompanionApp/NextJS/.env.local.videostart" TO "./WebCompanionApp/NextJS/.env.local"
+// 03. COPY FILE "./WebCompanionApp/NextJS/.env.local.videostart" TO "./WebCompanionApp/NextJS/.env.local"
 
 
-// 05. POPULATE ALL VALUES WITHIN "./WebCompanionApp/NextJS/.env.local"
+// 04. POPULATE ALL VALUES WITHIN "./WebCompanionApp/NextJS/.env.local"
 
 
-// 06. POPULATE 'address' value "./WebCompanionApp/NextJS/pages/list.jsx' TO MATCH CONTRACT ADDRESS OUTPUT FROM SMART CONTRACT DEPLOYMENT
+// 05. POPULATE THE 'address' VALUE IN "./WebCompanionApp/NextJS/pages/list.jsx' TO MATCH CONTRACT ADDRESS OUTPUT FROM SMART CONTRACT DEPLOYMENT
 
 
-// 07. OPEN FOLDER "./WebCompanionApp/NextJS/" IN A TERMINAL FOR COMMAND LINE 
+// 06. OPEN FOLDER "./WebCompanionApp/NextJS/" IN A TERMINAL FOR COMMAND LINE 
 
 
-// 08. INSTALL DEPENDENCIES IN A TERMINAL WITH COMMAND LINE 
+// 07. INSTALL DEPENDENCIES IN A TERMINAL WITH COMMAND LINE 
 
     npm i
     
-// 09. BUILD AND RUN APP IN A TERMINAL WITH COMMAND LINE 
+// 08. BUILD AND RUN APP IN A TERMINAL WITH COMMAND LINE 
 
     npm run dev
 
-// 10. OPEN WEB COMPANION APP IN BROWSER AT "http://localhost:3000/"
+// 09. OPEN WEB COMPANION APP IN BROWSER AT "http://localhost:3000/"
 
 
-// 11. USE WEB COMPANION APP TO AUTHENTICATE WITH SAME WEB3 ADDRESS YOU USE TO PLAY THE UNITY GAME
+// 10. USE WEB COMPANION APP TO AUTHENTICATE WITH SAME WEB3 ADDRESS YOU USE TO PLAY THE UNITY GAME
 
 
-// 12. ENJOY!
+// 11. ENJOY!
 
     Congratulations, you are done!
 
