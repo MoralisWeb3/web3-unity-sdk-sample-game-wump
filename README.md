@@ -8,9 +8,10 @@ This sample game demonstrates [Moralis](https://moralis.io/) Web3 Unity SDK.
 
 **Getting Started**
 1. Download this repo (*.zip or *.git)
-2. Download the [Unity Editor](https://store.unity.com/#plans-individual)
-3. Open this repo in the Unity Editor
-4. Enjoy
+1. Download the [Unity Editor](https://store.unity.com/#plans-individual)
+1. Open this repo in the Unity Editor
+1. Follow https://docs.moralis.io/docs/unity-demos instructions for `Setup Unity` and `Setup Backend`
+1. Enjoy!
 
 See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
 
