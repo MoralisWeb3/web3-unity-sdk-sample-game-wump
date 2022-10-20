@@ -1,6 +1,19 @@
+///
+/// KEEP EXISTING VALUE
+///
 APP_DOMAIN=wump.web.companion.app
+
+///
+/// KEEP EXISTING VALUE
+///
 NEXTAUTH_URL=http://localhost:3000
+
+///
+/// SET VALUE PER https://next-auth.js.org/configuration/options
+///
 NEXTAUTH_SECRET=
+
+///
+/// SET VALUE PER https://docs.moralis.io/reference/getting-the-api-key
+///
 MORALIS_API_KEY=
-
-
