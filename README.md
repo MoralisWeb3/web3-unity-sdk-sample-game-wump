@@ -26,7 +26,7 @@ See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
 **Configuration**
 * `Unity Target` - [Standalone MAC/PC](https://support.unity.com/hc/en-us/articles/206336795-What-platforms-are-supported-by-Unity-)
 * `Unity Version` - Use this [Version](./Unity/ProjectSettings/ProjectVersion.txt)
-* `Unity Rendering` - [Universal Render Pipeline (URP)](https://docs.unity3d.com/Manual/built-in-render-pipeline.html](https://docs.unity3d.com/Manual/universal-render-pipeline.html)
+* `Unity Rendering` - [Universal Render Pipeline (URP)](https://docs.unity3d.com/Manual/universal-render-pipeline.html)
 * `Unity Aspect Ratio` - [Game View 16x10](https://docs.unity3d.com/Manual/GameView.html)
 
 **Structure**
