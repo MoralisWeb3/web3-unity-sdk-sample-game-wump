@@ -54,7 +54,7 @@ See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
   <tr>
     <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_03.png" width = "250"></td>
     <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_07.png" width = "250"></td>
-    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_13.png" width = "250"></td>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_013.png" width = "250"></td>
   </tr> 
 </table>
 
