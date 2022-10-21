@@ -20,8 +20,11 @@ See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
 
 
 **Documentation**
-* `README.md` - The primary documentation for this repo
-* `Unity/Assets/Moralis/TheGame/Documentation/ReadMe.asset` - Select this asset in Unity to get started
+* `README.md` - Overall Docs for this repo
+* `Unity/Assets/Moralis/TheGame/Documentation/ReadMe.asset` - Unity Docs. Select this asset in Unity. 
+* `SmartContracts/Hardhat/Instructions.txt` - SmartContracts Docs. Deployment required to empower the Unity gamee
+* `WebCompanionApp/NextJS/Instructions.txt` - WebCompanionApp Docs. This is optional.
+
 
 
 **Configuration**
