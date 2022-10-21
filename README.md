@@ -49,10 +49,12 @@ See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
   <tr>
     <th>Intro Scene</th>
     <th>Game Scene</th>
+    <th>4-Player Multiplayer</th>
   </tr>
   <tr>
     <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_03.png" width = "250"></td>
     <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_07.png" width = "250"></td>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_13.png" width = "250"></td>
   </tr> 
 </table>
 
@@ -82,12 +84,14 @@ See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
 
 <table>
   <tr>
-    <th>Readme.asset</th>
-    <th>TheGameConfiguration.asset</th>
+    <th>UX Sequence Diagram</th>
+    <th>UML (Light) UMVCS Architecture</th>
+    <th>UML Factory Pattern</th>
   </tr>
   <tr>
-    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_01.png" width = "250"></td>
-    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Screenshot_02.png" width = "250"></td>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Planning_01.png" width = "250"></td>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Planning_02.png" width = "250"></td>
+    <td align="center"><img src="./Unity/Assets/Moralis/TheGame/Documentation/Images/Planning_03.png" width = "250"></td>
   </tr> 
 </table>
 
