@@ -45,6 +45,31 @@ See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
 ## Media
 
 
+
+<BR>
+  
+**Video: Creating a Web3 Unity Multiplayer Playground**
+<table>
+  <tr>
+    <th>Thumbnail</th>
+    <th>TimeStamps</th>
+  </tr>
+  <tr>
+    <td style="max-width:50%;" align="center"><a href="https://www.youtube.com/watch?v=9f_SG3Fib5E"><img src="https://img.youtube.com/vi/9f_SG3Fib5E/hqdefault.jpg" width = "400"></a></td>
+        <td align="left">
+<ul>          
+<li>▶ <a href="https://www.youtube.com/watch?v=9f_SG3Fib5E&t=0s">0:00</a> Intro Topic</li>
+<li>▶ <a href="https://www.youtube.com/watch?v=9f_SG3Fib5E&t=51s">0:51</a> Main Topic</li>
+<li>▶ <a href="https://www.youtube.com/watch?v=9f_SG3Fib5E&t=431s">7:11</a> Live Demo - Unity Sample Game </li></li>
+<li>▶ <a href="https://www.youtube.com/watch?v=9f_SG3Fib5E&t=796s">13:16</a> Live Demo - Web Companion App (NextJS)</li>
+<li>▶ <a href="https://www.youtube.com/watch?v=9f_SG3Fib5E&t=922s">15:22</a> Moralis Web3</li></li>
+<li>▶ <a href="https://www.youtube.com/watch?v=9f_SG3Fib5E&t=987s">16:27</a> Recap Topic</li>
+</ul>
+    </td>
+  </tr> 
+</table>
+
+ 
 <BR>
 
 **Unity Images**
