@@ -21,7 +21,8 @@ See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
 
 **Documentation**
 * `README.md` - The primary documentation for this repo
-* `Assets/Moralis/TheGame/Documentation/ReadMe.asset` - Select this asset in Unity to get started
+* `Unity/Assets/Moralis/TheGame/Documentation/ReadMe.asset` - Select this asset in Unity to get started
+
 
 **Configuration**
 * `Unity Target` - [Standalone MAC/PC](https://support.unity.com/hc/en-us/articles/206336795-What-platforms-are-supported-by-Unity-)
@@ -31,10 +32,10 @@ See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
 
 **Structure**
 * `Unity/` - Open this folder in the Unity Editor
-* `Assets/Moralis Web3 Unity SDK Samples/TheGame/Scenes/` - Open any Scene. Press 'Play'!
+* `Unity/Assets/Moralis/TheGame/Scenes/` - Open any Scene. Press 'Play'!
 
 **Dependencies**
-* `Moralis Web3 Unity SDK` - Already included via [Unity Package Manager](https://docs.unity3d.com/Manual/upm-ui.html) as this [Version](./Unity/Packages/manifest.json)
+* `Already included` - Via [Unity Package Manager](https://docs.unity3d.com/Manual/upm-ui.html) as this [Version](./Unity/Packages/manifest.json)
 
 ----
 
@@ -115,7 +116,7 @@ See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
 * Moralis provides a single workflow for building high performance dapps. Fully compatible with your favorite web3 tools and services. 
 * See [moralis.io](https://moralis.io) for more info.
 
-**Web3 Unity SDK**
+**Moralis SDK**
 
 * This SDK brings the power of Moralis to your Unity projects. 
 * See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
