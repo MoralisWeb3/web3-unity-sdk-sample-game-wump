@@ -3,6 +3,7 @@ using MoralisUnity.Samples.Shared.Exceptions;
 using MoralisUnity.Samples.Shared.Interfaces;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
 using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
+using MoralisUnity.Samples.TheGame.MVCS.View;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -23,10 +24,21 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			
 		// Properties -------------------------------------
 		public bool IsInitialized { get; private set; }
+		public bool IsVisibleRuntimeNetStatsMonitor {
+			get
+			{
+				return _networkManagerView.RuntimeNetStatsMonitor.Visible;
+			}
+			set
+			{
+				_networkManagerView.RuntimeNetStatsMonitor.Visible = value;
+			}
+		}
 
 		// Fields -----------------------------------------
 		private readonly TheGameController _theGameController = null;
 		private readonly IMultiplayerSetupService _multiplayerSetupService = null;
+		private NetworkManagerView _networkManagerView;
 		
 		// Wait, So click sound is audible before scene changes
 		private const int DelayLoadSceneMilliseconds = 100;
@@ -36,9 +48,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 
 		// Initialization Methods -------------------------
 		public TheMultiplayerController(
+			NetworkManagerView networkManagerView,
 			TheGameController theGameController,
 			IMultiplayerSetupService multiplayerSetupService)
 		{
+			_networkManagerView = networkManagerView;
 			_theGameController = theGameController;
 			_multiplayerSetupService = multiplayerSetupService;
 			
@@ -130,6 +144,19 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			return _multiplayerSetupService.CanShutdown();
 		}
 
+		public bool CanToggleStatsButton()
+		{
+			return _multiplayerSetupService.CanToggleStatsButton();
+		}
+		
+		public bool IsVisibleToggleStatsButton()
+		{
+			// As of October 23, 2022...
+			// The https://docs-multiplayer.unity3d.com/tools/current/RNSM has BUILD errors
+			// When included in a build. So its disabled and excluded per functionality
+			// This IsVisibleToggleStatsButton bool does not change functionality, but changes visibility.
+			return Application.isEditor;
+		}
 		
 		public async UniTask StartAsHostAsync()
 		{
@@ -208,6 +235,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		{
 			OnMultiplayerStateNameChanged.Invoke(stateName);
 		}
+
 
 	}
 }

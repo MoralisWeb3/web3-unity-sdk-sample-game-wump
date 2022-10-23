@@ -70,7 +70,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		//  Initializer Methods ---------------------------------
 		public FullMultiplayerSetupService(UnityTransport unityTransport)
 		{
-			Debug.LogError("Created!!! FullMultiplayerSetupService");
 			OnConnectStarted = new UnityEvent();
 			OnConnectCompleted = new StringUnityEvent();
 			OnDisconnectStarted = new UnityEvent();
@@ -139,8 +138,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		{
 			return IsInitialized &&IsHost || IsClient;
 		}
-		
-		
+
+		public bool CanToggleStatsButton()
+		{
+			return IsInitialized && IsHost || IsClient;
+		}
+
 		public async UniTask StartAsHost()
 		{
 			RequireIsInitialized();
@@ -459,8 +462,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 					{
 						Debug.LogError($"SignInAnonymouslyAsync() failed. IsSignedIn must NOT be true already. ");
 					}
-					
-				
 					break;		
 				case FullMultiplayerState.Authenticated:
 					_observableFullMultiplayerState.Value = FullMultiplayerState.LobbyConnecting;

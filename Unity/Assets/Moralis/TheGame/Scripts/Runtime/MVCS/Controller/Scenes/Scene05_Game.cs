@@ -42,6 +42,7 @@ namespace MoralisUnity.Samples.TheGame
 			_ui.StartAsHostButton.Button.onClick.AddListener(StartAsHostButton_OnClicked);
 			_ui.JoinAsClientButton.Button.onClick.AddListener(JoinAsClientButton_OnClicked);
 			_ui.ShutdownButton.Button.onClick.AddListener(ShutdownButton_OnClicked);
+			_ui.ToggleStatsButton.Button.onClick.AddListener(ToggleStatsButton_OnClicked);
 			_ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);
 			//
 			TheGameSingleton.Instance.TheGameController.OnPlayerAction.AddListener(OnPlayerAction);
@@ -99,6 +100,7 @@ namespace MoralisUnity.Samples.TheGame
 			TheGameSingleton.Instance.TheGameController.OnRPCSharedStatusChanged.RemoveListener(OnRPCSharedStatusChanged);
 			TheGameSingleton.Instance.TheGameController.OnRPCTransferLogChanged.RemoveListener( OnRPCTransferLogHistoryChanged);
 			TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.RemoveListener(OnTheGameModelChanged);
+		
 			TheGameSingleton.Instance.TheMultiplayerController.OnMultiplayerStateNameChanged.RemoveListener( OnMultiplayerStateNameChanged);
 
 			if (!TheGameSingleton.IsShuttingDown)
@@ -124,42 +126,7 @@ namespace MoralisUnity.Samples.TheGame
 			{
 				await TheGameSingleton.Instance.TheMultiplayerController.ConnectAsync();
 			}
-			
-			/*
-			
-				//TODO: REmove this
-			if (TheGameConfiguration.Instance.MultiplayerIsAutoStart &&
-			    !TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceIsConnected())
-			{
-				TheGameSingleton.Instance.TheGameController.MultiplayerSetupServiceConnectAsync();
-			}
-				
-				
-			// The instance playing in the Primary UNITY EDITOR will host
-			// All others will NOT host
-			if (ClonesManagerWrapper.HasClonesManager)
-			{
-				if (ClonesManagerWrapper.IsClone)
-				{
-					_onConnectStarted.Invoke();
-					await JoinAsClient();
-				}
-				else
-				{
-					// Primary UNITY EDITOR
-					_onConnectStarted.Invoke();
-					await StartAsHost();
-				}
-			}
-			else
-			{
-				_onConnectStarted.Invoke();
-				await JoinAsClient();
-			}
-			*/
 		}
-
-
 
 		private async UniTask RefreshUIAsync()
 		{
@@ -168,10 +135,14 @@ namespace MoralisUnity.Samples.TheGame
 				TheGameSingleton.Instance.TheMultiplayerController.IsConnected(),
 				TheGameSingleton.Instance.TheMultiplayerController.IsHost());
 			
+			//Special situation: See comment in IsVisibleToggleStatsButton
+			_ui.ToggleStatsButton.IsVisible = TheGameSingleton.Instance.TheMultiplayerController.IsVisibleToggleStatsButton();
+			
 			//
 			_ui.StartAsHostButton.IsInteractable = TheGameSingleton.Instance.TheMultiplayerController.CanStartAsHost();
 			_ui.JoinAsClientButton.IsInteractable = TheGameSingleton.Instance.TheMultiplayerController.CanJoinAsClient();
 			_ui.ShutdownButton.IsInteractable = TheGameSingleton.Instance.TheMultiplayerController.CanShutdown();
+			_ui.ToggleStatsButton.IsInteractable = TheGameSingleton.Instance.TheMultiplayerController.CanToggleStatsButton();
 			_ui.BackButton.IsInteractable = true;
 		}
 		
@@ -204,6 +175,15 @@ namespace MoralisUnity.Samples.TheGame
 			await TheGameSingleton.Instance.TheMultiplayerController.JoinAsClientAsync();
 		}
 		
+		
+		private async void ToggleStatsButton_OnClicked()
+		{
+			if (TheGameSingleton.Instance.TheMultiplayerController.CanToggleStatsButton())
+			{
+				TheGameSingleton.Instance.TheMultiplayerController.IsVisibleRuntimeNetStatsMonitor =
+					!TheGameSingleton.Instance.TheMultiplayerController.IsVisibleRuntimeNetStatsMonitor;
+			}
+		}	
 		
 		private async void ShutdownButton_OnClicked()
 		{

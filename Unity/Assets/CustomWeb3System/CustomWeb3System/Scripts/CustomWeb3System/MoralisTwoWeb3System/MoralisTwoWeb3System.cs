@@ -186,7 +186,6 @@ namespace MoralisUnity.Samples.Shared
 			RequireIsInitialized();
 			
 			//Recheck every time
-			Debug.Log("mor 2 init, addy: " + await GetWeb3UserAddressAsync());
 			IsAuthenticated = await HasWeb3UserAddressAsync();
 
 			return IsAuthenticated;
@@ -212,7 +211,7 @@ namespace MoralisUnity.Samples.Shared
 							return !_customWeb3WalletSystem.IsConnected;
 						}, PlayerLoopTiming.Update, cancellationTokenSource.Token);
 				}
-				catch (OperationCanceledException common)
+				catch (OperationCanceledException)
 				{
 					//Called for timeout. No problem.
 				}

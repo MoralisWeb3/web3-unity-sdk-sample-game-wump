@@ -123,6 +123,7 @@ namespace MoralisUnity.Samples.TheGame
 			_theGameController.Initialize();
 			
 			_theMultiplayerController = new TheMultiplayerController(
+				_networkManagerView,
 				_theGameController,
 				_multiplayerSetupService);
 			

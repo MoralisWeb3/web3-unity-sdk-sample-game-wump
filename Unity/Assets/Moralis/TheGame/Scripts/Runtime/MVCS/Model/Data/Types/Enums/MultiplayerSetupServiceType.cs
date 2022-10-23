@@ -27,8 +27,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService
         bool CanStartAsHost();
         bool CanJoinAsClient();
         bool CanShutdown();
+        bool CanToggleStatsButton();
         UniTask StartAsHost();
         UniTask JoinAsClient();
         UniTask Shutdown();
+       
     }
 }

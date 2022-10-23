@@ -153,6 +153,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			return IsInitialized && NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer;
 		}
 		
+		public bool CanToggleStatsButton()
+		{
+			return IsInitialized && NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer;
+		}
 		
 		public async UniTask StartAsHost()
 		{	

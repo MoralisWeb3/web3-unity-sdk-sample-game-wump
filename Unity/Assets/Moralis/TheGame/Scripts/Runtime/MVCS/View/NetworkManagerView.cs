@@ -1,7 +1,7 @@
 using RMC.Shared.Managers;
+using Unity.Multiplayer.Tools.NetStatsMonitor;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.View
 {
@@ -21,10 +21,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
         
             //  Properties ------------------------------------
             public NetworkManager NetworkManager { get { return _networkManager;}}
+            public RuntimeNetStatsMonitor RuntimeNetStatsMonitor { get { return _runtimeNetStatsMonitor;}}
             
             //  Fields ----------------------------------------
             [SerializeField] 
             private NetworkManager _networkManager = null;
+
+            [SerializeField] 
+            private RuntimeNetStatsMonitor _runtimeNetStatsMonitor = null;
 
             //  Unity Methods ---------------------------------
 

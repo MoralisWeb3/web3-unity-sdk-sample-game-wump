@@ -53,7 +53,6 @@ namespace MoralisUnity.Samples.SharedCustom.DesignPatterns.Creational.Singleton.
         [InitializeOnLoadMethod]
         static void InitializeOnLoadMethod()
         {
-            Debug.Log("InitializeOnLoadMethod");
             EditorApplication.playModeStateChanged += _OnPlayModeStateChanged;
         }
 
@@ -70,7 +69,6 @@ namespace MoralisUnity.Samples.SharedCustom.DesignPatterns.Creational.Singleton.
             if (state == PlayModeStateChange.EnteredEditMode)
             {
                 OnEnteredEditMode();
-
             }
             else if (state == PlayModeStateChange.EnteredPlayMode)
             {

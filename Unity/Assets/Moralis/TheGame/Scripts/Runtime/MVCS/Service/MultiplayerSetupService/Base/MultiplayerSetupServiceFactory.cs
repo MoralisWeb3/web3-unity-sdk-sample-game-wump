@@ -1,6 +1,7 @@
 
 using RMC.Shared.Exceptions;
 using MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService;
+using MoralisUnity.Samples.TheGame.MVCS.View;
 using Unity.Netcode.Transports.UTP;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService
@@ -14,6 +15,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService
     public class MultiplayerSetupServiceFactory
     {
         //  Properties ------------------------------------
+        
+        
+        //  Fields ----------------------------------------
 
         //  Methods ---------------------------------------
         public IMultiplayerSetupService CreateMultiplayerSetupService(
@@ -21,11 +25,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService
             UnityTransport unityTransport,
             UnityTransport.SimulatorParameters lanSimulatorParameters)
         {
-            
-            
             //KEEP LOG
             TheGameSingleton.Debug.LogBlueMessage($"MultiplayerSetupServiceFactory() Using The Service For {multiplayerSetupServiceType}");
-
+            
             IMultiplayerSetupService multiplayerSetupService = null;
             switch (multiplayerSetupServiceType)
             {
