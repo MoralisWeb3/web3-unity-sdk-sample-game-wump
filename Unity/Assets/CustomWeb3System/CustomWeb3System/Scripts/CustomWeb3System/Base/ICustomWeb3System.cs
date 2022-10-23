@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared.UnityWeb3Tools.Models;
+using PlayFab.CloudScriptModels;
 
 namespace MoralisUnity.Samples.Shared
 {
     /// <summary>
     /// Implemented by <see cref="MoralisTwoWeb3System"/>
     /// </summary>
-    public interface ICustomWeb3System 
+    public interface ICustomWeb3System : IWeb3Calls
     {
         //  Properties ------------------------------------
         ICustomWeb3WalletSystem CustomWeb3WalletSystem { set; get; }
@@ -20,16 +21,17 @@ namespace MoralisUnity.Samples.Shared
         //  Methods ---------------------------------------
         string ConvertWeb3AddressToShortFormat(string address);
 
-        
         //  Async Methods ---------------------------------------
         UniTask AuthenticateAsync();
         UniTask<bool> IsAuthenticatedAsync();
-        Task<string> GetWeb3UserAddressAsync();
-        UniTask<String> ExecuteContractFunctionAsync(string contractAddress, string abi, string functionName, object[] args, bool isLogging = false);
-        UniTask<object> RunContractFunctionAsync(string contractAddress, string functionName, string abi, object args, bool isLogging = false);
-        UniTask<List<NftOwner>> GetNFTsForContractAsync(string contractAddress, bool isLogging = false);
+        UniTask<string> GetWeb3UserAddressAsync();
+        UniTask<bool> HasWeb3UserAddressAsync();
         UniTask ClearActiveSessionAsync();
-        UniTask CloseActiveSessionAsync();
-    
+        UniTask CloseActiveSessionAsync(bool willImmediatelyReconnect = false);
+        UniTask<string> EthPersonalSignAsync(string web3UserAddress, string message);
+                
+        //  Async PlayFab Methods ---------------------------------------
+        UniTask<ExecuteFunctionResult> ChallengeRequestAsync(string web3UserAddress, int chainId);
+        UniTask<ExecuteFunctionResult> ChallengeVerifyAsync(string message, string signature);
     }
 }

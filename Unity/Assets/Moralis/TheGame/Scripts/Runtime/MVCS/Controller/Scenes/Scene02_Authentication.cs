@@ -26,8 +26,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
 
         protected async void Start()
         {
-            _ui.AuthenticationKit.gameObject.SetActive(true);
-            
             _ui.PlayerView.PlayerNameText.text = TheGameHelper.GetPlayerNameAsSceneTitle("Web3 Auth", 5); 
             _ui.CancelButton.Button.onClick.AddListener(CancelButton_OnClicked);
             
@@ -45,7 +43,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             }
             else
             {
-                _ui.AuthenticationKit.gameObject.SetActive(true);
+    
                 _ui.AuthenticationKit.OnConnected.AddListener(AuthenticationUI_OnConnected);
             }
             RefreshUIAsync();

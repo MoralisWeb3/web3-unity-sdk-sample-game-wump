@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.SharedCustom.Exceptions;
 using UnityEngine;
@@ -41,8 +42,12 @@ namespace MoralisUnity.Samples.Shared
 		{
 			get
 			{
+#if !UNITY_WEBGL
 				RequireIsInitialized();
 				return WalletConnect.ActiveSession.ChainId;
+#else
+				return Web3GL.ChainId();;
+#endif
 			}
 		}
 
@@ -151,12 +156,32 @@ namespace MoralisUnity.Samples.Shared
 		{
 			RequireIsInitialized();
 			WalletConnectInstance.CloseSession(willImmediatelyReconnect);
+			if (willImmediatelyReconnect)
+			{
+				await WalletConnectInstance.Connect();
+				Debug.Log("reconnect");
+			}
 			await UniTask.NextFrame();
 		}
-		
-		
+
+		public async UniTask<string> EthPersonalSignAsync(string web3UserAddress, string message)
+		{
+						                
+#if !UNITY_WEBGL
+			// Sign the message with WalletConnect
+			string signature = await WalletConnect.ActiveSession.EthPersonalSign(web3UserAddress, message);
+#else
+            // Sign the message with Web3
+            string signature = await Web3GL.Sign(message);
+#endif
+			return signature;
+		}
+
+
 		public async UniTask<string> GetWeb3UserAddressAsync()
 		{
+			
+#if !UNITY_WEBGL
 			//Do not require AUTH here, because this method IS PART of the auth-check
 			//Do not require INIT here, because this method IS PART of the auth-check
 			if (HasWalletConnectInstance && HasActiveSession)
@@ -175,6 +200,10 @@ namespace MoralisUnity.Samples.Shared
 				}
 			}
 			return string.Empty;
+#else
+			return Web3GL.Account().ToLower();
+#endif
+
 		}
 		
 		// Event Handlers ---------------------------------

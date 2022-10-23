@@ -104,6 +104,7 @@ namespace MoralisUnity.Samples.Shared
 
             if (_willInitializeOnStart)
             {
+                Debug.Log("auth kit Start() calling initasync");
                 await InitializeAsync();
             }
         }
@@ -116,12 +117,8 @@ namespace MoralisUnity.Samples.Shared
         {
             State = AuthenticationKitState.Initializing;
 
-            // Initialize Moralis
-            //Moralis.Start();
-
-            //// Log out any old users so we do a full authentication cycle
-            //await Moralis.LogOutAsync();
-
+            // Likely already authed, but keep as a check
+            await CustomWeb3System.Instance.AuthenticateAsync();
             State = AuthenticationKitState.Initialized;
         }
 

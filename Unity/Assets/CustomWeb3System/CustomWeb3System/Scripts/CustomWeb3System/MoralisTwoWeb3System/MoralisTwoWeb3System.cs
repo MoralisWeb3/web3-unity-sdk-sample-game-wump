@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared.Interfaces;
-using MoralisUnity.Samples.Shared.UnityWeb3Tools.Functions;
-using Newtonsoft.Json;
-using PlayFab;
-using PlayFab.CloudScriptModels;
 using UnityEngine;
 using MoralisUnity.Samples.Shared.UnityWeb3Tools.Models;
 using MoralisUnity.Samples.SharedCustom.DesignPatterns.Creational.Singleton.CustomSingleton;
 using MoralisUnity.Samples.SharedCustom.Exceptions;
-using UnityEditor;
+using PlayFab.CloudScriptModels;
 
 #pragma warning disable 1998, CS4014
 namespace MoralisUnity.Samples.Shared
@@ -71,10 +65,7 @@ namespace MoralisUnity.Samples.Shared
 		// Fields -----------------------------------------
 		private ICustomWeb3WalletSystem _customWeb3WalletSystem;
 		private ICustomBackendSystem _customBackendSystem;
-		//
-		private ExecuteContractFunctionSubSystem _executeContractFunctionSubsystem = new ExecuteContractFunctionSubSystem();
-		private RunContractFunctionSubsystem _runContractFunctionSubsystem = new RunContractFunctionSubsystem();
-		
+
 		// Unity Methods ----------------------------------
 
 		// Initialization Methods -------------------------
@@ -88,9 +79,6 @@ namespace MoralisUnity.Samples.Shared
 		{
 			if (!IsInitialized)
 			{
-				_runContractFunctionSubsystem = new RunContractFunctionSubsystem();
-				_executeContractFunctionSubsystem = new ExecuteContractFunctionSubSystem();
-				
 				// Do initialize / do not auth
 				_customWeb3WalletSystem.Initialize();
 				if (!_customWeb3WalletSystem.IsInitialized)
@@ -116,8 +104,6 @@ namespace MoralisUnity.Samples.Shared
 			IsInitialized = true;
 		}
 
-
-		
 		public void RequireIsInitialized()
 		{
 			if (!IsInitialized)
@@ -152,8 +138,8 @@ namespace MoralisUnity.Samples.Shared
 		}
 
 
-
 		// General Methods --------------------------------
+
 
 		public async UniTask ClearActiveSessionAsync()
 		{
@@ -161,13 +147,27 @@ namespace MoralisUnity.Samples.Shared
 			await _customWeb3WalletSystem.ClearActiveSessionAsync();
 			await _customBackendSystem.ClearActiveSessionAsync();
 		}
-		
-		public async UniTask CloseActiveSessionAsync()
+
+		public async UniTask CloseActiveSessionAsync(bool willImmediatelyReconnect = false)
 		{
-			Debug.Log("close session");
-			await _customWeb3WalletSystem.CloseActiveSessionAsync();
+			await _customWeb3WalletSystem.CloseActiveSessionAsync(willImmediatelyReconnect);
 		}
-		
+
+		public async UniTask<string> EthPersonalSignAsync(string web3UserAddress, string message)
+		{
+			return await _customWeb3WalletSystem.EthPersonalSignAsync(web3UserAddress, message);
+		}
+
+		public async UniTask<ExecuteFunctionResult> ChallengeRequestAsync(string web3UserAddress,int chainId)
+		{
+			return await _customBackendSystem.ChallengeRequestAsync(web3UserAddress, chainId);
+		}
+
+		public async UniTask<ExecuteFunctionResult> ChallengeVerifyAsync(string message, string signature)
+		{
+			return await _customBackendSystem.ChallengeVerifyAsync(message, signature);
+		}
+
 		public bool HasActiveSession
 		{
 			get
@@ -176,7 +176,7 @@ namespace MoralisUnity.Samples.Shared
 			}
 		}
 
-
+		
 		public async UniTask<bool> IsAuthenticatedAsync()
 		{
 			if (!IsInitialized)
@@ -190,6 +190,7 @@ namespace MoralisUnity.Samples.Shared
 
 			return IsAuthenticated;
 		}
+		
 		
 		public async UniTask AuthenticateAsync()
 		{
@@ -219,17 +220,16 @@ namespace MoralisUnity.Samples.Shared
 			}
 			await IsAuthenticatedAsync();
 		}
-		
 
 		
-		private async UniTask<bool> HasWeb3UserAddressAsync()
+		public async UniTask<bool> HasWeb3UserAddressAsync()
 		{
 			RequireIsInitialized();
 			return await _customWeb3WalletSystem.HasWeb3UserAddressAsync();
 		}
 
 		
-		public async Task<string> GetWeb3UserAddressAsync()
+		public async UniTask<string> GetWeb3UserAddressAsync()
 		{
 			RequireIsInitialized();
 			return await _customWeb3WalletSystem.GetWeb3UserAddressAsync();
@@ -261,24 +261,14 @@ namespace MoralisUnity.Samples.Shared
 			RequireIsInitialized();
 			RequireIsAuthenticated();
 
-			if (!_executeContractFunctionSubsystem.IsInitialized)
-			{
-				await _executeContractFunctionSubsystem.InitializeAsync();
-			}
-			
-			//
-			string web3UserAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
-			string result = await _executeContractFunctionSubsystem.RunAsync(
-				web3UserAddress, 
-				contractAddress, 
-				abi, 
-				functionName, 
+			string result = await _customBackendSystem.ExecuteContractFunctionAsync(
+				contractAddress,
+				abi,
+				functionName,
 				args,
 				isLogging);
-			
 			return result;
 		}
-
 
 		// Event Handlers ---------------------------------
 		public async UniTask<object> RunContractFunctionAsync(
@@ -292,21 +282,13 @@ namespace MoralisUnity.Samples.Shared
 			RequireIsInitialized();
 			RequireIsAuthenticated();
 
-			if (!_runContractFunctionSubsystem.IsInitialized)
-			{
-				_runContractFunctionSubsystem.Initialize();
-			}
-			
-			//
-			int chainId = CustomWeb3System.Instance.ChainId;
-			object result = await _runContractFunctionSubsystem.RunAsync(
+			object result = await _customBackendSystem.RunContractFunctionAsync(
 				contractAddress,
-				chainId,
 				functionName,
 				abi,
 				args,
 				isLogging);
-
+			
 			return result;
 		}
 
@@ -318,101 +300,11 @@ namespace MoralisUnity.Samples.Shared
 			//
 			string web3UserAddress = await CustomWeb3System.Instance.GetWeb3UserAddressAsync();
 			int chainid = this.ChainId;
-			List<NftOwner> matchingNftOwners = new List<NftOwner>();
-			bool hasCompletedExecuteFunction = false;
-			
-			if (isLogging)
-			{
-				StringBuilder stringBuilder = new StringBuilder();
-				stringBuilder.AppendLine($"GetNFTsForContractAsync() Starting ...\n\n");
-				Debug.Log(stringBuilder);
-			}
 
-			PlayFabCloudScriptAPI.ExecuteFunction(new ExecuteFunctionRequest()
-			{
-				Entity = new PlayFab.CloudScriptModels.EntityKey()
-				{
-					Id = PlayFabSettings.staticPlayer.EntityId, //Get this from when you logged in,
-					Type = PlayFabSettings.staticPlayer.EntityType, //Get this from when you logged in
-				},
-				FunctionName = "GetNftsForContract", //This should be the name of your Azure Function that you created.
-				FunctionParameter =
-					new Dictionary<string, object>() //This is the data that you would want to pass into your function.
-					{
-						{ "walletAddress", web3UserAddress },
-						{ "chainid", chainid } 
-					},
-				GeneratePlayStreamEvent = true //Set this to true if you would like this call to show up in PlayStream
-			}, (ExecuteFunctionResult result) =>
-			{
-				if (result.FunctionResultTooLarge ?? false)
-				{
-					Debug.LogError("error 1 for : " + result.FunctionResult);
-					//"This can happen if you exceed the limit that can be returned from an Azure Function, See PlayFab Limits Page for details.");
-					// If the is a error fire the OnFailed event
-					hasCompletedExecuteFunction = true;
-				}
-
-				// If the authentication succeeded the user profile is update and we get the UpdateUserDataAsync return values a response
-				// If it failed it returns empty
-				if (String.IsNullOrEmpty(result.FunctionResult.ToString()))
-				{
-					Debug.LogError("error 2 for : " + result.FunctionResult);
-					hasCompletedExecuteFunction = true;
-				}
-				else
-				{
-					
-					List<NftOwner> allNftOwners =
-						JsonConvert.DeserializeObject<List<NftOwner>>(result.FunctionResult.ToString());
-
-					if (allNftOwners == null)
-					{
-						Debug.Log("No owners for this contractAddress");
-						hasCompletedExecuteFunction = true;
-					}
-
-					foreach (NftOwner nftOwner in allNftOwners)
-					{
-						try
-						{
-							// Check if its minted in our contract
-							if (string.Equals(nftOwner.TokenAddress, contractAddress, StringComparison.InvariantCultureIgnoreCase))
-							{
-								matchingNftOwners.Add(nftOwner);
-							}
-						}
-						catch (Exception e)
-						{
-							Debug.LogError("Error with My NFT called: " + e.Message);
-							throw;
-						}
-					}
-
-					hasCompletedExecuteFunction = true;
-				}
-			}, (PlayFabError error) => { Debug.Log($"Oops Something went wrong: {error.GenerateErrorReport()}"); });
-
-			
-			if (isLogging)
-			{
-				StringBuilder stringBuilder = new StringBuilder();
-				stringBuilder.AppendLine($"GetNFTsForContractAsync() Pending");
-				Debug.Log(stringBuilder);
-			}
-			
-			await UniTask.WaitWhile(() => !hasCompletedExecuteFunction);
-
-			if (isLogging)
-			{
-				StringBuilder stringBuilder = new StringBuilder();
-				stringBuilder.AppendLine($"GetNFTsForContractAsync() Completed ...\n\n");
-				stringBuilder.AppendLine($"result.count = {matchingNftOwners.Count}");
-				stringBuilder.AppendLine($"\n\n\n");
-				Debug.Log(stringBuilder);
-			}
-			
-			return matchingNftOwners;
+			List<NftOwner> resultNftOwners = await _customBackendSystem.GetNFTsForContractAsync(
+				contractAddress,
+				isLogging);
+			return resultNftOwners;
 		}
 	}
 }

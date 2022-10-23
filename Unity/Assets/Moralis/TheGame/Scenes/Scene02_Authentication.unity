@@ -189,11 +189,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayFabAuthenticationKit
       objectReference: {fileID: 0}
+    - target: {fileID: 7219081933008859008, guid: 7a19f0121c3ad2742be0f57a488c7961, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7668476649847229474, guid: 7a19f0121c3ad2742be0f57a488c7961, type: 3}
       propertyPath: _authenticationKit
       value: 
       objectReference: {fileID: 862443313}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7668476649847229474, guid: 7a19f0121c3ad2742be0f57a488c7961, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7a19f0121c3ad2742be0f57a488c7961, type: 3}
 --- !u!4 &862443312 stripped
 Transform:

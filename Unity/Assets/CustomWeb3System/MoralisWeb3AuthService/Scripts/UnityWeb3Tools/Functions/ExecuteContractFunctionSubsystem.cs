@@ -23,7 +23,6 @@ namespace MoralisUnity.Samples.Shared.UnityWeb3Tools.Functions
          {
              if (!IsInitialized)
              {
-                 Debug.LogWarning("Changed to RunOnThreadPool before testing it");
                  await UniTask.RunOnThreadPool(() =>
                  {
                      WalletConnectSession client = WalletConnect.Instance.Session;

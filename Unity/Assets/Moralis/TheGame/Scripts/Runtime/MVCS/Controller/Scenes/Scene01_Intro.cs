@@ -38,8 +38,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             
             RefreshUIAsync();
 
-            _isAuthenticated =
-                await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
+            _isAuthenticated = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
             TheGameSingleton.Debug.Log("scene _isAuthenticated: " + _isAuthenticated);
             if (_isAuthenticated)
             {
@@ -50,8 +49,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             {
                 Debug.LogWarning("Not Authenticated. That is ok. Must visit Authentication Scene"); 
             }
-            
-           
         }
         
 
@@ -71,9 +68,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         {
             TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
             
-            Debug.Log("not clearing session");
-            // await CustomWeb3System.Instance.ClearActiveSessionAsync();
-            // await CustomWeb3System.Instance.CloseActiveSessionAsync();
+            Debug.Log("YES clearing session");
+            await CustomWeb3System.Instance.ClearActiveSessionAsync();
+            await CustomWeb3System.Instance.CloseActiveSessionAsync();
             TheGameSingleton.Instance.TheGameController.LoadAuthenticationSceneAsync();
         }
         

@@ -1,4 +1,5 @@
 ﻿
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.SharedCustom.Interfaces;
 
@@ -22,5 +23,6 @@ namespace MoralisUnity.Samples.Shared
         UniTask ConnectAsync();
         UniTask ClearActiveSessionAsync();
         UniTask CloseActiveSessionAsync(bool willImmediatelyReconnect = false);
+        UniTask<string> EthPersonalSignAsync(string web3UserAddress, string message);
     }
 }
