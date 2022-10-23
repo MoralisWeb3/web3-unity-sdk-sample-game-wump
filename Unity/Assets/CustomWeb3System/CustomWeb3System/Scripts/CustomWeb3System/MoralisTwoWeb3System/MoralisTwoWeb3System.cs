@@ -13,6 +13,7 @@ using UnityEngine;
 using MoralisUnity.Samples.Shared.UnityWeb3Tools.Models;
 using MoralisUnity.Samples.SharedCustom.DesignPatterns.Creational.Singleton.CustomSingleton;
 using MoralisUnity.Samples.SharedCustom.Exceptions;
+using UnityEditor;
 
 #pragma warning disable 1998, CS4014
 namespace MoralisUnity.Samples.Shared
@@ -74,6 +75,8 @@ namespace MoralisUnity.Samples.Shared
 		private ExecuteContractFunctionSubSystem _executeContractFunctionSubsystem = new ExecuteContractFunctionSubSystem();
 		private RunContractFunctionSubsystem _runContractFunctionSubsystem = new RunContractFunctionSubsystem();
 		
+		// Unity Methods ----------------------------------
+
 		// Initialization Methods -------------------------
 		void ICustomSingletonParent.OnInstantiatedChild()
 		{
@@ -88,17 +91,25 @@ namespace MoralisUnity.Samples.Shared
 				_runContractFunctionSubsystem = new RunContractFunctionSubsystem();
 				_executeContractFunctionSubsystem = new ExecuteContractFunctionSubSystem();
 				
+				// Do initialize / do not auth
+				_customWeb3WalletSystem.Initialize();
+				if (!_customWeb3WalletSystem.IsInitialized)
+				{
+					Debug.Log($"{GetType().Name}.InitializeAsync() failed. Error 0001");
+				}
+				Debug.Log("HasWeb3UserAddressAsync: " + _customWeb3WalletSystem.HasWeb3UserAddressAsync());
 				// Do initialize
 				_customBackendSystem.Initialize();
 				if (!_customBackendSystem.IsInitialized)
 				{
-					Debug.Log($"{GetType().Name}.InitializeAsync() failed. Error 1");
+					Debug.Log($"{GetType().Name}.InitializeAsync() failed. Error 0002");
 				}
 				
+				// Do auth
 				await _customBackendSystem.AuthenticateAsync();
 				if (!_customBackendSystem.IsAuthenticated)
 				{
-					Debug.Log($"{GetType().Name}.InitializeAsync() failed. Error 1");
+					Debug.Log($"{GetType().Name}.InitializeAsync() failed. Error 0003");
 				}
 
 			}
@@ -127,17 +138,34 @@ namespace MoralisUnity.Samples.Shared
 		{
 			if (!IsAuthenticated)
 			{
-				Debug.Log("Where am i?");
 				throw new NotAuthenticatedException(this);
 			}
 		}
 
+		//Statics cannot be overriden, but this is the proper
+		//solution to get parent static functionality in local scope. Keep.
+		public new static void OnEnteredEditMode()
+		{
+			Debug.Log("OnEnteredEditMode() !!!!!! ");
+			//Clear out statics when play stops
+			Uninstantiate();
+		}
+
+
+
 		// General Methods --------------------------------
 
-		public async UniTask ClearActiveSession()
+		public async UniTask ClearActiveSessionAsync()
 		{
-			await _customBackendSystem.ClearActiveSession();
-			await _customWeb3WalletSystem.ClearActiveSession();
+			Debug.Log("clear session");
+			await _customWeb3WalletSystem.ClearActiveSessionAsync();
+			await _customBackendSystem.ClearActiveSessionAsync();
+		}
+		
+		public async UniTask CloseActiveSessionAsync()
+		{
+			Debug.Log("close session");
+			await _customWeb3WalletSystem.CloseActiveSessionAsync();
 		}
 		
 		public bool HasActiveSession
@@ -157,10 +185,9 @@ namespace MoralisUnity.Samples.Shared
 			}
 			RequireIsInitialized();
 			
-			if (!IsAuthenticated)
-			{
-				IsAuthenticated = await HasWeb3UserAddressAsync();
-			}
+			//Recheck every time
+			Debug.Log("mor 2 init, addy: " + await GetWeb3UserAddressAsync());
+			IsAuthenticated = await HasWeb3UserAddressAsync();
 
 			return IsAuthenticated;
 		}
@@ -172,6 +199,7 @@ namespace MoralisUnity.Samples.Shared
 			{
 				
 				// Call without await
+				if (_customWeb3WalletSystem.IsConnected)
 				_customWeb3WalletSystem.ConnectAsync();
 				CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 				cancellationTokenSource.CancelAfterSlim(TimeSpan.FromSeconds(2)); // 2sec timeout is enough

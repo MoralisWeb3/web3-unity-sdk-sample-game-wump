@@ -37,8 +37,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             TheGameSingleton.Instance.TheGameController.OnTheGameModelChanged.AddListener(OnTheGameModelChange);
             
             RefreshUIAsync();
-            
-            _isAuthenticated = await _ui.AuthenticationButtonUI.AuthenticateAndReturnBoolAsync();
+
+            _isAuthenticated =
+                await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
+            Debug.Log("scene _isAuthenticated: " + _isAuthenticated);
             if (_isAuthenticated)
             {
                 _isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
@@ -69,13 +71,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         {
             TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
             
-            //Before loading the one-and-only scene with AuthenticationKit
-            //Destroy the Existing WalletConnect. Otherwise bug in AuthenticationKit.
-            
-            
-            Debug.LogWarning("BEFORE: This destroyed an instance of wallet connect. needed?");
-
-            CustomWeb3System.Instance.ClearActiveSession();
+            Debug.Log("not clearing session");
+            // await CustomWeb3System.Instance.ClearActiveSessionAsync();
+            // await CustomWeb3System.Instance.CloseActiveSessionAsync();
             TheGameSingleton.Instance.TheGameController.LoadAuthenticationSceneAsync();
         }
         

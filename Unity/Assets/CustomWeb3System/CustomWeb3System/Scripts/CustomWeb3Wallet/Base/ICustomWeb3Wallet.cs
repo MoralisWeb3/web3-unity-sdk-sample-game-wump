@@ -1,12 +1,13 @@
 ﻿
 using Cysharp.Threading.Tasks;
+using MoralisUnity.Samples.SharedCustom.Interfaces;
 
 namespace MoralisUnity.Samples.Shared
 {
     /// <summary>
     /// Implemented by <see cref="WalletConnectWeb3WalletSystem"/>
     /// </summary>
-    public interface ICustomWeb3WalletSystem 
+    public interface ICustomWeb3WalletSystem : IInitializable
     {
         //  Properties ------------------------------------
         bool HasActiveSession { get; }
@@ -14,11 +15,12 @@ namespace MoralisUnity.Samples.Shared
         int ChainId { get; }
 
         //  Methods ---------------------------------------
-        UniTask ClearActiveSession();
         
         //  Async Methods ---------------------------------------
         UniTask<string> GetWeb3UserAddressAsync();
         UniTask<bool> HasWeb3UserAddressAsync();
         UniTask ConnectAsync();
+        UniTask ClearActiveSessionAsync();
+        UniTask CloseActiveSessionAsync(bool willImmediatelyReconnect = false);
     }
 }

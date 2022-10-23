@@ -194,7 +194,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             {
                 if (!TheGameSingleton.IsShuttingDown)
                 {
-                    Debug.Log("NEVER BE IN HERE - unless play mode has STOPPED");
+                    //Debug.Log("NEVER BE IN HERE - unless play mode has STOPPED");
                     TheGameSingleton.Instance.TheGameController.UnregisterView(this);
                 }
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using PlayFab;
 using PlayFab.CloudScriptModels;
 using UnityEngine;
@@ -15,22 +16,31 @@ namespace MoralisUnity.Samples.Shared
         /// <summary>
         /// Invoked when authetication was 
         /// </summary>
-        [Header("Events")] public UnityEvent OnSucces = new UnityEvent();
+        [Header("Events")] 
+        public UnityEvent OnSucces = new UnityEvent();
 
         /// <summary>
         /// Invoked when State==AuthenticationKitState.Disconnected
         /// </summary>
         public UnityEvent OnFailed = new UnityEvent();
 
-        private AuthenticationKit authenticationKit = null;
+        [SerializeField]
+        private AuthenticationKit _authenticationKit = null;
 
-        public void Awake()
+        public async void Start()
         {
-            authenticationKit = FindObjectOfType<AuthenticationKit>(true);
+            _authenticationKit = FindObjectOfType<AuthenticationKit>(true);
+            _authenticationKit.OnStateChanged.AddListener(StateObservable_OnValueChanged);
+
+            await UniTask.WaitWhile(() => WalletConnect.Instance == null);
+            Debug.Log("WalletConnect.Instance: " + WalletConnect.Instance);
+            Debug.Log("WalletConnect.Instance.Session: " + WalletConnect.Instance.Session.Connected);
+            Debug.Log("WalletConnect.Instance.Session.Connected: " + WalletConnect.Instance.Session.Connected);
         }
 
         public void StateObservable_OnValueChanged(AuthenticationKitState authenticationKitState)
         {
+            Debug.Log("authenticationKitState: " + authenticationKitState);
             switch (authenticationKitState)
             {
                 case AuthenticationKitState.WalletConnected:
@@ -84,7 +94,7 @@ namespace MoralisUnity.Samples.Shared
                 string message = result.FunctionResult.ToString();
                 if (!String.IsNullOrEmpty(message))
                 {
-                    authenticationKit.State = AuthenticationKitState.WalletSigning;
+                    _authenticationKit.State = AuthenticationKitState.WalletSigning;
 
 #if !UNITY_WEBGL
                     // Sign the message with WalletConnect
@@ -150,7 +160,7 @@ namespace MoralisUnity.Samples.Shared
                 // If it failed it returns empty
                 if (!String.IsNullOrEmpty(result.FunctionResult.ToString()))
                 {
-                    authenticationKit.State = AuthenticationKitState.WalletSigned;
+                    _authenticationKit.State = AuthenticationKitState.WalletSigned;
                     Debug.Log("Web3 Authentication successful!");
                     Debug.Log(result.FunctionResult);
                     // On success fire the OnSuccess event

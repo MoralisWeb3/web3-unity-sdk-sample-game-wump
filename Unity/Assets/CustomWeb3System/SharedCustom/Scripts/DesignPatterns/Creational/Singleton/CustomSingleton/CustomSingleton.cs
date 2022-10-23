@@ -1,4 +1,5 @@
 
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,25 +13,75 @@ namespace MoralisUnity.Samples.SharedCustom.DesignPatterns.Creational.Singleton.
         void OnInstantiatedBase();
         void OnInstantiatedChild();
     }
-    
+
     public abstract class CustomSingletonParent : System.Object, ICustomSingletonParent
     {
         //  Properties ------------------------------------
         public UnityEvent OnInstantiated = new UnityEvent();
-        
+
         //  General Methods -------------------------------
         void ICustomSingletonParent.OnInstantiatedBase()
         {
             (this as ICustomSingletonParent).OnInstantiatedChild();
             OnInstantiated.Invoke();
-            
+
         }
-        
+
         void ICustomSingletonParent.OnInstantiatedChild()
         {
             //Override 
         }
+
+        public static void OnEnteredEditMode()
+        {
+            //Do nothing here
+            //Static cannot be overridden per se
+            //You can REDECLARE this method in a child 
+            //REDECLARATION will be called
+        }
+
+        public static void  OnEnteredPlayMode()
+        {
+            //Do nothing here
+            //Static cannot be overridden per se
+            //You can REDECLARE this method in a child 
+            //REDECLARATION will be called
+        }
+        
+#if UNITY_EDITOR
+
+        [InitializeOnLoadMethod]
+        static void InitializeOnLoadMethod()
+        {
+            Debug.Log("InitializeOnLoadMethod");
+            EditorApplication.playModeStateChanged += _OnPlayModeStateChanged;
+        }
+
+        /// <summary>
+        /// This InitializeOnLoadMethod scheme is designed to
+        /// Properly reset the IsShuttingDown each time play mode ends
+        ///
+        /// The IsShuttingDown helps prevent non-singletons in their OnDestroy()
+        /// from accidentally calling singleton.Instantiate which causes issues
+        /// 
+        /// </summary>
+        private static void _OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.EnteredEditMode)
+            {
+                OnEnteredEditMode();
+
+            }
+            else if (state == PlayModeStateChange.EnteredPlayMode)
+            {
+                OnEnteredPlayMode();
+            }
+        }
+#endif
+
+
     }
+
 
     //TODO: Add to Moralis Web3 Unity SDK - srivello
     /// <summary>
@@ -66,12 +117,16 @@ namespace MoralisUnity.Samples.SharedCustom.DesignPatterns.Creational.Singleton.
             }
         }
         
+        protected static void Uninstantiate()
+        {
+            _instance = null;
+        }
+        
         public static T Instantiate()
         {
             return Instance;
         }
-        
-		
+   
         //  General Methods -------------------------------
 		
         

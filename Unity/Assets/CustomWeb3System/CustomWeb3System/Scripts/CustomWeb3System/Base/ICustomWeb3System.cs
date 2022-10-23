@@ -19,7 +19,7 @@ namespace MoralisUnity.Samples.Shared
 
         //  Methods ---------------------------------------
         string ConvertWeb3AddressToShortFormat(string address);
-        UniTask ClearActiveSession();
+
         
         //  Async Methods ---------------------------------------
         UniTask AuthenticateAsync();
@@ -28,8 +28,8 @@ namespace MoralisUnity.Samples.Shared
         UniTask<String> ExecuteContractFunctionAsync(string contractAddress, string abi, string functionName, object[] args, bool isLogging = false);
         UniTask<object> RunContractFunctionAsync(string contractAddress, string functionName, string abi, object args, bool isLogging = false);
         UniTask<List<NftOwner>> GetNFTsForContractAsync(string contractAddress, bool isLogging = false);
-
-
+        UniTask ClearActiveSessionAsync();
+        UniTask CloseActiveSessionAsync();
     
     }
 }

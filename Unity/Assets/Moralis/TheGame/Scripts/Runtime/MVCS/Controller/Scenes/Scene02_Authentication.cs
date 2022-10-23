@@ -64,7 +64,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             //Debug.Log($"CancelButton_OnClicked() wasA = {_isAuthenticatedOnStart}, isA = {isAuthenticated}");
             
             // Stop any processes
-            Destroy(_ui.gameObject);
+            if (_ui && _ui.gameObject)
+            {
+                Destroy(_ui.gameObject);
+            }
             
             // Leave
             TheGameSingleton.Instance.TheGameController.LoadIntroSceneAsync();

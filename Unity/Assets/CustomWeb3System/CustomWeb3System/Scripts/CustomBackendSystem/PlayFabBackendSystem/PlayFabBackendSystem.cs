@@ -59,7 +59,7 @@ namespace MoralisUnity.Samples.Shared
 		
 		// General Methods --------------------------------
 
-		public UniTask ClearActiveSession()
+		public UniTask ClearActiveSessionAsync()
 		{
 			PlayFabAuthService.Instance.ClearRememberMe();
 			return UniTask.DelayFrame(0);

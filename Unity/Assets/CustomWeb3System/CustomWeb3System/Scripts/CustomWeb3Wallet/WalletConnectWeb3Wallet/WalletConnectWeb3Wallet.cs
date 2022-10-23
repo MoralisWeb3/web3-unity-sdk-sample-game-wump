@@ -1,5 +1,6 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
+using MoralisUnity.Samples.SharedCustom.Exceptions;
 using UnityEngine;
 using WalletConnectSharp.Unity;
 
@@ -12,58 +13,153 @@ namespace MoralisUnity.Samples.Shared
 	public class WalletConnectWeb3WalletSystem : ICustomWeb3WalletSystem
 	{
 		// Properties -------------------------------------
+		public bool IsInitialized { get; private set; }
+
+
 		public bool HasActiveSession
 		{
 			get
 			{
-				return WalletConnect.Instance != null && WalletConnect.ActiveSession != null;
+				//Allow false without throwing exception
+				return HasWalletConnectInstance && WalletConnect.ActiveSession != null;
 			}
 		}
-		
+
+
 		public bool IsConnected
 		{
 			get
 			{
-				return WalletConnect.Instance != null && WalletConnect.ActiveSession != null && WalletConnect.ActiveSession.Connected;
+				//Allow false without throwing exception
+				return HasWalletConnectInstance && WalletConnect.ActiveSession != null &&
+				       WalletConnect.ActiveSession.Connected;
 			}
 		}
-		
+
+
 		public int ChainId
 		{
 			get
 			{
+				RequireIsInitialized();
 				return WalletConnect.ActiveSession.ChainId;
 			}
 		}
+
+
+		//Keep this private
+		private bool HasWalletConnectInstance
+		{
+			get { return WalletConnectInstance != null; }
+		}
+
+
+		//Keep this private
+		private WalletConnect WalletConnectInstance
+		{
+			get
+			{
+				// Internally, we ALWAYS 're-get' this instead of assuming it still exists. It is brittle.
+				return WalletConnect.Instance;
+			}
+		}
+
+
 		// Fields -----------------------------------------
 
+
 		// Initialization Methods -------------------------
-		
+		public void Initialize()
+		{
+			if (!IsInitialized)
+			{
+				IsInitialized = HasWalletConnectInstance;
+				if (!IsInitialized)
+				{
+					Debug.LogError("Initialize() failed. HasWalletConnectInstance must not equal false");
+				}
+			}
+		}
+
+
+		public void RequireIsInitialized()
+		{
+			if (!IsInitialized)
+			{
+				throw new NotInitializedException(this);
+			}
+		}
+
+
 		// General Methods --------------------------------
 		public async UniTask ConnectAsync()
 		{
-			await WalletConnect.Instance.Connect();
+			RequireIsInitialized();
+
+			// CLear out the session so it is re-establish on sign-in.
+			WalletConnectInstance.CLearSession();
+
+			// Enable auto save to remember the session for future use 
+			WalletConnectInstance.autoSaveAndResume = true;
+
+			// Don't start a new session on disconnect automatically
+			WalletConnectInstance.createNewSessionOnSessionDisconnect = false;
+
+			await WalletConnectInstance.Connect();
 		}
-		
-		
+
+		public async UniTask DisconnectAsync()
+		{
+			try
+			{
+				// Close the WalletConnect Transport Session
+				await WalletConnectInstance.Session.Transport.Close();
+
+				// Disconnect the WalletConnect session
+				await WalletConnectInstance.Session.Disconnect();
+			}
+			catch (Exception e)
+			{
+				//Reason for Aborted warning is unknown, but expected. 
+				if (e.Message != "Aborted")
+				{
+					// Send error to the log but not as an error as this is expected behavior from W.C.
+					Debug.LogWarning($"[WalletConnect] Error = {e.Message}");
+				}
+			}
+		}
+
+
 		public async UniTask<bool> HasWeb3UserAddressAsync()
 		{
+			RequireIsInitialized();
 			string web3UserAddress = await GetWeb3UserAddressAsync();
 			return !string.IsNullOrEmpty(web3UserAddress);
 		}
 
 
-		public async UniTask ClearActiveSession()
+		public async UniTask ClearActiveSessionAsync()
 		{
-			WalletConnect.Instance.CLearSession();
+			RequireIsInitialized();
+			WalletConnectInstance.CLearSession();
 			
 			await UniTask.WaitWhile(() => !HasActiveSession);
 		}
-
+		
+		
+		public async UniTask CloseActiveSessionAsync(bool willImmediatelyReconnect = false)
+		{
+			RequireIsInitialized();
+			WalletConnectInstance.CloseSession(willImmediatelyReconnect);
+			await UniTask.NextFrame();
+		}
+		
+		
 		public async UniTask<string> GetWeb3UserAddressAsync()
 		{
 			//Do not require AUTH here, because this method IS PART of the auth-check
-			if (HasActiveSession)
+			//Do not require INIT here, because this method IS PART of the auth-check
+			if (HasWalletConnectInstance && HasActiveSession)
 			{
 				if (WalletConnect.ActiveSession.Accounts != null && 
 				    WalletConnect.ActiveSession.Accounts.Length > 0)
@@ -82,6 +178,7 @@ namespace MoralisUnity.Samples.Shared
 		}
 		
 		// Event Handlers ---------------------------------
+
 	}
 }
 
