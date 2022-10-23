@@ -34,6 +34,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		public bool IsConnected { get; private set; }
 		public bool IsHost { get { return NetworkManager.Singleton.IsHost;} }
 		public bool IsClient { get { return NetworkManager.Singleton.IsClient;} }
+		public bool IsServer { get { return NetworkManager.Singleton.IsServer;} }
 		
 		public UnityEvent OnConnectStarted { get { return _onConnectStarted; } }
 		public StringUnityEvent OnConnectCompleted { get { return _onConnectCompleted; } }
@@ -80,83 +81,36 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			{
 				//NOTE: In this LAN implementation, not much happens in this method. That is ok.
 				IsConnected = true;
+				
 				OnStateNameForDebuggingChanged.Invoke("Connected");
 				await UniTask.CompletedTask;
 			}
-			
-		}
-
-		
-		public void OnGUI() 
-		{
-			//TODO: Remove this
-// 			if (!IsInitialized) return;
-// 			//Regardless of _isAutoStart, this will appear properly as needed
-//
-// 			float guiWidth = Screen.width * 0.2f;
-// 			float guiHeight = Screen.height * 0.2f;
-// 			float guiMarginWidth = 10;
-// 			float guiMarginHeight = 320;
-// 			GUILayout.BeginArea(new Rect(
-// 				Screen.width - guiWidth - guiMarginWidth, 
-// 				Screen.height - guiHeight - guiMarginHeight, 
-// 				guiWidth, 
-// 				guiHeight));
-// 			if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer) 
-// 			{
-// 				if (GUILayout.Button("Host"))
-// 				{
-// 					await StartAsHost();
-// 				}
-//
-// 				if (GUILayout.Button("Client"))
-// 				{
-// 					await JoinAsClient();
-// 				}
-// 			}
-// 			else
-// 			{
-// 				string label = "Disconnect ";
-// 				if (NetworkManager.Singleton.IsHost)
-// 				{
-// 					label += "Host";
-// 				}
-// 				else
-// 				{
-// 					label += "Client";
-// 				}
-//
-// 				if (GUILayout.Button(label))
-// 				{
-// #pragma warning disable CS4014
-// 					Shutdown();
-// #pragma warning restore CS4014
-// 				}
-// 			}
-// 			GUILayout.EndArea();
 		}
 
 		
 		public bool CanStartAsHost()
 		{
-			return IsInitialized && !NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer;
+			return IsInitialized && !IsClient && !IsServer;
 		}
 		
 		
 		public bool CanJoinAsClient()
 		{
-			return IsInitialized && !NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer;;
+			return IsInitialized && !IsClient && !IsServer;;
 		}
+		
 		
 		public bool CanShutdown()
 		{
-			return IsInitialized && NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer;
+			return IsInitialized && IsClient || IsServer;
 		}
+		
 		
 		public bool CanToggleStatsButton()
 		{
-			return IsInitialized && NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer;
+			return IsInitialized && IsClient || IsServer;
 		}
+		
 		
 		public async UniTask StartAsHost()
 		{	
@@ -175,6 +129,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			
 		}
 
+		
 		public async UniTask JoinAsClient()
 		{
 			RequireIsInitialized();
@@ -190,22 +145,16 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			OnStateNameForDebuggingChanged.Invoke("StartClientCompleted");
 		}
 		
-
 		
 		public async UniTask Shutdown()
 		{
 			RequireIsInitialized();
-			if (IsConnected)
-			{
-				OnStateNameForDebuggingChanged.Invoke("ShutdownStarting");
-				NetworkManager.Singleton.Shutdown();
-				await UniTask.Delay(1000);
-				OnStateNameForDebuggingChanged.Invoke("ShutdownCompleted");
-			}
-			else
-			{
-				Debug.LogWarning("Shutdown () failed. Must be IsConnected==true");
-			}
+			
+			NetworkManager.Singleton.Shutdown(true);
+			OnStateNameForDebuggingChanged.Invoke("ShutdownStarting");
+			await UniTask.Delay(1000);
+			OnStateNameForDebuggingChanged.Invoke("ShutdownCompleted");
+			IsConnected = false;
 		}
 
 
@@ -214,27 +163,28 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			//When the scene is closing its 'too late' to do these things. That is ok.
 			try
 			{
-				if (NetworkManager.Singleton.IsServer)
+				if (!NetworkManager.Singleton.ShutdownInProgress)
 				{
-					if (!NetworkManager.Singleton.ShutdownInProgress)
+					if (IsServer)
 					{
+						//UNITY MESSAGE: Only server can disconnect remote clients. Please use `Shutdown()` instead.
 						NetworkManager.Singleton.DisconnectClient(NetworkManager.Singleton.LocalClientId);
-						Debug.Log("DisconnectClient 2 ");
-				
-						if (NetworkManager.Singleton.IsServer)
-						{
-							await Shutdown();
-						}
 					}
+					await Shutdown();
 				}
 			}
-			catch (NullReferenceException)
+			catch (NullReferenceException e)
 			{
 				//Do nothing. Sometimes "NetworkManager.Singleton" is null. That is ok.
+				Debug.LogWarning(e.Message);
+			}
+			catch (Exception e)
+			{
+				//Do nothing. Sometimes "NetworkManager.Singleton" is null. That is ok.
+				Debug.LogWarning("2: " + e.Message);
 			}
 
 			IsConnected = false;
-
 		}
 		
 
@@ -244,7 +194,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			OnStateNameForDebuggingChanged.Invoke("Connected");
 			
 			// For each client, store the 'i am now connected'
-			if (!NetworkManager.Singleton.IsClient) return;
+			if (!IsClient) return;
 
 			// For host, it is both a server and a client
 			// so check that the connection is 'me'
@@ -258,7 +208,5 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 				//Debug.Log($"{this.GetType().Name} NetworkManager_OnClientConnected() from l={_localClientId} nsl={NetworkManager.Singleton.LocalClientId} leaveID{connectedClientId}"); 
 			}
 		}
-
-
 	}
 }

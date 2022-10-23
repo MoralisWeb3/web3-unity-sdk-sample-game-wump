@@ -47,6 +47,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		public bool IsConnected { get; private set; }
 		public bool IsHost { get { return _isHost; } private set { _isHost = value;} }
 		public bool IsClient { get { return _isClient; } private set { _isHost = value;} }
+		public bool IsServer { get { return NetworkManager.Singleton.IsServer;} }
 		
 		//  Fields ----------------------------------------
 		private UnityTransport _unityTransport;
@@ -75,6 +76,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			OnDisconnectStarted = new UnityEvent();
 			OnDisconnectCompleted = new UnityEvent();
 			OnStateNameForDebuggingChanged = new StringUnityEvent();
+			NetworkManager.Singleton.OnTransportFailure += NetworkManager_OnTransportFailure;
+			NetworkManager.Singleton.OnServerStarted += NetworkManager_OnServerStarted;
 			
 			//
 			_unityTransport = unityTransport;
@@ -82,6 +85,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 			IsConnected = false;
 			_observableFullMultiplayerState.Value = FullMultiplayerState.Null;
 		}
+
+
+
 		public void Initialize()
 		{
 			if (!IsInitialized)
@@ -194,7 +200,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		
 		private async Task<Lobby> QuickJoinLobbyAsync()
 		{
-			Debug.LogWarning("7777777 QuickJoinLobbyAsync()");
+			Debug.LogWarning("QuickJoinLobbyAsync()");
 			Lobby lobby = null;
 			try
 			{
@@ -276,7 +282,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 		
 		private async Task<Lobby> CreateLobbyAsync()
 		{
-			Debug.LogWarning("7777777 CreateLobbyAsync()");
+			Debug.LogWarning("CreateLobbyAsync()");
 			
 			Allocation allocation = await RelayService.Instance.CreateAllocationAsync(MaxConnections);
 
@@ -403,6 +409,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService
 
 		
 		//  Event Handlers --------------------------------
+		private void NetworkManager_OnTransportFailure()
+		{
+			Debug.Log("NetworkManager_OnTransportFailure");
+		}
+		
+		private void NetworkManager_OnServerStarted()
+		{
+			Debug.Log("NetworkManager_OnServerStarted");
+		}
+		
+		
 		private async void ObservableFullMultiplayerState_OnValueChanged(
 			FullMultiplayerState oldValue, FullMultiplayerState newValue)
 		{

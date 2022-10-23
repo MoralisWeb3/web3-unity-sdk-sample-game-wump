@@ -3,6 +3,7 @@ using RMC.Shared.Exceptions;
 using MoralisUnity.Samples.TheGame.MVCS.Networking.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using Unity.Netcode.Transports.UTP;
+using UnityEngine;
 
 namespace MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService
 {
@@ -37,6 +38,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService
                 
                 case MultiplayerSetupServiceType.Full:
                     multiplayerSetupService = new FullMultiplayerSetupService(unityTransport);
+                    Debug.LogError("FullMultiplayerSetupService() has known issues. Can HOST but cannot JOIN. Fix may be committed soon. Try LAN mode instead.");
                     break;
                 
                 default:

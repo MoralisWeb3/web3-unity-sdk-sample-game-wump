@@ -41,7 +41,7 @@ namespace MoralisUnity.Samples.TheGame
 		{
 			_ui.StartAsHostButton.Button.onClick.AddListener(StartAsHostButton_OnClicked);
 			_ui.JoinAsClientButton.Button.onClick.AddListener(JoinAsClientButton_OnClicked);
-			_ui.ShutdownButton.Button.onClick.AddListener(ShutdownButton_OnClicked);
+			_ui.ShutdownButton.Button.onClick.AddListener( () => ShutdownButton_OnClicked());
 			_ui.ToggleStatsButton.Button.onClick.AddListener(ToggleStatsButton_OnClicked);
 			_ui.BackButton.Button.onClick.AddListener(BackButton_OnClicked);
 			//
@@ -153,7 +153,6 @@ namespace MoralisUnity.Samples.TheGame
 		{
 			TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
 
-			
 			if (!TheGameSingleton.Instance.TheMultiplayerController.IsConnected())
 			{
 				await TheGameSingleton.Instance.TheMultiplayerController.ConnectAsync();
@@ -185,8 +184,13 @@ namespace MoralisUnity.Samples.TheGame
 			}
 		}	
 		
-		private async void ShutdownButton_OnClicked()
+		private async UniTask ShutdownButton_OnClicked()
 		{
+			if (TheGameSingleton.Instance.TheMultiplayerController.IsVisibleRuntimeNetStatsMonitor)
+			{
+				TheGameSingleton.Instance.TheMultiplayerController.IsVisibleRuntimeNetStatsMonitor = false;
+			}
+			
 			if (TheGameSingleton.Instance.TheMultiplayerController.CanShutdown())
 			{
 				TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
@@ -201,10 +205,10 @@ namespace MoralisUnity.Samples.TheGame
 		}
 		
 		
-		private void BackButton_OnClicked()
+		private async void BackButton_OnClicked()
 		{
 			//Mimic "Leave Multiplayer" button click too
-			ShutdownButton_OnClicked();
+			await ShutdownButton_OnClicked();
 			
 			TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
 			TheGameSingleton.Instance.TheGameController.LoadIntroSceneAsync();

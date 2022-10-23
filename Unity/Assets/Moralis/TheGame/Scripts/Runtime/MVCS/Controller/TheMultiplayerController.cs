@@ -217,14 +217,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		
 		private async void MultiplayerSetupService_OnDisconnectStarted()
 		{
-			Debug.Log($"MultiplayerSetupService_OnDisconnectStarted() ");
+			TheGameSingleton.Debug.Log($"MultiplayerSetupService_OnDisconnectStarted() ");
 			await _theGameController.ShowMessageWithDelayAsync(TheGameConstants.MultiplayerDisconnecting, 2000);
 		}
 		
 		
 		private async void MultiplayerSetupService_OnDisconnectCompleted()
 		{
-			Debug.Log($"MultiplayerSetupService_OnDisconnectionCompleted() ");
+			TheGameSingleton.Debug.Log($"MultiplayerSetupService_OnDisconnectionCompleted() ");
 			_theGameController.UpdateMessageDuringMethod(TheGameConstants.MultiplayerDisconnected);
 			await UniTask.Delay(1000);
 			_theGameController.HideMessageDuringMethod(true);

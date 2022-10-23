@@ -7,6 +7,7 @@ using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
 using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
+using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -155,8 +156,21 @@ namespace MoralisUnity.Samples.TheGame
 			//KEEP LOG FOREVER
 			TheGameSingleton.Debug.LogBlueMessage($"SetUniquePlayerPrefsKey() key = {TheGameConstants.GetPlayerPrefsKeyForWeb3AndMultiplayer()}");
 		}
-		
-		// Unity Methods --------------------------------
+
+		// Debug high level changes to networking state.
+		// private string lastTempString = "";
+		//
+		// // Unity Methods --------------------------------
+		// protected void Update()
+		// {
+		// 	string tempString = ("Network: c " + NetworkManager.Singleton.IsClient + " &s " + NetworkManager.Singleton.IsServer + " &g " + NetworkManager.Singleton.IsHost);
+		//
+		// 	if (tempString != lastTempString)
+		// 	{
+		// 		lastTempString = tempString;
+		// 		Debug.Log(lastTempString);
+		// 	}
+		// }
 		
 		protected override void OnDestroy()
 		{
