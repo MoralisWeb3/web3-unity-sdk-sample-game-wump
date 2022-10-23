@@ -40,7 +40,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
 
             _isAuthenticated =
                 await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
-            Debug.Log("scene _isAuthenticated: " + _isAuthenticated);
+            TheGameSingleton.Debug.Log("scene _isAuthenticated: " + _isAuthenticated);
             if (_isAuthenticated)
             {
                 _isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
