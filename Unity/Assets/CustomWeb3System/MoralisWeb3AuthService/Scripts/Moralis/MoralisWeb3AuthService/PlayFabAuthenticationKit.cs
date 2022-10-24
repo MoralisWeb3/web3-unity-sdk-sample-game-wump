@@ -18,22 +18,17 @@ namespace MoralisUnity.Samples.Shared
             _authenticationKit.gameObject.SetActive(false);
             _authenticationKit.OnStateChanged.AddListener(StateObservable_OnValueChanged);
 
-            Debug.Log("READYING...");
             // Wait for BACKEND to be authed
             await CustomWeb3System.Instance.AuthenticateAsync();
             await UniTask.WaitWhile(() => !CustomWeb3System.Instance.CustomBackendSystem.IsAuthenticated);
-            Debug.Log("READY...");
             
-            _authenticationKit.gameObject.SetActive(true);
-            Debug.Log("WalletConnect.Instance: " + WalletConnect.Instance);
-            Debug.Log("WalletConnect.Instance.Session: " + WalletConnect.Instance.Session.Connected);
-            Debug.Log("WalletConnect.Instance.Session.Connected: " + WalletConnect.Instance.Session.Connected);
-        
+            // Wait for instance. NEEDED?
+            await UniTask.WaitWhile(() => WalletConnect.Instance == null);
+            //_authenticationKit.gameObject.SetActive(true);
         }
 
         public async void StateObservable_OnValueChanged(AuthenticationKitState authenticationKitState)
         {
-            Debug.Log("authenticationKitState: " + authenticationKitState);
             switch (authenticationKitState)
             {
                 case AuthenticationKitState.WalletConnected:

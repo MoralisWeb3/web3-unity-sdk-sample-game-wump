@@ -13,6 +13,7 @@ namespace MoralisUnity.Samples.Shared.UI
     {
         //  Properties  ---------------------------------------
         public bool IsAuthenticated { get { return _isAuthenticated;}}
+        private bool _hasCalledAuthenticate = false;
 
         private async UniTask<bool> AuthenticateAndReturnBoolAsync()
         {
@@ -20,6 +21,7 @@ namespace MoralisUnity.Samples.Shared.UI
             {
                 await CustomWeb3System.Instance.AuthenticateAsync();
                 _isAuthenticated = await CustomWeb3System.Instance.IsAuthenticatedAsync();
+                _hasCalledAuthenticate = true;
             }
             return _isAuthenticated;
         }
@@ -37,12 +39,16 @@ namespace MoralisUnity.Samples.Shared.UI
         private async Task CheckIsAuthenticatedAsync()
         {
             //Don't set auth value
+            _hasCalledAuthenticate = false;
+            await RefreshUI();
             await AuthenticateAndReturnBoolAsync();
             await RefreshUI();
         }
         
         private async Task RefreshUI()
         {
+            IsInteractable = true;
+            
             if (_isAuthenticated)
             {
                 try
@@ -60,7 +66,16 @@ namespace MoralisUnity.Samples.Shared.UI
             else
             {
                 // Fallback
-                Text.text = SharedConstants.Authenticate;
+                if (_hasCalledAuthenticate)
+                {
+                    Text.text = SharedConstants.Authenticate;
+                }
+                else
+                {
+                    Text.text = SharedConstants.Loading;
+                    IsInteractable = false;
+                }
+                
             }
         }
 		

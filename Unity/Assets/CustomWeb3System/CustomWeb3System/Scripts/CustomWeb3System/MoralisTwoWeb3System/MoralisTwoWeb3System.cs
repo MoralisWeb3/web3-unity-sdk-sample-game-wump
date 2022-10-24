@@ -85,7 +85,6 @@ namespace MoralisUnity.Samples.Shared
 				{
 					Debug.Log($"{GetType().Name}.InitializeAsync() failed. Error 0001");
 				}
-				Debug.Log("HasWeb3UserAddressAsync: " + _customWeb3WalletSystem.HasWeb3UserAddressAsync());
 				// Do initialize
 				_customBackendSystem.Initialize();
 				if (!_customBackendSystem.IsInitialized)
@@ -143,7 +142,6 @@ namespace MoralisUnity.Samples.Shared
 
 		public async UniTask ClearActiveSessionAsync()
 		{
-			Debug.Log("clear session");
 			await _customWeb3WalletSystem.ClearActiveSessionAsync();
 			await _customBackendSystem.ClearActiveSessionAsync();
 		}

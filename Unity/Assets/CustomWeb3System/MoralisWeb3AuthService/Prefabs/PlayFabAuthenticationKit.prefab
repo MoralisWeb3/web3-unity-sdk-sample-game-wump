@@ -59,11 +59,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1028142497262709266, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 20
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 1028142497262709266, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 280
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028142497262709266, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 1028142497502137021, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: m_Name
@@ -71,7 +75,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1028142497502137021, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1028142497502137022, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: m_RootOrder
@@ -147,7 +151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6711608146466190628, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7666298087028915231, guid: a41feed31bcc36541a7a9505212ddc63, type: 3}
       propertyPath: DefaultWallet

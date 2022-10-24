@@ -1,3 +1,4 @@
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
@@ -67,11 +68,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         private async void AuthenticationButtonUI_OnClicked()
         {
             TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
-            
-            Debug.Log("YES clearing session");
-            await CustomWeb3System.Instance.ClearActiveSessionAsync();
-            await CustomWeb3System.Instance.CloseActiveSessionAsync();
+
             TheGameSingleton.Instance.TheGameController.LoadAuthenticationSceneAsync();
+            
         }
         
         

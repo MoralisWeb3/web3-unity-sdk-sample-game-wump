@@ -134,6 +134,22 @@ namespace MoralisUnity.Samples.Shared
 	        TextInfo myTI = new CultureInfo("en-US",false).TextInfo;
 	        return myTI.ToTitleCase(message);
         }
-        
+
+        public static async UniTask DestroyEveryGameObjectInScene()
+        {
+            var x = GameObject.FindObjectsOfType<MonoBehaviour>().ToList();
+            for (int i = x.Count - 1; i >= 0; i--)
+            {
+                if (x[i].gameObject)
+                {
+                   GameObject.Destroy(x[i].gameObject);
+                }
+            }
+
+            await UniTask.NextFrame();
+            var y = GameObject.FindObjectsOfType<MonoBehaviour>().ToList();
+            //Debug.Log("DestroyEveryGameObjectInScene Count = " + x.Count + " to Count = " + y.Count);
+
+        }
     }
 }

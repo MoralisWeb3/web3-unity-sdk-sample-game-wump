@@ -104,7 +104,6 @@ namespace MoralisUnity.Samples.Shared
 
             if (_willInitializeOnStart)
             {
-                Debug.Log("auth kit Start() calling initasync");
                 await InitializeAsync();
             }
         }

@@ -13,10 +13,18 @@ namespace MoralisUnity.Samples.Shared.Data.Types.Storage
         {
             get
             {
-                return _canvasGroup.alpha;
+                if (!_canvasGroup)
+                {
+                    return 0;
+                }
+                return  _canvasGroup.alpha;
             }
             set
             {
+                if (!_canvasGroup)
+                {
+                    return;
+                }
                 _canvasGroup.alpha = value;
             }
         }
@@ -25,10 +33,14 @@ namespace MoralisUnity.Samples.Shared.Data.Types.Storage
         {
             get
             {
-                return _canvasGroup.blocksRaycasts;
+                return _canvasGroup != null && _canvasGroup.blocksRaycasts;
             }
             set
             {
+                if (!_canvasGroup)
+                {
+                    return;
+                }
                 _canvasGroup.blocksRaycasts = value;
             }
         }

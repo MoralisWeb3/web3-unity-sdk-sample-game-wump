@@ -1,4 +1,4 @@
-using System;
+
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.TheGame.MVCS.View.Scenes;
@@ -21,31 +21,22 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         private Scene02_AuthenticationUI _ui;
 
         private bool _isAuthenticatedOnStart = false;
+        private bool _hasClickedAuthenticate = false;
 
         //  Unity Methods----------------------------------
 
         protected async void Start()
         {
+            RefreshUIAsync();
+            
+            //
             _ui.PlayerView.PlayerNameText.text = TheGameHelper.GetPlayerNameAsSceneTitle("Web3 Auth", 5); 
+            _ui.AuthenticationButtonUI.Button.onClick.AddListener(AuthenticationButton_OnClicked);
             _ui.CancelButton.Button.onClick.AddListener(CancelButton_OnClicked);
             
-            RefreshUIAsync();
-
+            //
             _isAuthenticatedOnStart = await TheGameSingleton.Instance.TheGameController.GetIsAuthenticatedAndUpdateModelAsync();
-            if (_isAuthenticatedOnStart)
-            {
-                //BUG: Mysteriously the AuthenticationKit will DISCONNECT in this situation
-                
-                //HACK: So wait one frame, then trigger the desired game-specific response as
-                //      if the user clicked a non-existent 'disconnect' button
-                await UniTask.NextFrame();
-                AuthenticationUI_OnDisconnected();
-            }
-            else
-            {
-    
-                _ui.AuthenticationKit.OnConnected.AddListener(AuthenticationUI_OnConnected);
-            }
+            _ui.AuthenticationKit.OnConnected.AddListener(AuthenticationUI_OnConnected);
             RefreshUIAsync();
         }
 
@@ -53,6 +44,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         //  General Methods -------------------------------
         private async void RefreshUIAsync()
         {
+            if (_ui.AuthenticationKit)
+            {
+                _ui.AuthenticationKit.gameObject.SetActive(_hasClickedAuthenticate);
+            }
+            
+            _ui.AuthenticationButtonUI.IsInteractable = !_hasClickedAuthenticate;
             _ui.CancelButton.IsInteractable = true;
         }
         
@@ -72,7 +69,23 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
         }
         
 
+        private async void AuthenticationButton_OnClicked()
+        {
+            _hasClickedAuthenticate = true;
+            if (_isAuthenticatedOnStart)
+            {
+                // Logout
+                TheGameSingleton.Instance.TheGameController.PlayAudioClipClick();
+                await CustomWeb3System.Instance.ClearActiveSessionAsync();
+                await CustomWeb3System.Instance.CloseActiveSessionAsync();
+                await SharedHelper.DestroyEveryGameObjectInScene();
 
+                TheGameSingleton.Instance.TheGameController.LoadAuthenticationSceneAsync();
+            }
+            RefreshUIAsync();
+        }
+
+        
         //  Event Handlers --------------------------------
         private async void CancelButton_OnClicked()
         {

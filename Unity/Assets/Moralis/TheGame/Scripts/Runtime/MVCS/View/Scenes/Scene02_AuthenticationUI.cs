@@ -13,6 +13,8 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
         //  Properties ------------------------------------
         public PlayerView PlayerView { get { return _playerView; } }
         
+        public AuthenticationButtonUI AuthenticationButtonUI { get { return _authenticationButtonUI; } }
+        
         public BaseButtonUI CancelButton { get { return _cancelButton; } }
         
         public AuthenticationKit AuthenticationKit { get { return _authenticationKit; } }
@@ -25,6 +27,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
 
         [SerializeField]
         private PlayerView _playerView = null;
+
+        [SerializeField]
+        private AuthenticationButtonUI _authenticationButtonUI = null;
 
         [SerializeField]
         private BaseButtonUI _cancelButton = null;
