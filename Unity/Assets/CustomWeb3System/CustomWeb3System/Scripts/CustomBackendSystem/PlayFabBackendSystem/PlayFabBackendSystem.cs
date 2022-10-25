@@ -86,16 +86,11 @@ namespace MoralisUnity.Samples.Shared
 			
 			if (!IsAuthenticated)
 			{
-				// Prevent repeating this call, wait for response
+				// Allow for multiple AuthenticateAsync calls without making multiple Authenticate() calls. Works well.
 				if (!_isPendingCallAuthenticate)
 				{
-					Debug.Log("1 DO CALL");
 					_isPendingCallAuthenticate = true;
 					PlayFabAuthService.Instance.Authenticate(Authtypes.Silent); //Play as guest. Adequate
-				}
-				else
-				{
-					Debug.Log("2 NOT CALL");
 				}
 			}
 
@@ -272,7 +267,6 @@ namespace MoralisUnity.Samples.Shared
 	        RequireIsInitialized();
 	        RequireIsAuthenticated();
 	        
-            Debug.Log("ChallengeRequestAsync message: " + address);
             ExecuteFunctionResult executeFunctionResult = null;
             bool hasCompletedExecuteFunction = false;
             
@@ -324,7 +318,6 @@ namespace MoralisUnity.Samples.Shared
 	        RequireIsInitialized();
 	        RequireIsAuthenticated();
 	        
-	        Debug.Log("ChallengeVerifyAsync message: " + message);
 	        ExecuteFunctionResult executeFunctionResult = null;
 	        bool hasCompletedExecuteFunction = false;
 	        

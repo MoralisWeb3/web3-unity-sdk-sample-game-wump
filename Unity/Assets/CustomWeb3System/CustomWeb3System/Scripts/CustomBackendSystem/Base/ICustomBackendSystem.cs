@@ -13,7 +13,6 @@ namespace MoralisUnity.Samples.Shared
         bool IsAuthenticated { get; } //TODO: be async?
         
         //  Methods ---------------------------------------
-        UniTask ClearActiveSessionAsync();
         
         //  Async Methods ---------------------------------------
         UniTask AuthenticateAsync();

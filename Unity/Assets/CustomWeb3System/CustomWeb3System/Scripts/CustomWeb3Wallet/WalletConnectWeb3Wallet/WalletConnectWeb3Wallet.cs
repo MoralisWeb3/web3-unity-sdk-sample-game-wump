@@ -152,14 +152,35 @@ namespace MoralisUnity.Samples.Shared
 		}
 		
 		
-		public async UniTask CloseActiveSessionAsync(bool willImmediatelyReconnect = false)
+
+
+		/// <summary>
+		/// KLUGE: Before connecting a HARD reset was needed.
+		/// </summary>
+		public async UniTask KLUGE_CloseOpenWalletConnection()
+		{
+			try
+			{
+				//NOTE: Repeated calls here are PURPOSEFUL and required based on trial/error.
+				//      No idea why.
+				await ClearActiveSessionAsync(); //1
+				await CloseActiveSessionAsync(); //2
+				await ClearActiveSessionAsync(); //3
+				await CloseActiveSessionAsync(); //4
+			}
+			catch (Exception e)
+			{
+				Debug.LogWarning($"Known Issue: {e.Message}");
+			}
+		}
+
+		private async UniTask CloseActiveSessionAsync(bool willImmediatelyReconnect = false)
 		{
 			RequireIsInitialized();
 			WalletConnectInstance.CloseSession(willImmediatelyReconnect);
 			if (willImmediatelyReconnect)
 			{
 				await WalletConnectInstance.Connect();
-				Debug.Log("reconnect");
 			}
 			await UniTask.NextFrame();
 		}

@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllowedWalletNames: []
-  DefaultWallet: 2
+  DefaultWallet: 4
   retryOnTimeout: 1
   autoSaveAndResume: 1
   connectOnAwake: 0

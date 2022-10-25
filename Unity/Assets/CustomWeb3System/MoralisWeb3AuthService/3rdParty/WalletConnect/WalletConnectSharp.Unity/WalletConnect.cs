@@ -193,9 +193,7 @@ namespace WalletConnectSharp.Unity
                             else if (!Session.Connected && !Session.Connecting)
                             {
                                 StartCoroutine(SetupDefaultWallet());
-
                                 SetupEvents();
-
                                 return await CompleteConnect();
                             }
                             else
@@ -217,7 +215,6 @@ namespace WalletConnectSharp.Unity
                             return null;
                         }
                     }
-
                     //default will be set by library
                     ICipher ciper = null;
 
@@ -242,10 +239,9 @@ namespace WalletConnectSharp.Unity
                     {
                         StartCoroutine(SetupDefaultWallet());
                     }
-
                     SetupEvents();
-
                     return await CompleteConnect();
+                    
                 }
                 catch(TimeoutException)
                 {
@@ -296,8 +292,6 @@ namespace WalletConnectSharp.Unity
 
         private async Task<WCSessionData> CompleteConnect()
         {
-            //Debug.Log("Waiting for Wallet connection");
-            
             if (ConnectionStarted != null)
             {
                 ConnectionStarted(this, EventArgs.Empty);
@@ -319,7 +313,6 @@ namespace WalletConnectSharp.Unity
                     var session = await Session.SourceConnectSession();
 
                     allEvents.Invoke(session);
-
                     return session;
                 }
                 catch (IOException e)
@@ -368,7 +361,6 @@ namespace WalletConnectSharp.Unity
             {
                 SelectedWallet = wallet;
                 yield return DownloadImagesFor(wallet.id,new [] {"md"});
-                //Debug.Log("Setup default wallet " + wallet.name);
             }
         }
 

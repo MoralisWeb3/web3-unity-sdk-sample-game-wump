@@ -15,7 +15,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
         
         public AuthenticationButtonUI AuthenticationButtonUI { get { return _authenticationButtonUI; } }
         
-        public BaseButtonUI CancelButton { get { return _cancelButton; } }
+        public BaseButtonUI BackButton { get { return _backButton; } }
         
         public AuthenticationKit AuthenticationKit { get { return _authenticationKit; } }
         
@@ -32,7 +32,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View.Scenes
         private AuthenticationButtonUI _authenticationButtonUI = null;
 
         [SerializeField]
-        private BaseButtonUI _cancelButton = null;
+        private BaseButtonUI _backButton = null;
 
         //  Unity Methods----------------------------------
 

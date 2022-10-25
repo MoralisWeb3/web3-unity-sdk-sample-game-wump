@@ -15,7 +15,6 @@ namespace MoralisUnity.Samples.Shared
         //  Properties ------------------------------------
         ICustomWeb3WalletSystem CustomWeb3WalletSystem { set; get; }
         ICustomBackendSystem CustomBackendSystem { set; get; }
-        bool HasActiveSession { get; }
         int ChainId { get; }
 
         //  Methods ---------------------------------------
@@ -26,12 +25,12 @@ namespace MoralisUnity.Samples.Shared
         UniTask<bool> IsAuthenticatedAsync();
         UniTask<string> GetWeb3UserAddressAsync();
         UniTask<bool> HasWeb3UserAddressAsync();
-        UniTask ClearActiveSessionAsync();
-        UniTask CloseActiveSessionAsync(bool willImmediatelyReconnect = false);
         UniTask<string> EthPersonalSignAsync(string web3UserAddress, string message);
-                
+        UniTask KLUGE_CloseOpenWalletConnection();
+        
         //  Async PlayFab Methods ---------------------------------------
         UniTask<ExecuteFunctionResult> ChallengeRequestAsync(string web3UserAddress, int chainId);
         UniTask<ExecuteFunctionResult> ChallengeVerifyAsync(string message, string signature);
+        
     }
 }

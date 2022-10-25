@@ -140,20 +140,14 @@ namespace MoralisUnity.Samples.Shared
 		// General Methods --------------------------------
 
 
-		public async UniTask ClearActiveSessionAsync()
-		{
-			await _customWeb3WalletSystem.ClearActiveSessionAsync();
-			await _customBackendSystem.ClearActiveSessionAsync();
-		}
-
-		public async UniTask CloseActiveSessionAsync(bool willImmediatelyReconnect = false)
-		{
-			await _customWeb3WalletSystem.CloseActiveSessionAsync(willImmediatelyReconnect);
-		}
-
 		public async UniTask<string> EthPersonalSignAsync(string web3UserAddress, string message)
 		{
 			return await _customWeb3WalletSystem.EthPersonalSignAsync(web3UserAddress, message);
+		}
+
+		public async UniTask KLUGE_CloseOpenWalletConnection()
+		{
+			await _customWeb3WalletSystem.KLUGE_CloseOpenWalletConnection();
 		}
 
 		public async UniTask<ExecuteFunctionResult> ChallengeRequestAsync(string web3UserAddress,int chainId)

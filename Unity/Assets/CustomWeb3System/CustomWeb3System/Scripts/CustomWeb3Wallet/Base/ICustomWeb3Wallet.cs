@@ -21,8 +21,7 @@ namespace MoralisUnity.Samples.Shared
         UniTask<string> GetWeb3UserAddressAsync();
         UniTask<bool> HasWeb3UserAddressAsync();
         UniTask ConnectAsync();
-        UniTask ClearActiveSessionAsync();
-        UniTask CloseActiveSessionAsync(bool willImmediatelyReconnect = false);
+        UniTask KLUGE_CloseOpenWalletConnection();
         UniTask<string> EthPersonalSignAsync(string web3UserAddress, string message);
     }
 }
