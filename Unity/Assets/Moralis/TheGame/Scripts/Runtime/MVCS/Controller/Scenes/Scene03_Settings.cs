@@ -38,7 +38,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             if (_isAuthenticated)
             {
                 // Populate the top UI
-                _isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
+                _isRegistered = await TheGameSingleton.Instance.TheWeb3Controller.GetIsRegisteredAndUpdateModelAsync();
                 RefreshUIAsync();
             }
         }
@@ -88,7 +88,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                 TheGameConstants.SafeReregistering,
                 async delegate ()
                 {
-                    await TheGameSingleton.Instance.TheGameController.SafeReregisterDeleteAllPrizesAsync();
+                    await TheGameSingleton.Instance.TheWeb3Controller.SafeReregisterDeleteAllPrizesAsync();
                     await RefreshUIAsync();
                 });
             

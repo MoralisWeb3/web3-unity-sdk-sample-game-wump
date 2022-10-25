@@ -31,7 +31,7 @@ namespace MoralisUnity.Samples.Shared
 		//
 		private ExecuteContractFunctionSubSystem _executeContractFunctionSubsystem = new ExecuteContractFunctionSubSystem();
 		private RunContractFunctionSubsystem _runContractFunctionSubsystem = new RunContractFunctionSubsystem();
-
+		private bool _isPendingCallAuthenticate = false;
 
 		// Initialization Methods -------------------------
 		void ICustomSingletonParent.OnInstantiatedChild()
@@ -47,6 +47,8 @@ namespace MoralisUnity.Samples.Shared
 				_runContractFunctionSubsystem = new RunContractFunctionSubsystem();
 				_executeContractFunctionSubsystem = new ExecuteContractFunctionSubSystem();
 				
+				PlayFabAuthService.OnLoginSuccess -= PlayFabAuthService_OnLoginSuccess;
+				PlayFabAuthService.OnPlayFabError -= PlayFabAuthService_OnPlayFabError;
 				PlayFabAuthService.OnLoginSuccess += PlayFabAuthService_OnLoginSuccess;
 				PlayFabAuthService.OnPlayFabError += PlayFabAuthService_OnPlayFabError;
 				PlayFabAuthService.Instance.RememberMe = true;
@@ -84,13 +86,21 @@ namespace MoralisUnity.Samples.Shared
 			
 			if (!IsAuthenticated)
 			{
-				PlayFabAuthService.Instance.Authenticate(Authtypes.Silent); //Play as guest. Adequate
+				// Prevent repeating this call, wait for response
+				if (!_isPendingCallAuthenticate)
+				{
+					Debug.Log("1 DO CALL");
+					_isPendingCallAuthenticate = true;
+					PlayFabAuthService.Instance.Authenticate(Authtypes.Silent); //Play as guest. Adequate
+				}
+				else
+				{
+					Debug.Log("2 NOT CALL");
+				}
 			}
 
 			return UniTask.WaitWhile(() => !IsAuthenticated && !HasAuthenticationError);
 		}
-
-
 
 
 		public async UniTask<String> ExecuteContractFunctionAsync(string contractAddress, string abi,
@@ -381,6 +391,7 @@ namespace MoralisUnity.Samples.Shared
 		{
 			Debug.LogWarning($"PlayFabAuthService_OnLoginSuccess () loginResult = {loginResult}");
 			RequireIsInitialized();
+			_isPendingCallAuthenticate = false;
 			IsAuthenticated = true;
 			RequireIsAuthenticated();
 		}
@@ -389,6 +400,7 @@ namespace MoralisUnity.Samples.Shared
 		{
 			RequireIsInitialized();
 			Debug.LogError($"PlayFabAuthService_OnPlayFabError () playFabError = {playFabError}");
+			_isPendingCallAuthenticate = false;
 			HasAuthenticationError = true;
 			IsAuthenticated = false;
 		}

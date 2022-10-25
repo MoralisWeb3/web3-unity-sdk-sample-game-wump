@@ -115,7 +115,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                 async delegate ()
                 {
                     // Will Also Populate the Top UI
-                    _isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
+                    _isRegistered = await TheGameSingleton.Instance.TheWeb3Controller.GetIsRegisteredAndUpdateModelAsync();
 
                     await RefreshUIAsync();
                 });
@@ -141,7 +141,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                     TheGameConstants.Registering,
                     async delegate ()
                     {
-                        await TheGameSingleton.Instance.TheGameController.RegisterAndUpdateModelAsync();
+                        await TheGameSingleton.Instance.TheWeb3Controller.RegisterAndUpdateModelAsync();
 
                         //Populate UI
                         await IsRegisteredButton_OnClicked();
@@ -169,7 +169,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                     TheGameConstants.Unregistering,
                     async delegate ()
                     {
-                        await TheGameSingleton.Instance.TheGameController.UnregisterAsync();
+                        await TheGameSingleton.Instance.TheWeb3Controller.UnregisterAsync();
 
                         //Populate UI
                         await IsRegisteredButton_OnClicked();
@@ -196,7 +196,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                     TheGameConstants.GettingPrizes,
                     async delegate ()
                     {
-                        List<Prize> prizes = await TheGameSingleton.Instance.TheGameController.GetPrizesAndUpdateModelAsync();
+                        List<Prize> prizes = await TheGameSingleton.Instance.TheWeb3Controller.GetPrizesAndUpdateModelAsync();
 
                         _outputTextStringBuilder.Clear();
                         _outputTextStringBuilder.AppendHeaderLine($"GetPrizesAsync()");
@@ -226,7 +226,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                     TheGameConstants.GettingTransferLogHistory,
                     async delegate ()
                     {
-                        TransferLog transferLog = await TheGameSingleton.Instance.TheGameController.GetTransferLogHistoryAsync();
+                        TransferLog transferLog = await TheGameSingleton.Instance.TheWeb3Controller.GetTransferLogHistoryAsync();
 
                         _outputTextStringBuilder.Clear();
                         _outputTextStringBuilder.AppendHeaderLine($"GetTransferLogHistoryAsync()");
@@ -266,17 +266,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                     TheGameConstants.TransferingGold,
                     async delegate ()
                     {
-                        int gold = await TheGameSingleton.Instance.TheGameController.GetGoldAndUpdateModelAsync();
+                        int gold = await TheGameSingleton.Instance.TheWeb3Controller.GetGoldAndUpdateModelAsync();
                         if (gold < TheGameConstants.GoldOnTransfer)
                         {
                             Debug.LogWarning($"TransferPrizeAsync() failed. gold = {gold}.");
                         }
 
                         string fakeAddress = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e";
-                        await TheGameSingleton.Instance.TheGameController.TransferGoldAsync(fakeAddress);
+                        await TheGameSingleton.Instance.TheWeb3Controller.TransferGoldAsync(fakeAddress);
 
                         // Again Update The Model
-                        await TheGameSingleton.Instance.TheGameController.GetGoldAndUpdateModelAsync();
+                        await TheGameSingleton.Instance.TheWeb3Controller.GetGoldAndUpdateModelAsync();
                         
                         // UI
                         _outputTextStringBuilder.Clear();
@@ -305,17 +305,17 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                     TheGameConstants.TransferingPrize,
                     async delegate ()
                     {
-                        List<Prize> prizes = await TheGameSingleton.Instance.TheGameController.GetPrizesAndUpdateModelAsync();
+                        List<Prize> prizes = await TheGameSingleton.Instance.TheWeb3Controller.GetPrizesAndUpdateModelAsync();
                         if (prizes.Count < TheGameConstants.PrizesOnTransfer)
                         {
                             Debug.LogWarning($"TransferPrizeAsync() failed. prizes.Count = {prizes.Count}.");
                         }
                         
                         string fakeAddress = "0x1FdafeC82b2fcD83BbE74a1cfeC616d57709963e";
-                        await TheGameSingleton.Instance.TheGameController.TransferPrizeAsync(fakeAddress, prizes[0]);
+                        await TheGameSingleton.Instance.TheWeb3Controller.TransferPrizeAsync(fakeAddress, prizes[0]);
 
                         // Again Update The Model
-                        await TheGameSingleton.Instance.TheGameController.GetPrizesAndUpdateModelAsync();
+                        await TheGameSingleton.Instance.TheWeb3Controller.GetPrizesAndUpdateModelAsync();
                         
                         // UI
                         _outputTextStringBuilder.Clear();
@@ -337,7 +337,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                 TheGameConstants.SafeReregistering,
                 async delegate ()
                 {
-                    await TheGameSingleton.Instance.TheGameController.SafeReregisterDeleteAllPrizesAsync();
+                    await TheGameSingleton.Instance.TheWeb3Controller.SafeReregisterDeleteAllPrizesAsync();
                     
                     //Populate UI
                     await IsRegisteredButton_OnClicked();

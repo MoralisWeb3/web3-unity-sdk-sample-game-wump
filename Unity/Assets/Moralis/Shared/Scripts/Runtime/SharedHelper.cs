@@ -151,5 +151,19 @@ namespace MoralisUnity.Samples.Shared
             //Debug.Log("DestroyEveryGameObjectInScene Count = " + x.Count + " to Count = " + y.Count);
 
         }
+
+        public static void SafeQuitGame()
+        {
+            if (Application.isEditor)
+            {
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#endif //UNITY_EDITOR
+            }
+            else
+            {
+                Application.Quit();
+            }
+        }
     }
 }

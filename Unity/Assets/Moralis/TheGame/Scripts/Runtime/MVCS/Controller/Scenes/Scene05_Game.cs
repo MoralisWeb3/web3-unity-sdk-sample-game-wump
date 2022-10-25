@@ -1,9 +1,6 @@
-using System;
 using Cysharp.Threading.Tasks;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
-using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
-using MoralisUnity.Samples.TheGame.MVCS.Service.MultiplayerSetupService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using MoralisUnity.Samples.TheGame.MVCS.View.Scenes;
 using UnityEngine;
@@ -20,22 +17,15 @@ namespace MoralisUnity.Samples.TheGame
 		
 		//  Properties ------------------------------------
 
-
 		//  Fields ----------------------------------------
 		[Header("References (Scene)")]
 		[SerializeField]
 		private Scene05_GameUI _ui;
 	
-		private static Scene05_Game _Instance;
 		private bool _isInitialized = false;
 
 
 		//  Unity Methods ---------------------------------
-		protected void Awake()
-		{
-			_Instance = this;
-		}
-
 		
 		protected async void Start()
 		{
@@ -65,7 +55,7 @@ namespace MoralisUnity.Samples.TheGame
 			}
 			else
 			{
-				bool isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
+				bool isRegistered = await TheGameSingleton.Instance.TheWeb3Controller.GetIsRegisteredAndUpdateModelAsync();
 				RefreshUIAsync();
 				
 				if (!isRegistered)
@@ -222,13 +212,16 @@ namespace MoralisUnity.Samples.TheGame
 			await RefreshUIAsync();
 		}
 		
+		
 		private void OnTheGameModelChanged(TheGameModel theGameModel)
 		{
 		}
 		
+		
 		private void OnPlayerAction(PlayerView playerView)
 		{
 		}
+		
 		
 		private async void OnRPCSharedStatusChanged(PlayerView playerView)
 		{
@@ -238,15 +231,14 @@ namespace MoralisUnity.Samples.TheGame
 			}
 		}
 		
+		
 		private async void OnRPCTransferLogHistoryChanged(TransferLog transferLog)
 		{
 			string message = TheGameHelper.GetTransferLogDisplayText(transferLog);
 			_ui.TopUI.QueueSharedStatusText(message, 6000);
 			
 			//Update the gold/prize ui
-			await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
+			await TheGameSingleton.Instance.TheWeb3Controller.GetIsRegisteredAndUpdateModelAsync();
 		}
-		
-
 	}
 }

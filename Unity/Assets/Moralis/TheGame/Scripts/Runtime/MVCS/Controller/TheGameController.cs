@@ -1,21 +1,19 @@
 using System;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using MoralisUnity.Samples.Shared;
 using MoralisUnity.Samples.Shared.Components;
-using MoralisUnity.Samples.Shared.Data.Types;
-using MoralisUnity.Samples.Shared.Exceptions;
 using MoralisUnity.Samples.Shared.Interfaces;
+using MoralisUnity.Samples.SharedCustom.Exceptions;
 using MoralisUnity.Samples.TheGame.MVCS.Controller.Events;
 using MoralisUnity.Samples.TheGame.MVCS.Model;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types;
 using MoralisUnity.Samples.TheGame.MVCS.Model.Data.Types.Configuration;
-using MoralisUnity.Samples.TheGame.MVCS.Service.TheGameService;
 using MoralisUnity.Samples.TheGame.MVCS.View;
 using RMC.Shared.Managers;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
+using NotInitializedException = MoralisUnity.Samples.Shared.Exceptions.NotInitializedException;
+using SwitchDefaultException = MoralisUnity.Samples.Shared.Exceptions.SwitchDefaultException;
 
 #pragma warning disable CS4014
 namespace MoralisUnity.Samples.TheGame.MVCS.Controller
@@ -47,14 +45,22 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 
 			
 		// Properties -------------------------------------
-		public PendingMessage PendingMessageForDeletion { get { return _theGameService.PendingMessageActive; } }
-		public PendingMessage PendingMessageForSave { get { return _theGameService.PendingMessagePassive; } }
 		public bool IsInitialized { get; private set; }
+
+		public TheWeb3Controller TheWeb3Controller
+		{
+			set
+			{
+				//Must set this value before init
+				RequireIsNotInitialized();
+				_theWeb3Controller = value;
+			}
+		}
 
 		// Fields -----------------------------------------
 		private readonly TheGameModel _theGameModel = null;
 		private readonly TheGameView _theGameView = null;
-		private readonly ITheGameService _theGameService = null;
+		private TheWeb3Controller _theWeb3Controller = null;
 		
 		// Wait, So click sound is audible before scene changes
 		private const int DelayLoadSceneMilliseconds = 100;
@@ -65,12 +71,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		// Initialization Methods -------------------------
 		public TheGameController(
 			TheGameModel theGameModel,
-			TheGameView theGameView,
-			ITheGameService theGameService )
+			TheGameView theGameView)
 		{
 			_theGameModel = theGameModel;
 			_theGameView = theGameView;
-			_theGameService = theGameService;
 		}
 
 		public void Initialize()
@@ -99,6 +103,14 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			if (!IsInitialized)
 			{
 				throw new NotInitializedException(this);
+			}
+		}
+		
+		public void RequireIsNotInitialized()
+		{
+			if (IsInitialized)
+			{
+				throw new InitializedException(this);
 			}
 		}
 		
@@ -136,70 +148,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		///////////////////////////////////////////
 
 
-		///////////////////////////////////////////
-		// Related To: Service
-		///////////////////////////////////////////
-
-		// GETTER Methods -------------------------
-		
-		/// <summary>
-		/// The checks "IsRegistered" *AND* if true, it loads
-		/// some other data.
-		///
-		/// TODO: Does this method load too many things?
-		/// </summary>
-		/// <returns></returns>
-		public async UniTask<bool> GetIsRegisteredAndUpdateModelAsync()
-		{
-			// Call Service. Sync Model
-			bool isRegistered = await _theGameService.GetIsRegisteredAsync();
-			_theGameModel.IsRegistered.Value = isRegistered;
-
-			//TODO: Perhaps pass a parameter of useModelCache to bypass these checks EVERY time?
-			if (_theGameModel.IsRegistered.Value)
-			{
-				await GetGoldAndUpdateModelAsync();
-				await GetPrizesAndUpdateModelAsync();
-				
-				if (!_theGameModel.CustomPlayerInfo.Value.HasWeb3Address)
-				{
-					string web3Address = await GetWeb3UserAddressAsync();
-					SetPlayerWeb3AddressAndUpdateModel(web3Address);
-				}
-				
-				if (!_theGameModel.CustomPlayerInfo.Value.HasNickname)
-				{
-					RandomizeNicknameAndUpdateModel();
-				}
-			}
-			
-			return _theGameModel.IsRegistered.Value;
-		}
-
-		
-		public async UniTask<int> GetGoldAndUpdateModelAsync()
-		{
-			int gold = await _theGameService.GetGoldAsync();
-			_theGameModel.Gold.Value = gold;
-			return _theGameModel.Gold.Value;
-		}
-		
-		
-		public async UniTask<List<Prize>> GetPrizesAndUpdateModelAsync()
-		{
-			List<Prize> prizes = await _theGameService.GetPrizesAsync();
-			_theGameModel.Prizes.Value = prizes;
-			return _theGameModel.Prizes.Value;
-		}
-		
-		
-		public async UniTask<TransferLog> GetTransferLogHistoryAsync()
-		{
-			TransferLog result = await _theGameService.GetTransferLogHistoryAsync();
-			return result;
-		}
-		
-		
 		public void SetPlayerNicknameAndUpdateModel(string nickname)
 		{
 			// Set COMPLETE object to properly trigger events
@@ -224,71 +172,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			SetPlayerNicknameAndUpdateModel(nickname);
 		}
 
-		
-		// SETTER Methods -------------------------
-		public async UniTask RegisterAndUpdateModelAsync()
-		{
-			_theGameModel.ResetAllData();
-			await _theGameService.RegisterAsync();
-			_theGameModel.IsRegistered.Value = await GetIsRegisteredAndUpdateModelAsync();
-			
-			// Wait for contract values to sync so the client will see the changes
-			await DelayExtraAfterStateChangeAsync(); // Delay 1 of 2
-			await DelayExtraAfterStateChangeAsync(); // Delay 2 of 2 -- yes this is a long delay. Apparently needed for this state change
-		}
-
-		
-		public async UniTask UnregisterAsync()
-		{
-			_theGameModel.ResetAllData();
-			await _theGameService.UnregisterAsync();
-			_theGameModel.IsRegistered.Value = await GetIsRegisteredAndUpdateModelAsync();
-
-			// Wait for contract values to sync so the client will see the changes
-			await DelayExtraAfterStateChangeAsync();
-	
-		}
-
-
-		public async UniTask TransferGoldAsync(string toAddress)
-		{
-			await _theGameService.TransferGoldAsync(toAddress);
-			
-			// Wait for contract values to sync so the client will see the changes
-			await DelayExtraAfterStateChangeAsync();
-			await UniTask.Delay(ExtraDelayAfterTransferMilliseconds);
-		}
-
-		
-		public async UniTask TransferPrizeAsync(string toAddress, Prize prize)
-		{
-			if (prize == null)
-			{
-				throw new ArgumentException("TransferPrizeAsync() failed. prize = {prize}");
-			}
-			await _theGameService.TransferPrizeAsync(toAddress, prize);
-			
-			// Wait for contract values to sync so the client will see the changes
-			await DelayExtraAfterStateChangeAsync();
-			await UniTask.Delay(ExtraDelayAfterTransferMilliseconds);
-		}
-		
-		
-		public async UniTask SafeReregisterDeleteAllPrizesAsync()
-		{
-			_theGameModel.ResetAllData();
-			await _theGameService.SafeReregisterDeleteAllPrizesAsync();
-			
-			// Wait for contract values to sync so the client will see the changes
-			await DelayExtraAfterStateChangeAsync();
-			
-			// Refresh the UI
-			await GetIsRegisteredAndUpdateModelAsync();
-			
-			// Wait for contract values to sync so the client will see the changes
-			await DelayExtraAfterStateChangeAsync();
-		}
-		
 		
 		private void PlayerView_OnIsWalkingChanged(PlayerView playerView)
 		{
@@ -348,6 +231,9 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			{
 				case PlayerView playerView:
 					playerView.OnIsWalkingChanged.RemoveListener(PlayerView_OnIsWalkingChanged);
+					playerView.OnPlayerAction.RemoveListener(PlayerView_OnPlayerAction);
+					playerView.OnRPCSharedStatusChanged.RemoveListener(PlayerView_OnRPCSharedStatusChanged);
+					playerView.OnRPCTransferLogChanged.RemoveListener(PlayerView_OnRPCTransferLogChanged);
 					break;
 				case TransferDialogView transferDialogView:
 					transferDialogView.OnTransferGoldRequested.RemoveListener(TransferDialogView_OnTransferGoldRequested);
@@ -431,11 +317,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 					async delegate ()
 					{
 						_theGameModel.IsTransferPending.Value = true;
-						await TransferPrizeAsync(_theGameModel.SelectedPlayerView.Value.Web3Address, 
+						await _theWeb3Controller.TransferPrizeAsync(_theGameModel.SelectedPlayerView.Value.Web3Address, 
 							_theGameModel.Prizes.Value[0]);
 
 						// Update client UI
-						await GetPrizesAndUpdateModelAsync();
+						await _theWeb3Controller.GetPrizesAndUpdateModelAsync();
 						
 						//Finish the transfer by mimicking the cancel button
 						TransferDialogView_OnTransferCancelRequested(transferDialogView);
@@ -453,10 +339,10 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 					async delegate ()
 					{
 						_theGameModel.IsTransferPending.Value = true;
-						await TransferGoldAsync(_theGameModel.SelectedPlayerView.Value.Web3Address);
+						await _theWeb3Controller.TransferGoldAsync(_theGameModel.SelectedPlayerView.Value.Web3Address);
 
 						// Update client UI
-						await GetGoldAndUpdateModelAsync();
+						await _theWeb3Controller.GetGoldAndUpdateModelAsync();
 
 						//Finish the transfer by mimicking the cancel button
 						TransferDialogView_OnTransferCancelRequested(transferDialogView);
@@ -498,11 +384,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			}
 		}
 
-		
-		public void PlayAudioClip(int audioClipIndex)
-		{
-			_theGameView.PlayAudioClip(audioClipIndex );
-		}
 		public void PlayAudioClipClick()
 		{
 			_theGameView.PlayAudioClipClick();
@@ -560,21 +441,13 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		}
 
 
-		public async void LoadPreviousSceneAsync()
-		{
-			// Wait, So click sound is audible before scene changes
-			await UniTask.Delay(DelayLoadSceneMilliseconds);
-
-			_theGameView.SceneManagerComponent.LoadScenePrevious();
-		}
-
 		/// <summary>
 		/// For short async messaging
 		/// </summary>
 		public async UniTask ShowMessagePassiveAsync(Func<UniTask> task)
 		{
 			await _theGameView.ShowMessageDuringMethodAsync(
-				_theGameService.PendingMessagePassive.Message, task);
+				_theWeb3Controller.PendingMessagePassive.Message, task);
 		}
 		
 		/// <summary>
@@ -583,18 +456,19 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 		public async UniTask ShowMessageActiveAsync(string title, Func<UniTask> task)
 		{
 			await _theGameView.ShowMessageDuringMethodAsync(
-				$"{title}\n-\n{_theGameService.PendingMessageActive.Message}", task);
+				$"{title}\n-\n{_theWeb3Controller.PendingMessageActive.Message}", task);
 		}
 		
 		// Wait for contract values to sync so the client will see the changes
 		private async UniTask DelayExtraAfterStateChangeAsync()
 		{
-			if (_theGameService.HasExtraDelay)
+			if (_theWeb3Controller.HasExtraDelay)
 			{
-				_theGameView.UpdateMessageDuringMethod(_theGameService.PendingMessageExtraDelay.Message);
-				await _theGameService.DoExtraDelayAsync();
+				_theGameView.UpdateMessageDuringMethod(_theWeb3Controller.PendingMessageExtraDelay.Message);
+				await _theWeb3Controller.DoExtraDelayAsync();
 			}
 		}
+		
 		
 		public async UniTask ShowMessageWithDelayAsync(string message, int delayMilliseconds)
 		{
@@ -606,17 +480,18 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			_theGameView.UpdateMessageDuringMethod(message, false);
 		}
 		
+		
 		public void HideMessageDuringMethod(bool isAnimated)
 		{
 			_theGameView.HideMessageDuringMethod(isAnimated);
 		}
 
+		
 		// Event Handlers ---------------------------------
 		private void TheGameModel_OnTheGameModelChanged(TheGameModel theGameModel)
 		{
 			OnTheGameModelChanged.Invoke(_theGameModel);
 		}
-		
 		
 		
 		private void SceneManagerComponent_OnSceneLoadingEvent(SceneManagerComponent sceneManagerComponent, 
@@ -631,8 +506,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			{
 				DOTween.KillAll();
 			}
-
-
 		}
 
 		
@@ -645,22 +518,12 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller
 			// 	CustomWeb3System.Instance.EnsureInstantiatedWalletConnectInstance();
 			// }
 			
-
 		}
 
 
 		public void QuitGame()
 		{
-			if (Application.isEditor)
-			{
-#if UNITY_EDITOR
-				UnityEditor.EditorApplication.isPlaying = false;
-#endif //UNITY_EDITOR
-			}
-			else
-			{
-				Application.Quit();
-			}
+			SharedHelper.SafeQuitGame();
 		}
 
 	}

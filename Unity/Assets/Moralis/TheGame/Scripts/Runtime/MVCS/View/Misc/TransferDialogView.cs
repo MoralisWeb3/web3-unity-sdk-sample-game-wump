@@ -53,7 +53,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.View
             if (_isAuthenticated)
             {
                 // Populate the top UI
-                _isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
+                _isRegistered = await TheGameSingleton.Instance.TheWeb3Controller.GetIsRegisteredAndUpdateModelAsync();
                 RefreshUIAsync();
             }
         }

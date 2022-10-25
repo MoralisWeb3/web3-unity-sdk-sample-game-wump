@@ -55,6 +55,7 @@ namespace MoralisUnity.Samples.TheGame
 
 		// Properties -------------------------------------
 		public TheGameController TheGameController  { get { return _theGameController; }}
+		public TheWeb3Controller TheWeb3Controller  { get { return _theWeb3Controller; }}
 		public TheMultiplayerController TheMultiplayerController  { get { return _theMultiplayerController; }}
 		
 		
@@ -63,6 +64,7 @@ namespace MoralisUnity.Samples.TheGame
 		private TheGameView _theGameView;
 		private NetworkManagerView _networkManagerView;
 		private TheGameController _theGameController;
+		private TheWeb3Controller _theWeb3Controller;
 		private TheMultiplayerController _theMultiplayerController;
 		private ITheGameService _theGameService;
 		private IMultiplayerSetupService _multiplayerSetupService = null;
@@ -82,7 +84,7 @@ namespace MoralisUnity.Samples.TheGame
 			gameObject.name = GetType().Name;
 			
 			///////////////////////////////////
-			// The Game Model
+			// The Game Models
 			_theGameModel = new TheGameModel();
 			
 			////////////// VIEW - (PARENT UNDER SINGLETON) /////////////////////
@@ -99,7 +101,7 @@ namespace MoralisUnity.Samples.TheGame
 			SharedHelper.SafeDontDestroyOnLoad(_networkManagerView.gameObject);
 
 			///////////////////////////////////
-			// The Game Service
+			// The Services
 			TheGameServiceType theGameServiceType = 
 				TheGameConfiguration.Instance.TheGameServiceType;
 			
@@ -115,19 +117,29 @@ namespace MoralisUnity.Samples.TheGame
 				TheGameConfiguration.Instance.LanSimulatorParameters);
 			
 			///////////////////////////////////
-			// Controller
+			// Controllers
+			
+			// TheGameController
 			_theGameController = new TheGameController(
 				_theGameModel, 
-				_theGameView,
-				_theGameService);
+				_theGameView);
 			
+			// TheWeb3Controller
+			_theWeb3Controller = new TheWeb3Controller(
+				_theGameModel, 
+				_theGameController,
+				_theGameService);
+			_theWeb3Controller.Initialize();
+			
+			//TheGameController Init - Set later since its created later
+			_theGameController.TheWeb3Controller = _theWeb3Controller; 
 			_theGameController.Initialize();
 			
+			//  TheMultiplayerController
 			_theMultiplayerController = new TheMultiplayerController(
 				_networkManagerView,
 				_theGameController,
 				_multiplayerSetupService);
-			
 			_theMultiplayerController.Initialize();
 			
 		}

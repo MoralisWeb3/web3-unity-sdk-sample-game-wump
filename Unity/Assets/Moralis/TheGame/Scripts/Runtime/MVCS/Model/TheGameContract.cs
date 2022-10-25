@@ -234,7 +234,6 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Model
 		{
 			int[] tokenIds = new int[prizes.Count];
 			
-			Debug.Log("GetTokenIds()");
 			for (int i = 0; i < prizes.Count; i++)
 			{
 				tokenIds[i] = GetTokenId(prizes[i]);

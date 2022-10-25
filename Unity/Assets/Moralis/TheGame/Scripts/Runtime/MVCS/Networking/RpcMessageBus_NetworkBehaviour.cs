@@ -49,7 +49,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Networking
             //  Unity Methods ---------------------------------
             public async UniTask SendMessageTransferLogAsync()
             {
-                TransferLog transferLog = await TheGameSingleton.Instance.TheGameController.GetTransferLogHistoryAsync();
+                TransferLog transferLog = await TheGameSingleton.Instance.TheWeb3Controller.GetTransferLogHistoryAsync();
                 
                 //CONVERT: 1 OF 2
                 //RPC needs serializable data. Unity supports custom, serializable classes.

@@ -43,7 +43,7 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
             TheGameSingleton.Debug.Log("scene _isAuthenticated: " + _isAuthenticated);
             if (_isAuthenticated)
             {
-                _isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
+                _isRegistered = await TheGameSingleton.Instance.TheWeb3Controller.GetIsRegisteredAndUpdateModelAsync();
                 RefreshUIAsync();
             }
             else
@@ -84,11 +84,11 @@ namespace MoralisUnity.Samples.TheGame.MVCS.Controller.Scenes
                 async delegate()
                 {
                     //After this happens, the OnTheGameModelChange() will be called automatically
-                    await TheGameSingleton.Instance.TheGameController.RegisterAndUpdateModelAsync();
+                    await TheGameSingleton.Instance.TheWeb3Controller.RegisterAndUpdateModelAsync();
                     
                     //Registering is crucial. Ensure the user sees the result with some extra stuff here...
                     await UniTask.Delay(3000);
-                    _isRegistered = await TheGameSingleton.Instance.TheGameController.GetIsRegisteredAndUpdateModelAsync();
+                    _isRegistered = await TheGameSingleton.Instance.TheWeb3Controller.GetIsRegisteredAndUpdateModelAsync();
                     RefreshUIAsync();
 
                 });
