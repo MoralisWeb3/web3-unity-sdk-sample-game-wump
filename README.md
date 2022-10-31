@@ -21,8 +21,9 @@ See [docs.moralis.io/unity](https://docs.moralis.io/unity) for more info.
 
 **Documentation**
 * `README.md` - Overall Docs for this repo
-* `Unity/Assets/Moralis/TheGame/Documentation/ReadMe.asset` - Unity Docs. Select this asset in Unity. 
-* `SmartContracts/Hardhat/Instructions.txt` - SmartContracts Docs. Deployment required to empower the Unity gamee
+* `Unity/Assets/Moralis/TheGame/Documentation/ReadMe.asset` - Unity Docs. Select this asset in Unity
+* `Server/azure-playfab-functions-vscode/Instructions.txt` - Azure Docs. Deployment **required** to empower the Unity game
+* `SmartContracts/Hardhat/Instructions.txt` - SmartContracts Docs. Deployment **required** to empower the Unity game
 * `WebCompanionApp/NextJS/Instructions.txt` - WebCompanionApp Docs. This is optional.
 
 
