@@ -1,5 +1,9 @@
-﻿using UnityEditor;
+﻿
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace MoralisUnity.Samples.Shared
 {
@@ -17,6 +21,7 @@ namespace MoralisUnity.Samples.Shared
         }
     }
     
+#if UNITY_EDITOR
     [InitializeOnLoad] 
     public static class Bootstrap
     {
@@ -26,4 +31,5 @@ namespace MoralisUnity.Samples.Shared
             CustomWeb3System.SetICustomWeb3SystemInstanceFactory(new MoralisTwoWeb3SystemFactory());
         }
     }
+#endif
 }

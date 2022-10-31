@@ -77,7 +77,6 @@ namespace MoralisUnity.Samples.Shared
 
 		public async UniTask InitializeAsync()
 		{
-			Debug.LogError("InitializeAsync1 :  " + IsInitialized);
 			if (!IsInitialized)
 			{
 				// Do initialize / do not auth
@@ -102,7 +101,6 @@ namespace MoralisUnity.Samples.Shared
 
 			}
 			IsInitialized = true;
-			Debug.LogError("InitializeAsync2:  " + IsInitialized);
 		}
 
 		public void RequireIsInitialized()
