@@ -1,0 +1,18 @@
+///////////////////////////////////////////////////////////
+// Instructions.txt
+//      *   Follow these complete steps setup, deploy, 
+//          and run Azure funtions to be called by Unity
+///////////////////////////////////////////////////////////
+
+// 01. FOLLOW ALL INSTRUCTIONS INCLUDING "Setup Backend"
+
+    https://docs.moralis.io/docs/unity-demos
+    
+    
+// 02. RUN THE RELEVANT SCENE IN UNITY
+
+    Congratulations, you are done!
+
+
+///////////////////////////////////////////////////////////
+

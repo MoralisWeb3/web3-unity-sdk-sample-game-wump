@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "azure_playfab_functions_vscode": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7053",
+      "launchBrowser": false
+    }
+  }
+}
